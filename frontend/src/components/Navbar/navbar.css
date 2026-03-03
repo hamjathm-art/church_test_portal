@@ -1,0 +1,20 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+.navbar {
+    display: none;
+    padding: 20px;
+    color: #fff;
+    background-color: black;
+}
+#button{
+    color: white;
+    background-color: black;
+    border-color: white;
+}
+@media only screen and (max-width: 850px) {
+    .navbar{
+        display: block;
+    }
+}

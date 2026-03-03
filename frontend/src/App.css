@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Raleway", sans-serif;
+  box-sizing: border-box;
+}
+
+/* ── Remove all underlines globally ── */
+a, a:hover, a:focus, a:active, a:visited {
+  text-decoration: none !important;
+}
+
+body {
+  background-color: #f0f2f5;
+  color: #1f2937;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* ── Font Hierarchy ── */
+h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #111827;
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #374151;
+}
+
+h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+h5, h6 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+p {
+  font-size: 14px;
+  font-weight: 400;
+  color: #4b5563;
+}
+
+label {
+  font-weight: 600;
+}
+
+.container1 {
+  display: flex;
+}
+
+main {
+  padding: 28px;
+  min-height: 100vh;
+  flex: 1;
+  min-width: 0;
+  background-color: #f0f2f5;
+}
+
+@media only screen and (max-width: 768px) {
+  main {
+    padding: 16px;
+  }
+}
+
+/* ── Global Form Button ── */
+.form-btn {
+  transition: background-color 0.2s ease, transform 0.15s ease !important;
+}
+
+.form-btn:hover {
+  background-color: #1E3A8A !important;
+  transform: translateY(-1px);
+}

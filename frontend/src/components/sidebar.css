@@ -1,0 +1,245 @@
+/* ── Sidebar ── */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 280px;
+  background: #1E3A8A;
+  color: #fff;
+  transition: all 0.3s ease;
+  z-index: 100;
+  overflow-y: auto;
+  box-shadow: 4px 0 20px rgba(30, 58, 138, 0.18);
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+/* ── Logo Section ── */
+.top-section {
+  padding: 28px 20px 24px;
+  text-align: center;
+  border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+  margin-bottom: 30px;
+}
+
+.logo {
+  font-size: 30px;
+  margin: 0;
+  line-height: 1;
+}
+
+.logo img {
+  border-radius: 10px;
+}
+
+/* ── Menu Links ── */
+.link {
+  display: flex;
+  align-items: center;
+  color: #E0EAFF;
+  padding: 12px 22px;
+  gap: 14px;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+  margin: 3px 10px;
+  border-radius: 10px;
+  text-decoration: none !important;
+}
+
+.link:hover {
+  background: rgba(96, 165, 250, 0.12);
+  color: #60A5FA;
+  text-decoration: none !important;
+}
+
+/* ── Active State ── */
+.sidebar .link.active {
+  background: rgba(96, 165, 250, 0.18);
+  color: #60A5FA !important;
+  border-left-color: #60A5FA;
+  font-weight: 600;
+  margin: 3px 0;
+  border-radius: 0;
+  text-decoration: none !important;
+}
+
+.sidebar .link.active .icon {
+  color: #60A5FA;
+}
+
+.icon {
+  font-size: 19px;
+  display: flex;
+  align-items: center;
+  min-width: 22px;
+  color: #E0EAFF;
+  transition: color 0.2s ease;
+}
+
+.link:hover .icon {
+  color: #60A5FA;
+}
+
+.link_text {
+  font-size: 14px;
+  font-weight: 500;
+  font-family: "Raleway", sans-serif;
+  text-decoration: none !important;
+}
+
+/* ── Submenu ── */
+.submenu {
+  margin: 0 10px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.submenu .link.active {
+  background: rgba(96, 165, 250, 0.18);
+  color: #60A5FA !important;
+  margin: 0;
+}
+
+.sublink {
+  padding-left: 52px;
+  background-color: transparent;
+  margin: 0;
+  border-radius: 0;
+}
+
+.sublink .link_text {
+  font-size: 13px;
+}
+
+/* ── Logout Popup ── */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  backdrop-filter: blur(4px);
+}
+
+.popup {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px 40px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  min-width: 320px;
+}
+
+.popup h3 {
+  color: #1f2937;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.pop-btn {
+  padding: 10px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 0 8px;
+  transition: all 0.2s;
+}
+
+.pop-btn-no {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.pop-btn-yes {
+  background: #1E3A8A;
+  color: #fff;
+}
+
+.pop-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* ── Close Button Mobile ── */
+.close-button-icons {
+  display: none;
+  justify-content: flex-end;
+  padding: 14px 14px 0;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.4);
+  transition: color 0.2s;
+}
+
+.close-button-icons:hover {
+  color: #fff;
+}
+
+/* ── Mobile Bar ── */
+.Navbar-mobile-responsive {
+  display: none;
+}
+
+.menu-bar {
+  display: none;
+}
+
+/* ── Mobile Responsive ── */
+@media screen and (max-width: 968px) {
+  .sidebar {
+    position: fixed;
+    width: 280px;
+    top: 0;
+    left: 0;
+    height: 100vh;
+  }
+
+  .container1 {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .Navbar-mobile-responsive {
+    background: #1E3A8A;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4px;
+  }
+
+  .menu-bar {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 12px;
+  }
+
+  .submenu {
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .link {
+    padding: 11px 16px;
+    margin: 1px 0;
+    border-radius: 0;
+  }
+
+  .close-button-icons {
+    display: flex;
+    justify-content: flex-end;
+  }
+}

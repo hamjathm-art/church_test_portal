@@ -1,0 +1,17 @@
+.footer-box {
+  text-align: center;
+  background: linear-gradient(135deg, #1E3A8A 0%, #3B5EC2 100%);
+  color: #fff;
+  padding: 14px 20px;
+  border-top: 1px solid #60A5FA;
+  width: 100%;
+}
+
+.foot-text {
+  font-size: 13px;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+  letter-spacing: 0.3px;
+  color: #DBEAFE;
+}

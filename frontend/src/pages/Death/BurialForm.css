@@ -1,0 +1,72 @@
+.burial-card {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  margin: 0;
+  box-shadow: 0 4px 20px rgba(30, 58, 138, 0.18);
+  overflow: hidden;
+}
+
+.burial-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 28px;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+  border-radius: 12px 12px 0 0;
+}
+
+.burial-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  padding: 28px;
+}
+
+@media only screen and (max-width: 1024px) {
+  .burial-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .burial-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.burial-view-btn {
+  background-color: #fff;
+  color: #3B5EC2;
+  border: 1px solid #3B5EC2;
+  border-radius: 6px;
+  padding: 8px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.burial-view-btn:hover {
+  background-color: #3B5EC2;
+  color: #fff;
+}
+
+#burial-certificate-print-area {
+  font-family: 'Times New Roman', Times, serif;
+}
+
+#burial-certificate-print-area * {
+  font-family: 'Times New Roman', Times, serif;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

@@ -1,0 +1,123 @@
+.mass-card {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  margin: 0;
+  box-shadow: 0 4px 20px rgba(30, 58, 138, 0.18);
+}
+
+.mass-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 28px;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+  border-radius: 12px 12px 0 0;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.mass-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  padding-bottom: 20px;
+}
+
+.mass-view-btn {
+  background-color: #fff;
+  color: #3B5EC2;
+  border: 1px solid #3B5EC2;
+  border-radius: 6px;
+  padding: 8px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mass-view-btn:hover {
+  background-color: #3B5EC2;
+  color: #fff;
+}
+
+.mass-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+.mass-table thead {
+  background-color: #f9fafb;
+}
+
+.mass-table th,
+.mass-table td {
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  text-align: left;
+  font-size: 14px;
+}
+
+.mass-table th {
+  font-weight: 600;
+  color: #374151;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.no-print {
+  display: block;
+}
+
+.print-only {
+  display: none;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  #detail-print-area,
+  #detail-print-area * {
+    font-family: 'Times New Roman', Times, serif !important;
+    color: #000 !important;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .mass-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .mass-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mass-table {
+    font-size: 0.875rem;
+  }
+
+  .mass-table th,
+  .mass-table td {
+    padding: 8px;
+  }
+}

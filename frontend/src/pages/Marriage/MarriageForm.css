@@ -1,0 +1,66 @@
+.marriage-card {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  margin: 0;
+  box-shadow: 0 4px 20px rgba(30, 58, 138, 0.18);
+  overflow: hidden;
+}
+
+.marriage-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 28px;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+  border-radius: 12px 12px 0 0;
+}
+
+.marriage-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  padding: 28px;
+}
+
+@media only screen and (max-width: 1024px) {
+  .marriage-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .marriage-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.marriage-view-btn {
+  background-color: #fff;
+  color: #3B5EC2;
+  border: 1px solid #3B5EC2;
+  border-radius: 6px;
+  padding: 8px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.marriage-view-btn:hover {
+  background-color: #3B5EC2;
+  color: #fff;
+}
+
+/* Certificate view — force Times New Roman and black color on all elements */
+#marriage-certificate-print-area,
+#marriage-certificate-print-area * {
+  font-family: 'Times New Roman', Times, serif !important;
+  color: #000 !important;
+}
+
+/* Toast slide-in animation */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
