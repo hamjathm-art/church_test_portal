@@ -73,6 +73,21 @@ const VoucherForm = () => {
     return () => { if (toastTimer.current) clearTimeout(toastTimer.current); };
   }, []);
 
+  useEffect(() => {
+    if (!editingId) {
+      const fetchNext = async () => {
+        try {
+          const res = await authFetch('/api/voucher/next-number');
+          const result = await res.json();
+          if (result.success) {
+            setFormData(prev => ({ ...prev, voucherNo: result.data.nextNumber }));
+          }
+        } catch (e) { console.error(e); }
+      };
+      fetchNext();
+    }
+  }, [editingId]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (numericFields.includes(name)) {
@@ -92,7 +107,6 @@ const VoucherForm = () => {
   const validateForm = () => {
     const newErrors = {};
     const required = {
-      voucherNo: 'Voucher No is required',
       voucherDate: 'Voucher Date is required',
       payTo: 'Pay To is required',
       debitAccount: 'Debit Account is required',
@@ -216,6 +230,16 @@ const VoucherForm = () => {
     setErrors({});
     setCameFromSearch(false);
     setView('form');
+    const fetchNextNumber = async () => {
+      try {
+        const res = await authFetch('/api/voucher/next-number');
+        const result = await res.json();
+        if (result.success) {
+          setFormData(prev => ({ ...prev, voucherNo: result.data.nextNumber }));
+        }
+      } catch (e) { console.error(e); }
+    };
+    fetchNextNumber();
   };
 
   const handleCancel = () => {
@@ -341,6 +365,7 @@ const VoucherForm = () => {
             ? 'border-2 border-red-500 bg-red-50 text-red-800'
             : 'border border-gray-300 bg-white text-gray-900'
         }`}
+        style={{ fontStyle: 'normal' }}
       />
       {errors[name] && (
         <p className="text-red-500 text-xs mt-1.5">{errors[name]}</p>
@@ -432,7 +457,7 @@ const VoucherForm = () => {
     <div className="w-full py-6 px-4">
 
       {toast && (
-        <div style={{
+        <div className="voucher-toast" style={{
           position: 'fixed', top: '24px', right: '24px', zIndex: 100,
           display: 'flex', alignItems: 'center', gap: '12px',
           padding: '16px 24px', borderRadius: '10px',
@@ -467,7 +492,7 @@ const VoucherForm = () => {
       <div className="bg-white border border-gray-200 rounded-xl shadow-[0_4px_20px_rgba(30,58,138,0.18)]" style={{ maxWidth: '1100px' }}>
 
         {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 28px', borderBottom: '1px solid #e5e7eb', backgroundColor: '#f9fafb', borderRadius: '12px 12px 0 0' }}>
+        <div className="voucher-card-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 28px', borderBottom: '1px solid #e5e7eb', backgroundColor: '#f9fafb', borderRadius: '12px 12px 0 0' }}>
           <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#1f2937', margin: 0 }}>
             {view === 'form'
               ? (editingId ? 'Edit Voucher' : 'Voucher Form')
@@ -475,7 +500,7 @@ const VoucherForm = () => {
               ? 'Voucher Details'
               : 'Search Vouchers'}
           </h2>
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div className="voucher-header-btns" style={{ display: 'flex', gap: '10px' }}>
             {view === 'search' ? (
               <button className="form-btn" onClick={handleNewClick} style={{ backgroundColor: '#3B5EC2', color: '#fff', border: 'none', borderRadius: '6px', padding: '7px 18px', fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}><span style={{ fontSize: '18px', fontWeight: 700, lineHeight: '1' }}>+</span> New Voucher</button>
             ) : view === 'detail' ? (
@@ -494,14 +519,14 @@ const VoucherForm = () => {
         {/* Detail View */}
         {view === 'detail' && detailRecord ? (
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <div id="detail-print-area" style={{ width: '700px', minHeight: '990px', margin: '0 auto', backgroundImage: 'url(/images/f1.png)', backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat', padding: '155px 60px 50px', fontFamily: "'Times New Roman', Times, serif", position: 'relative', boxShadow: '0 2px 16px rgba(0,0,0,0.10)' }}>
+            <div className="voucher-detail-area" id="detail-print-area" style={{ width: '700px', maxWidth: '100%', minHeight: '990px', margin: '0 auto', backgroundImage: 'url(/images/f1.png)', backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat', padding: '155px 60px 50px', fontFamily: "'Times New Roman', Times, serif", position: 'relative', boxShadow: '0 2px 16px rgba(0,0,0,0.10)' }}>
               <div style={{ textAlign: 'center', marginBottom: '16px' }}>
                 <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#000', margin: '0 0 4px', letterSpacing: '1px', fontFamily: "'Times New Roman', Times, serif" }}>VOUCHER</h2>
                 <p style={{ fontSize: '12px', color: '#000', margin: '0 0 6px' }}>Parish Office Record</p>
                 <hr style={{ border: 'none', borderTop: '1px solid #000', margin: '4px 0 0' }} />
               </div>
 
-              <table style={{ margin: '0 auto', borderCollapse: 'collapse', fontSize: '13px', fontFamily: "'Times New Roman', Times, serif" }}>
+              <table className="voucher-detail-table" style={{ margin: '0 auto', borderCollapse: 'collapse', fontSize: '13px', fontFamily: "'Times New Roman', Times, serif", width: '100%' }}>
                 <tbody>
                   {[
                     { no: 1, label: 'Voucher No', value: detailRecord.voucherNo },
@@ -526,8 +551,8 @@ const VoucherForm = () => {
 
               {/* Signing Authority - no-print */}
               <div className="no-print" style={{ marginTop: '30px' }}>
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: '280px' }}>
+                <div className="voucher-cert-auth-wrap" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
+                  <div className="voucher-cert-auth-inner" style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: '280px' }}>
                     <label style={{ fontSize: '14px', fontWeight: 600, color: '#374151' }}>Signing Authority</label>
                     <select value={signingAuthority} onChange={e => setSigningAuthority(e.target.value)} style={{ padding: '10px 14px', fontSize: '15px', border: '1px solid #d1d5db', borderRadius: '8px', outline: 'none', backgroundColor: '#fff', color: '#111' }}>
                       <option value="">-- Select Authority --</option>
@@ -538,7 +563,7 @@ const VoucherForm = () => {
                 </div>
 
                 {signingAuthority && (
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', fontFamily: "'Times New Roman', Times, serif", marginTop: '16px' }}>
+                  <div className="voucher-cert-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', fontFamily: "'Times New Roman', Times, serif", marginTop: '16px' }}>
                     <div style={{ fontSize: '14px', color: '#000' }}>
                       <p style={{ margin: 0, fontWeight: 700, color: '#000' }}>Date :</p>
                       <p style={{ margin: 0, fontWeight: 700, color: '#000' }}>{getTodayFormatted().dayName},</p>
@@ -603,9 +628,30 @@ const VoucherForm = () => {
           <form onSubmit={handleSubmit} noValidate>
 
             {/* Payment Details */}
-            <div className="pt-5 px-7 pb-2 border-b border-gray-200">
+            <div className="voucher-form-section pt-5 px-7 pb-2 border-b border-gray-200">
               <div className="voucher-grid">
-                {field('voucherNo', 'Voucher No')}
+                <div key="voucherNo">
+                  <label className="flex items-center gap-1 text-sm font-semibold text-gray-700 mb-2 leading-5">
+                    Voucher No <span className="text-red-500 text-lg font-bold leading-none">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="voucherNo"
+                    value={formData.voucherNo}
+                    onChange={handleChange}
+                    placeholder="Voucher No"
+                    readOnly
+                    style={{ backgroundColor: '#f3f4f6', cursor: 'not-allowed', fontStyle: 'normal', fontWeight: 500 }}
+                    className={`w-full py-2.5 px-3.5 text-[15px] rounded-lg outline-none transition-colors duration-200 focus:border-[#1E3A8A] ${
+                      errors.voucherNo
+                        ? 'border-2 border-red-500 bg-red-50 text-red-800'
+                        : 'border border-gray-300 bg-white text-gray-900'
+                    }`}
+                  />
+                  {errors.voucherNo && (
+                    <p className="text-red-500 text-xs mt-1.5">{errors.voucherNo}</p>
+                  )}
+                </div>
                 {field('voucherDate', 'Voucher Date', 'date')}
                 {field('payTo', 'Pay To')}
                 {selectField('debitAccount', 'Debit Account', debitAccountOptions)}
@@ -615,12 +661,12 @@ const VoucherForm = () => {
             </div>
 
             {/* TDS Note */}
-            <div className="py-3 px-7 border-b border-gray-200">
+            <div className="voucher-form-section py-3 px-7 border-b border-gray-200">
               <p className="text-[13px] text-gray-500 italic">TDS Applicable for labour vouchers more than Rs.30,000/-</p>
             </div>
 
             {/* Payment Mode */}
-            <div className="pt-5 px-7 pb-2 border-b border-gray-200">
+            <div className="voucher-form-section pt-5 px-7 pb-2 border-b border-gray-200">
               <div className="voucher-grid">
                 {radioGroup('paymentMode', 'Payment Mode', [
                   { value: 'Cash', label: 'Cash' },
@@ -631,7 +677,7 @@ const VoucherForm = () => {
             </div>
 
             {/* Details */}
-            <div className="pt-5 px-7 pb-5 border-b border-gray-200">
+            <div className="voucher-form-section pt-5 px-7 pb-5 border-b border-gray-200">
               <label className="flex items-center gap-1 text-sm font-semibold text-gray-700 mb-2 leading-5">
                 Details
               </label>
@@ -646,7 +692,7 @@ const VoucherForm = () => {
             </div>
 
             {/* Bottom Submit */}
-            <div className="flex justify-end gap-3 px-6 py-3 border-t border-gray-200">
+            <div className="voucher-bottom-btns flex justify-end gap-3 px-6 py-3 border-t border-gray-200">
               {editingId && (
                 <button className="form-btn" type="button" onClick={handleCancel} style={{ backgroundColor: '#f3f4f6', color: '#374151', border: '1px solid #d1d5db', borderRadius: '6px', padding: '7px 18px', fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}
                   onMouseEnter={(e) => { e.target.style.backgroundColor = '#3B5EC2'; e.target.style.color = '#fff'; e.target.style.borderColor = '#3B5EC2'; }}
@@ -665,7 +711,7 @@ const VoucherForm = () => {
           </form>
         ) : (
           /* Search View */
-          <div style={{ padding: '24px 28px' }}>
+          <div className="voucher-search-section" style={{ padding: '24px 28px' }}>
             <div className="voucher-grid" key={resetKey} style={{ marginBottom: '20px' }}>
               {searchField('voucherNo', 'Voucher No')}
               {searchField('voucherDateFrom', 'Date of Voucher (From)', 'date')}
@@ -728,7 +774,7 @@ const VoucherForm = () => {
 
               <div style={{ minWidth: 0 }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px', fontWeight: 600, color: '#374151', marginBottom: '8px', lineHeight: '20px' }}>Sort by</label>
-                <div style={{ display: 'flex', gap: '10px', minWidth: 0 }}>
+                <div className="voucher-sort-row" style={{ display: 'flex', gap: '10px', minWidth: 0 }}>
                   <select name="sortBy" value={searchData.sortBy} onChange={handleSearchChange} style={{ ...selectStyle, flex: 1, minWidth: 0 }}>
                     <option value="voucherNo">Voucher No</option>
                     <option value="voucherDate">Voucher Date</option>
@@ -755,7 +801,7 @@ const VoucherForm = () => {
               </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', padding: '16px 0', borderTop: '1px solid #e5e7eb' }}>
+            <div className="voucher-search-btns" style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', padding: '16px 0', borderTop: '1px solid #e5e7eb' }}>
               <button className="form-btn" type="button" onClick={handleSearchReset} style={{ backgroundColor: '#f3f4f6', color: '#374151', border: '1px solid #d1d5db', borderRadius: '6px', padding: '7px 18px', fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}
                 onMouseEnter={(e) => { e.target.style.backgroundColor = '#3B5EC2'; e.target.style.color = '#fff'; e.target.style.borderColor = '#3B5EC2'; }}
                 onMouseLeave={(e) => { e.target.style.backgroundColor = '#f3f4f6'; e.target.style.color = '#374151'; e.target.style.borderColor = '#d1d5db'; }}
@@ -773,8 +819,8 @@ const VoucherForm = () => {
                 ) : searchResults.length === 0 ? (
                   <p style={{ textAlign: 'center', color: '#6b7280', padding: '40px 0', backgroundColor: '#f9fafb', borderRadius: '8px' }}>No records found matching your search criteria.</p>
                 ) : (
-                  <div style={{ overflowX: 'auto', maxWidth: '100%' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+                  <div className="voucher-table-wrap" style={{ overflowX: 'auto', maxWidth: '100%' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', minWidth: '800px' }}>
                       <thead>
                         <tr style={{ backgroundColor: '#f9fafb', borderBottom: '2px solid #e5e7eb' }}>
                           {['Sr.', 'Voucher No', 'Voucher Date', 'Pay To', 'Debit Account', 'Amount', 'TDS', 'Payment Mode', 'Cheque No', 'Details', 'Action'].map((h) => (
@@ -807,7 +853,7 @@ const VoucherForm = () => {
                     </table>
 
                     {totalPages > 1 && (
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', padding: '16px 0', marginTop: '12px', borderTop: '1px solid #e5e7eb' }}>
+                      <div className="voucher-pagination" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', padding: '16px 0', marginTop: '12px', borderTop: '1px solid #e5e7eb' }}>
                         <button onClick={() => handleSearch(currentPage - 1)} disabled={currentPage <= 1 || searchLoading} style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: currentPage <= 1 ? '#f3f4f6' : '#EEF2FF', color: currentPage <= 1 ? '#9ca3af' : '#3B5EC2', border: `1px solid ${currentPage <= 1 ? '#e5e7eb' : '#C7D2FE'}`, borderRadius: '6px', padding: '8px 20px', fontSize: '14px', fontWeight: 500, cursor: currentPage <= 1 ? 'not-allowed' : 'pointer' }}>
                           <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>Previous
                         </button>

@@ -6,6 +6,7 @@ import {
   updateRequest,
   deleteRequest,
   searchRequests,
+  getNextRequestNumber,
 } from "../controllers/parishRequestController";
 
 const router = Router();
@@ -13,6 +14,7 @@ const router = Router();
 router.post("/", createRequest);
 router.get("/", getAllRequests);
 router.get("/search", searchRequests);
+router.get("/next-number", getNextRequestNumber);
 router.get("/:id", getRequestById);
 router.put("/:id", updateRequest); 
 router.delete("/:id", deleteRequest);

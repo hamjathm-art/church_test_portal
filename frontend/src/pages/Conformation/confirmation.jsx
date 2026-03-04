@@ -3,6 +3,7 @@ import './ConfirmationForm.css';
 import authFetch from '../../utils/authFetch';
 
 const initialFormData = {
+  confirmationNo: '',
   fullName: '',
   confirmationDate: '',
   officiatingMinister: '',
@@ -55,6 +56,21 @@ function ConfirmationForm() {
   useEffect(() => {
     return () => { if (toastTimer.current) clearTimeout(toastTimer.current); };
   }, []);
+
+  useEffect(() => {
+    if (!editingId) {
+      const fetchNext = async () => {
+        try {
+          const res = await authFetch('/api/confirmation/next-number');
+          const result = await res.json();
+          if (result.success) {
+            setFormData(prev => ({ ...prev, confirmationNo: result.data.nextNumber }));
+          }
+        } catch (e) { console.error(e); }
+      };
+      fetchNext();
+    }
+  }, [editingId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -249,6 +265,16 @@ function ConfirmationForm() {
     setErrors({});
     setCameFromSearch(false);
     setView('form');
+    const fetchNextNumber = async () => {
+      try {
+        const res = await authFetch('/api/confirmation/next-number');
+        const result = await res.json();
+        if (result.success) {
+          setFormData(prev => ({ ...prev, confirmationNo: result.data.nextNumber }));
+        }
+      } catch (e) { console.error(e); }
+    };
+    fetchNextNumber();
   };
 
   const handleCancel = () => {
@@ -322,6 +348,7 @@ function ConfirmationForm() {
           width: '100%',
           padding: '10px 14px',
           fontSize: '15px',
+          fontStyle: 'normal',
           border: errors[name] ? '2px solid #ef4444' : '1px solid #d1d5db',
           borderRadius: '8px',
           outline: 'none',
@@ -377,10 +404,10 @@ function ConfirmationForm() {
   );
 
   return (
-    <div style={{ width: '100%', padding: '24px 16px', minWidth: 0, overflow: 'hidden' }}>
+    <div style={{ width: '100%', padding: '24px 16px', minWidth: 0 }}>
 
       {toast && (
-        <div style={{
+        <div className="confirmation-toast" style={{
           position: 'fixed', top: '24px', right: '24px', zIndex: 100,
           display: 'flex', alignItems: 'center', gap: '12px',
           padding: '16px 24px', borderRadius: '10px',
@@ -422,7 +449,7 @@ function ConfirmationForm() {
               ? 'Confirmation Certificate'
               : 'Search Confirmation Records'}
           </h2>
-          <div className="no-print" style={{ display: 'flex', gap: '10px' }}>
+          <div className="no-print confirmation-header-btns" style={{ display: 'flex', gap: '10px' }}>
             {view === 'search' ? (
               <button className="form-btn" onClick={handleNewClick} style={{ backgroundColor: '#3B5EC2', color: '#fff', border: 'none', borderRadius: '6px', padding: '8px 24px', fontSize: '14px', fontWeight: 500, cursor: 'pointer' }}><span style={{ fontSize: '20px', fontWeight: 700, lineHeight: '1' }}>+</span> New Certificate</button>
             ) : view === 'certificate' ? (
@@ -440,14 +467,14 @@ function ConfirmationForm() {
 
         {view === 'certificate' && certificateRecord ? (
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <div id="confirmation-certificate-print-area" style={{ width: '700px', minHeight: '990px', margin: '0 auto', backgroundImage: 'url(/images/f1.png)', backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat', padding: '155px 60px 50px', fontFamily: "'Times New Roman', Times, serif", position: 'relative', boxShadow: '0 2px 16px rgba(0,0,0,0.10)' }}>
+            <div className="confirmation-cert-area" id="confirmation-certificate-print-area" style={{ width: '700px', maxWidth: '100%', minHeight: '990px', margin: '0 auto', backgroundImage: 'url(/images/f1.png)', backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat', padding: '155px 60px 50px', fontFamily: "'Times New Roman', Times, serif", position: 'relative', boxShadow: '0 2px 16px rgba(0,0,0,0.10)' }}>
               <div style={{ textAlign: 'center', marginBottom: '16px' }}>
                 <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#000', margin: '0 0 4px', letterSpacing: '1px', fontFamily: "'Times New Roman', Times, serif" }}>CONFIRMATION CERTIFICATE</h2>
                 <p style={{ fontSize: '12px', color: '#000', margin: '0 0 6px' }}>An Authentic Extract From The Original Confirmation Registers From The Parish Office.</p>
                 <hr style={{ border: 'none', borderTop: '1px solid #000', margin: '4px 0 0' }} />
               </div>
 
-              <table style={{ margin: '0 auto', borderCollapse: 'collapse', fontSize: '13px', fontFamily: "'Times New Roman', Times, serif" }}>
+              <table className="confirmation-cert-table" style={{ margin: '0 auto', borderCollapse: 'collapse', fontSize: '13px', fontFamily: "'Times New Roman', Times, serif", width: '100%' }}>
                 <tbody>
                   {[
                     { no: 1, label: 'Full Name', value: certificateRecord.fullName },
@@ -469,8 +496,8 @@ function ConfirmationForm() {
               </table>
 
               <div className="no-print" style={{ marginTop: '30px' }}>
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: '280px' }}>
+                <div className="confirmation-cert-auth-wrap" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
+                  <div className="confirmation-cert-auth-inner" style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: '280px' }}>
                     <label style={{ fontSize: '14px', fontWeight: 600, color: '#374151' }}>Signing Authority</label>
                     <select value={signingAuthority} onChange={(e) => setSigningAuthority(e.target.value)} style={{ padding: '10px 14px', fontSize: '15px', border: '1px solid #d1d5db', borderRadius: '8px', outline: 'none', backgroundColor: '#fff', color: '#111' }}>
                       <option value="">-- Select Authority --</option>
@@ -481,7 +508,7 @@ function ConfirmationForm() {
                 </div>
 
                 {signingAuthority && (
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', fontFamily: "'Times New Roman', Times, serif", marginTop: '16px' }}>
+                  <div className="confirmation-cert-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', fontFamily: "'Times New Roman', Times, serif", marginTop: '16px' }}>
                     <div style={{ fontSize: '14px', color: '#000' }}>
                       <p style={{ margin: 0, fontWeight: 700, color: '#000' }}>Date :</p>
                       <p style={{ margin: 0, fontWeight: 700, color: '#000' }}>{getTodayFormatted().dayName},</p>
@@ -505,7 +532,7 @@ function ConfirmationForm() {
               </div>
 
               <div className="print-only" style={{ display: 'none', marginTop: '16px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', fontFamily: "'Times New Roman', Times, serif", color: '#000' }}>
+                <div className="confirmation-cert-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', fontFamily: "'Times New Roman', Times, serif", color: '#000' }}>
                   <div style={{ fontSize: '13px', color: '#000' }}>
                     <p style={{ margin: 0, fontWeight: 700, color: '#000' }}>Date :</p>
                     <p style={{ margin: 0, fontWeight: 700, color: '#000' }}>{getTodayFormatted().dayName},</p>
@@ -522,6 +549,33 @@ function ConfirmationForm() {
         ) : view === 'form' ? (
           <form onSubmit={handleSubmit} noValidate>
             <div className="confirmation-grid">
+              <div key="confirmationNo">
+                <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px', fontWeight: 600, color: '#374151', marginBottom: '8px', lineHeight: '20px' }}>
+                  Confirmation No
+                </label>
+                <input
+                  type="text"
+                  name="confirmationNo"
+                  value={formData.confirmationNo}
+                  onChange={handleChange}
+                  placeholder="Confirmation No"
+                  readOnly
+                  style={{
+                    width: '100%',
+                    padding: '10px 14px',
+                    fontSize: '15px',
+                    fontStyle: 'normal',
+                    fontWeight: 500,
+                    border: '1px solid #d1d5db',
+                    borderRadius: '8px',
+                    outline: 'none',
+                    backgroundColor: '#f3f4f6',
+                    cursor: 'not-allowed',
+                    color: '#111',
+                    transition: 'border-color 0.2s',
+                  }}
+                />
+              </div>
               {field('fullName', 'Full Name')}
               {field('confirmationDate', 'Date of Confirmation', 'date')}
               {field('officiatingMinister', 'Officiating Minister')}
@@ -531,7 +585,7 @@ function ConfirmationForm() {
               {field('churchContact', 'Church Contact')}
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', padding: '16px 24px', borderTop: '1px solid #e5e7eb' }}>
+            <div className="confirmation-bottom-btns" style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', padding: '16px 24px', borderTop: '1px solid #e5e7eb' }}>
               {editingId && (
                 <button className="form-btn" type="button" onClick={handleCancel} style={{ backgroundColor: '#f3f4f6', color: '#374151', border: '1px solid #d1d5db', borderRadius: '6px', padding: '10px 24px', fontSize: '14px', fontWeight: 500, cursor: 'pointer', width: 'auto' }}
                   onMouseEnter={(e) => { e.target.style.backgroundColor = '#3B5EC2'; e.target.style.color = '#fff'; e.target.style.borderColor = '#3B5EC2'; }}
@@ -544,7 +598,7 @@ function ConfirmationForm() {
             </div>
           </form>
         ) : (
-          <div style={{ padding: '24px 28px' }}>
+          <div className="confirmation-search-section" style={{ padding: '24px 28px' }}>
             <div className="confirmation-grid" key={resetKey} style={{ marginBottom: '20px' }}>
               {searchField('fullName', 'Full Name')}
               {searchField('confirmationDateFrom', 'Confirmation Date (From)', 'date')}
@@ -555,14 +609,14 @@ function ConfirmationForm() {
 
               <div style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: '#374151', marginBottom: '8px' }}>Sort by</label>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <select name="sortBy" value={searchData.sortBy} onChange={handleSearchChange} style={{ ...selectStyle, flex: 1 }}>
+                <div className="confirmation-sort-row" style={{ display: 'flex', gap: '10px' }}>
+                  <select name="sortBy" value={searchData.sortBy} onChange={handleSearchChange} style={{ ...selectStyle, flex: 1, minWidth: 0 }}>
                     <option value="fullName">Full Name</option>
                     <option value="confirmationDate">Confirmation Date</option>
                     <option value="officiatingMinister">Officiating Minister</option>
                     <option value="churchName">Church Name</option>
                   </select>
-                  <select name="sortOrder" value={searchData.sortOrder} onChange={handleSearchChange} style={{ ...selectStyle, flex: 1 }}>
+                  <select name="sortOrder" value={searchData.sortOrder} onChange={handleSearchChange} style={{ ...selectStyle, flex: 1, minWidth: 0 }}>
                     <option value="asc">Ascending</option>
                     <option value="desc">Descending</option>
                   </select>
@@ -581,7 +635,7 @@ function ConfirmationForm() {
               </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', padding: '16px 0', borderTop: '1px solid #e5e7eb' }}>
+            <div className="confirmation-search-btns" style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', padding: '16px 0', borderTop: '1px solid #e5e7eb' }}>
               <button className="form-btn" type="button" onClick={handleSearchReset} style={{ backgroundColor: '#f3f4f6', color: '#374151', border: '1px solid #d1d5db', borderRadius: '6px', padding: '10px 28px', fontSize: '14px', fontWeight: 500, cursor: 'pointer' }}
                 onMouseEnter={(e) => { e.target.style.backgroundColor = '#3B5EC2'; e.target.style.color = '#fff'; e.target.style.borderColor = '#3B5EC2'; }}
                 onMouseLeave={(e) => { e.target.style.backgroundColor = '#f3f4f6'; e.target.style.color = '#374151'; e.target.style.borderColor = '#d1d5db'; }}
@@ -599,8 +653,8 @@ function ConfirmationForm() {
                 ) : searchResults.length === 0 ? (
                   <p style={{ textAlign: 'center', color: '#6b7280', padding: '40px 0', backgroundColor: '#f9fafb', borderRadius: '8px' }}>No records found matching your search criteria.</p>
                 ) : (
-                  <div style={{ overflowX: 'auto', maxWidth: '100%' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
+                  <div className="confirmation-table-wrap" style={{ overflowX: 'auto', maxWidth: '100%' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px', minWidth: '800px' }}>
                       <thead>
                         <tr style={{ backgroundColor: '#f9fafb', borderBottom: '2px solid #e5e7eb' }}>
                           <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' }}>Sr.</th>
@@ -633,7 +687,7 @@ function ConfirmationForm() {
                     </table>
 
                     {totalPages > 1 && (
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', padding: '16px 0', marginTop: '12px', borderTop: '1px solid #e5e7eb' }}>
+                      <div className="confirmation-pagination" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', padding: '16px 0', marginTop: '12px', borderTop: '1px solid #e5e7eb' }}>
                         <button onClick={() => handleSearch(currentPage - 1)} disabled={currentPage <= 1 || searchLoading} style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: currentPage <= 1 ? '#f3f4f6' : '#EEF2FF', color: currentPage <= 1 ? '#9ca3af' : '#3B5EC2', border: `1px solid ${currentPage <= 1 ? '#e5e7eb' : '#C7D2FE'}`, borderRadius: '6px', padding: '8px 20px', fontSize: '14px', fontWeight: 500, cursor: currentPage <= 1 ? 'not-allowed' : 'pointer' }}>
                           <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>Previous
                         </button>

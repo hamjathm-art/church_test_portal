@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.search = exports.update = exports.getById = exports.getAll = exports.create = void 0;
 const db_1 = __importDefault(require("../config/db"));
+const numberGenerator_1 = __importDefault(require("../utils/numberGenerator"));
 const fields = [
     "scc", "familyId", "registrationDate", "salutation", "firstName", "middleName",
     "surname", "address1", "address2", "address3", "pincode", "res", "office",
@@ -13,6 +14,7 @@ const fields = [
     "housingStatus", "remarks",
 ];
 const create = async (data) => {
+    data.familyId = await (0, numberGenerator_1.default)("families", "familyId", "FM");
     const values = fields.map((f) => data[f] || "");
     const placeholders = fields.map(() => "?").join(", ");
     const [result] = await db_1.default.query(`INSERT INTO families (${fields.join(", ")}) VALUES (${placeholders})`, values);

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as familyService from "../services/familyService";
+import generateNextNumber from "../utils/numberGenerator";
 
 const numericFields = ["pincode", "res", "office", "mobile", "fax"];
 
@@ -87,4 +88,13 @@ const searchFamilies = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export { createFamily, getAllFamilies, getFamilyById, updateFamily, searchFamilies };
+const getNextFamilyNumber = async (_req: Request, res: Response): Promise<void> => {
+  try {
+    const nextNumber = await generateNextNumber("families", "familyId", "FM");
+    res.status(200).json({ success: true, data: { nextNumber } });
+  } catch {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export { createFamily, getAllFamilies, getFamilyById, updateFamily, searchFamilies, getNextFamilyNumber };

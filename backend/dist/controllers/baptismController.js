@@ -32,9 +32,13 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchBaptisms = exports.deleteBaptism = exports.updateBaptism = exports.getBaptismById = exports.getAllBaptisms = exports.createBaptism = void 0;
+exports.getNextBaptismNumber = exports.searchBaptisms = exports.deleteBaptism = exports.updateBaptism = exports.getBaptismById = exports.getAllBaptisms = exports.createBaptism = void 0;
 const baptismService = __importStar(require("../services/baptismService"));
+const numberGenerator_1 = __importDefault(require("../utils/numberGenerator"));
 const createBaptism = async (req, res) => {
     try {
         const saved = await baptismService.create(req.body);
@@ -116,4 +120,14 @@ const deleteBaptism = async (req, res) => {
     }
 };
 exports.deleteBaptism = deleteBaptism;
+const getNextBaptismNumber = async (_req, res) => {
+    try {
+        const nextNumber = await (0, numberGenerator_1.default)("baptisms", "baptismNo", "BP");
+        res.status(200).json({ success: true, data: { nextNumber } });
+    }
+    catch {
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+exports.getNextBaptismNumber = getNextBaptismNumber;
 //# sourceMappingURL=baptismController.js.map

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as massIntentionService from "../services/massIntentionService";
+import generateNextNumber from "../utils/numberGenerator";
 
 const createIntention = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -111,4 +112,13 @@ const deleteIntention = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export { createIntention, getAllIntentions, getIntentionById, updateIntention, deleteIntention, searchIntentions, checkAvailability };
+const getNextIntentionNumber = async (_req: Request, res: Response): Promise<void> => {
+  try {
+    const nextNumber = await generateNextNumber("mass_intentions", "intentionNo", "MI");
+    res.status(200).json({ success: true, data: { nextNumber } });
+  } catch {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export { createIntention, getAllIntentions, getIntentionById, updateIntention, deleteIntention, searchIntentions, checkAvailability, getNextIntentionNumber };

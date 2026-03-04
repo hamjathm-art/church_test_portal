@@ -32,9 +32,13 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkAvailability = exports.searchIntentions = exports.deleteIntention = exports.updateIntention = exports.getIntentionById = exports.getAllIntentions = exports.createIntention = void 0;
+exports.getNextIntentionNumber = exports.checkAvailability = exports.searchIntentions = exports.deleteIntention = exports.updateIntention = exports.getIntentionById = exports.getAllIntentions = exports.createIntention = void 0;
 const massIntentionService = __importStar(require("../services/massIntentionService"));
+const numberGenerator_1 = __importDefault(require("../utils/numberGenerator"));
 const createIntention = async (req, res) => {
     try {
         const { contactNumber, emailAddress } = req.body;
@@ -151,4 +155,14 @@ const deleteIntention = async (req, res) => {
     }
 };
 exports.deleteIntention = deleteIntention;
+const getNextIntentionNumber = async (_req, res) => {
+    try {
+        const nextNumber = await (0, numberGenerator_1.default)("mass_intentions", "intentionNo", "MI");
+        res.status(200).json({ success: true, data: { nextNumber } });
+    }
+    catch {
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+exports.getNextIntentionNumber = getNextIntentionNumber;
 //# sourceMappingURL=massIntentionController.js.map

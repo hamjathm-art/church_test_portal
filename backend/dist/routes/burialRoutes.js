@@ -6,6 +6,7 @@ const router = (0, express_1.Router)();
 router.post("/", burialController_1.createBurial);
 router.get("/", burialController_1.getAllBurials);
 router.get("/search", burialController_1.searchBurials);
+router.get("/next-number", burialController_1.getNextBurialNumber);
 router.get("/:id", burialController_1.getBurialById);
 router.put("/:id", burialController_1.updateBurial);
 exports.default = router;

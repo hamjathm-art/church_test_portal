@@ -411,12 +411,139 @@
   }
 }
 
-@media screen and (max-width: 480px) {
-  .dash-ann-card-date-box {
-    min-width: 44px;
-    height: 44px;
+@media screen and (max-width: 500px) {
+  .dash-top-row,
+  .dash-second-row,
+  .dash-upcoming-row {
+    gap: 12px;
+    margin-bottom: 12px;
   }
-  .dash-ann-card-day {
+
+  .dash-card {
+    padding: 14px 16px;
+    border-radius: 12px;
+  }
+
+  .dash-card-value {
+    font-size: 24px;
+  }
+
+  .dash-card-label {
+    font-size: 11px;
+    letter-spacing: 0.5px;
+  }
+
+  .dash-card-sub {
+    font-size: 12px;
+  }
+
+  .dash-card-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
     font-size: 16px;
+  }
+
+  .dash-card-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .dash-season-card {
+    padding: 14px 16px;
+  }
+
+  .dash-season-name {
+    font-size: 22px;
+    margin: 2px 0 6px;
+  }
+
+  .dash-season-badge {
+    font-size: 11px;
+    padding: 4px 10px;
+  }
+
+  .dash-dates-card {
+    padding: 14px 16px;
+  }
+
+  .dash-ann-wrapper {
+    padding: 14px 12px;
+    border-radius: 12px;
+  }
+
+  .dash-ann-wrapper-title {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .dash-ann-card {
+    padding: 8px 10px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .dash-ann-card-date-box {
+    min-width: 38px;
+    height: 38px;
+  }
+
+  .dash-ann-card-day {
+    font-size: 14px;
+  }
+
+  .dash-ann-card-month {
+    font-size: 9px;
+  }
+
+  .dash-ann-card-title {
+    font-size: 13px;
+  }
+
+  .dash-ann-card-date {
+    font-size: 11px;
+  }
+
+  .dash-status {
+    font-size: 10px;
+    padding: 2px 8px;
+  }
+
+  .dash-section-title {
+    font-size: 14px;
+  }
+
+  /* Welcome + DateTime row */
+  .dash-top-welcome {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  /* Welcome header */
+  .dash-welcome-title {
+    font-size: 20px !important;
+  }
+
+  .dash-welcome-sub {
+    font-size: 12px !important;
+  }
+
+  /* DateTime bar */
+  .dash-datetime-bar {
+    padding: 10px 12px !important;
+    gap: 8px !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+  }
+
+  .dash-datetime-bar p {
+    font-size: 12px !important;
+  }
+
+  .dash-datetime-divider {
+    display: none !important;
   }
 }

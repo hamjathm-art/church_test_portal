@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as voucherService from "../services/voucherService";
+import generateNextNumber from "../utils/numberGenerator";
 
 const numericFields = ["amount", "tds"];
 
@@ -87,4 +88,13 @@ const searchVouchers = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export { createVoucher, getAllVouchers, getVoucherById, updateVoucher, searchVouchers };
+const getNextVoucherNumber = async (_req: Request, res: Response): Promise<void> => {
+  try {
+    const nextNumber = await generateNextNumber("vouchers", "voucherNo", "VC");
+    res.status(200).json({ success: true, data: { nextNumber } });
+  } catch {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export { createVoucher, getAllVouchers, getVoucherById, updateVoucher, searchVouchers, getNextVoucherNumber };

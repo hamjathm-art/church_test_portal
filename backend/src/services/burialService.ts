@@ -1,6 +1,7 @@
 import pool from "../config/db";
 import { ResultSetHeader } from "mysql2";
 import { Burial, CountRow, SearchResult } from "../types";
+import generateNextNumber from "../utils/numberGenerator";
 
 const fields: string[] = [
   "burialNo", "dateOfBurial", "fullName", "surname", "age", "nationality",
@@ -11,6 +12,7 @@ const fields: string[] = [
 const escapeField = (f: string): string => (f === "relationship" ? "`relationship`" : f);
 
 const create = async (data: Record<string, string>): Promise<Burial> => {
+  data.burialNo = await generateNextNumber("burials", "burialNo", "BL");
   const values = fields.map((f) => data[f] || "");
   const placeholders = fields.map(() => "?").join(", ");
   const fieldNames = fields.map(escapeField).join(", ");

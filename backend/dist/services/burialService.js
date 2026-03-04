@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.search = exports.update = exports.getById = exports.getAll = exports.create = void 0;
 const db_1 = __importDefault(require("../config/db"));
+const numberGenerator_1 = __importDefault(require("../utils/numberGenerator"));
 const fields = [
     "burialNo", "dateOfBurial", "fullName", "surname", "age", "nationality",
     "address", "profession", "relationship", "causeOfDeath", "lastSacraments",
@@ -12,6 +13,7 @@ const fields = [
 ];
 const escapeField = (f) => (f === "relationship" ? "`relationship`" : f);
 const create = async (data) => {
+    data.burialNo = await (0, numberGenerator_1.default)("burials", "burialNo", "BL");
     const values = fields.map((f) => data[f] || "");
     const placeholders = fields.map(() => "?").join(", ");
     const fieldNames = fields.map(escapeField).join(", ");

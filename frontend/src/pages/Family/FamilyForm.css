@@ -1,6 +1,6 @@
 .family-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
   gap: 24px;
   padding-bottom: 20px;
   align-items: start;
@@ -8,13 +8,13 @@
 
 @media only screen and (max-width: 1024px) {
   .family-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
 }
 
 @media only screen and (max-width: 600px) {
   .family-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -42,5 +42,189 @@
   to {
     transform: translateX(0);
     opacity: 1;
+  }
+}
+
+/* ── Responsive: below 500px ── */
+@media only screen and (max-width: 500px) {
+  .family-card-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px;
+    padding: 14px 16px !important;
+  }
+
+  .family-card-header h2 {
+    font-size: 17px !important;
+    text-align: center;
+  }
+
+  .family-header-btns {
+    flex-direction: column !important;
+    width: 100%;
+  }
+
+  .family-header-btns button {
+    width: 100% !important;
+    justify-content: center;
+  }
+
+  .family-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    padding: 16px 0 !important;
+    gap: 14px !important;
+  }
+
+  .family-grid > * {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .family-grid input,
+  .family-grid select,
+  .family-grid textarea {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .family-since-row {
+    flex-direction: column !important;
+  }
+
+  .family-bottom-btns {
+    flex-direction: column !important;
+    padding: 12px 16px !important;
+    gap: 10px !important;
+  }
+
+  .family-bottom-btns button {
+    width: 100% !important;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .family-search-section {
+    padding: 16px !important;
+    min-width: 0;
+  }
+
+  .family-sort-row {
+    flex-direction: column !important;
+  }
+
+  .family-search-btns {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .family-search-btns button {
+    width: 100% !important;
+    text-align: center;
+  }
+
+  .family-table-wrap {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100% !important;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+  }
+
+  .family-toast {
+    left: 12px !important;
+    right: 12px !important;
+    min-width: auto !important;
+    max-width: none !important;
+  }
+
+  .family-detail-area,
+  #detail-print-area {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 20px 12px 20px !important;
+    min-height: auto !important;
+    background-image: none !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    border: 1px solid #e5e7eb;
+    border-radius: 0;
+  }
+
+  #detail-print-area h2 {
+    font-size: 16px !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  #detail-print-area p {
+    font-size: 11px !important;
+  }
+
+  .family-detail-table,
+  #detail-print-area table {
+    font-size: 12px !important;
+    width: 100% !important;
+    table-layout: fixed;
+  }
+
+  .family-detail-table td,
+  #detail-print-area td {
+    padding: 3px 2px !important;
+    word-break: break-word !important;
+    white-space: normal !important;
+  }
+
+  .family-cert-auth-wrap {
+    justify-content: stretch !important;
+  }
+
+  .family-cert-auth-inner {
+    min-width: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+  }
+
+  .family-cert-footer {
+    flex-direction: column !important;
+    gap: 16px;
+    align-items: center !important;
+  }
+
+  .family-cert-footer > div {
+    text-align: center;
+  }
+
+  .family-cert-footer p {
+    font-size: 12px !important;
+  }
+
+  .family-form-section {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    overflow: hidden !important;
+  }
+
+  .family-form-section h3 {
+    font-size: 15px !important;
+  }
+
+  .family-grid input,
+  .family-grid select,
+  .family-grid textarea {
+    font-size: 14px !important;
+    padding: 9px 12px !important;
+  }
+
+  .family-grid label {
+    font-size: 13px !important;
+  }
+
+  .family-pagination {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .family-pagination button {
+    width: 100% !important;
+    justify-content: center;
   }
 }

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as baptismService from "../services/baptismService";
+import generateNextNumber from "../utils/numberGenerator";
 
 const createBaptism = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -78,4 +79,13 @@ const deleteBaptism = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export { createBaptism, getAllBaptisms, getBaptismById, updateBaptism, deleteBaptism, searchBaptisms };
+const getNextBaptismNumber = async (_req: Request, res: Response): Promise<void> => {
+  try {
+    const nextNumber = await generateNextNumber("baptisms", "baptismNo", "BP");
+    res.status(200).json({ success: true, data: { nextNumber } });
+  } catch {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export { createBaptism, getAllBaptisms, getBaptismById, updateBaptism, deleteBaptism, searchBaptisms, getNextBaptismNumber };

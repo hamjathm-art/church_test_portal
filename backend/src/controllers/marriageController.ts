@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as marriageService from "../services/marriageService";
+import generateNextNumber from "../utils/numberGenerator";
 
 const createMarriage = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -66,4 +67,13 @@ const searchMarriages = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export { createMarriage, getAllMarriages, getMarriageById, updateMarriage, searchMarriages };
+const getNextMarriageNumber = async (_req: Request, res: Response): Promise<void> => {
+  try {
+    const nextNumber = await generateNextNumber("marriages", "marriageNo", "MG");
+    res.status(200).json({ success: true, data: { nextNumber } });
+  } catch {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export { createMarriage, getAllMarriages, getMarriageById, updateMarriage, searchMarriages, getNextMarriageNumber };

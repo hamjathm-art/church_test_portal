@@ -5,11 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.search = exports.update = exports.getById = exports.getAll = exports.create = void 0;
 const db_1 = __importDefault(require("../config/db"));
+const numberGenerator_1 = __importDefault(require("../utils/numberGenerator"));
 const fields = [
     "voucherNo", "voucherDate", "payTo", "debitAccount", "amount",
     "tds", "paymentMode", "chequeNumber", "details",
 ];
 const create = async (data) => {
+    data.voucherNo = await (0, numberGenerator_1.default)("vouchers", "voucherNo", "VC");
     const values = fields.map((f) => data[f] || "");
     const placeholders = fields.map(() => "?").join(", ");
     const [result] = await db_1.default.query(`INSERT INTO vouchers (${fields.join(", ")}) VALUES (${placeholders})`, values);

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as parishRequestService from "../services/parishRequestService";
+import generateNextNumber from "../utils/numberGenerator";
 
 const createRequest = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -96,4 +97,13 @@ const deleteRequest = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export { createRequest, getAllRequests, getRequestById, updateRequest, deleteRequest, searchRequests };
+const getNextRequestNumber = async (_req: Request, res: Response): Promise<void> => {
+  try {
+    const nextNumber = await generateNextNumber("parish_requests", "requestNo", "PR");
+    res.status(200).json({ success: true, data: { nextNumber } });
+  } catch {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export { createRequest, getAllRequests, getRequestById, updateRequest, deleteRequest, searchRequests, getNextRequestNumber };

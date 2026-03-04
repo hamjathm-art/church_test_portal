@@ -6,6 +6,7 @@ import {
   updateBaptism,
   deleteBaptism,
   searchBaptisms,
+  getNextBaptismNumber,
 } from "../controllers/baptismController";
 
 const router = Router();
@@ -13,6 +14,7 @@ const router = Router();
 router.post("/", createBaptism);
 router.get("/", getAllBaptisms);
 router.get("/search", searchBaptisms);
+router.get("/next-number", getNextBaptismNumber);
 router.get("/:id", getBaptismById);
 router.put("/:id", updateBaptism); 
 router.delete("/:id", deleteBaptism);

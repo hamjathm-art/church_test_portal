@@ -30,6 +30,7 @@ const intentionTypeLabel = (val) => {
 };
 
 const initialFormData = {
+  intentionNo: '',
   fullName: '',
   contactNumber: '',
   emailAddress: '',
@@ -107,6 +108,21 @@ function Intentions() {
   useEffect(() => {
     return () => { if (toastTimer.current) clearTimeout(toastTimer.current); };
   }, []);
+
+  useEffect(() => {
+    if (!editingId) {
+      const fetchNext = async () => {
+        try {
+          const res = await authFetch('/api/mass-intention/next-number');
+          const result = await res.json();
+          if (result.success) {
+            setFormData(prev => ({ ...prev, intentionNo: result.data.nextNumber }));
+          }
+        } catch (e) { console.error(e); }
+      };
+      fetchNext();
+    }
+  }, [editingId]);
 
   // Auto-filter when navigated from dashboard with pending status
   useEffect(() => {
@@ -389,6 +405,16 @@ function Intentions() {
     setCameFromSearch(false);
     setBookedSlots({ slot1: false, slot2: false, slot3: false, slot4: false });
     setView('form');
+    const fetchNextNumber = async () => {
+      try {
+        const res = await authFetch('/api/mass-intention/next-number');
+        const result = await res.json();
+        if (result.success) {
+          setFormData(prev => ({ ...prev, intentionNo: result.data.nextNumber }));
+        }
+      } catch (e) { console.error(e); }
+    };
+    fetchNextNumber();
   };
 
   const handleCancel = () => {
@@ -473,7 +499,7 @@ function Intentions() {
         onChange={handleChange}
         placeholder={type === 'date' || type === 'datetime-local' ? '' : label}
         style={{
-          width: '100%', padding: '10px 14px', fontSize: '15px',
+          width: '100%', padding: '10px 14px', fontSize: '15px', fontStyle: 'normal',
           border: errors[name] ? '2px solid #ef4444' : '1px solid #d1d5db',
           borderRadius: '8px', outline: 'none',
           backgroundColor: errors[name] ? '#fef2f2' : '#fff',
@@ -615,11 +641,11 @@ function Intentions() {
   };
 
   return (
-    <div style={{ width: '100%', padding: '24px 16px', minWidth: 0, overflow: 'hidden' }}>
+    <div style={{ width: '100%', padding: '24px 16px', minWidth: 0 }}>
 
       {/* Toast Notification */}
       {toast && (
-        <div style={{
+        <div className="mass-toast" style={{
           position: 'fixed', top: '24px', right: '24px', zIndex: 100,
           display: 'flex', alignItems: 'center', gap: '12px',
           padding: '16px 24px', borderRadius: '10px',
@@ -668,7 +694,7 @@ function Intentions() {
               <p style={{ fontSize: '13px', color: '#6b7280', margin: '4px 0 0' }}>Offering prayers for our loved ones and special intentions.</p>
             )}
           </div>
-          <div className="no-print" style={{ display: 'flex', gap: '10px' }}>
+          <div className="no-print mass-header-btns" style={{ display: 'flex', gap: '10px' }}>
             {view === 'search' ? (
               <button
                 className="form-btn"
@@ -709,7 +735,7 @@ function Intentions() {
         {/* ========== DETAIL VIEW ========== */}
         {view === 'detail' && detailRecord ? (
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <div id="detail-print-area" style={{ width: '700px', minHeight: '990px', margin: '0 auto', backgroundImage: 'url(/images/f1.png)', backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat', padding: '155px 60px 50px', fontFamily: "'Times New Roman', Times, serif", position: 'relative', boxShadow: '0 2px 16px rgba(0,0,0,0.10)' }}>
+            <div id="detail-print-area" className="mass-detail-area" style={{ width: '700px', maxWidth: '100%', minHeight: '990px', margin: '0 auto', backgroundImage: 'url(/images/f1.png)', backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat', padding: '155px 60px 50px', fontFamily: "'Times New Roman', Times, serif", position: 'relative', boxShadow: '0 2px 16px rgba(0,0,0,0.10)' }}>
               {/* Header */}
               <div style={{ textAlign: 'center', marginBottom: '16px' }}>
                 <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#000', margin: '0 0 4px', letterSpacing: '1px', fontFamily: "'Times New Roman', Times, serif" }}>
@@ -726,7 +752,7 @@ function Intentions() {
               </div>
 
               {/* Detail Rows */}
-              <table style={{ margin: '0 auto', borderCollapse: 'collapse', fontSize: '13px', fontFamily: "'Times New Roman', Times, serif" }}>
+              <table className="mass-detail-table" style={{ margin: '0 auto', borderCollapse: 'collapse', fontSize: '13px', width: '100%', fontFamily: "'Times New Roman', Times, serif" }}>
                 <tbody>
                   {getDetailRows(detailRecord).map((item, idx) => (
                     <tr key={idx} style={{ verticalAlign: 'top' }}>
@@ -743,8 +769,8 @@ function Intentions() {
               <div className="no-print" style={{ marginTop: '30px' }}>
                 {detailRecord.status === 'Completed' ? (
                   <>
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: '280px' }}>
+                    <div className="mass-cert-auth-wrap" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
+                      <div className="mass-cert-auth-inner" style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: '280px' }}>
                         <label style={{ fontSize: '14px', fontWeight: 600, color: '#374151' }}>Signing Authority</label>
                         <select
                           value={signingAuthority}
@@ -759,7 +785,7 @@ function Intentions() {
                     </div>
 
                     {signingAuthority && (
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', fontFamily: "'Times New Roman', Times, serif", marginTop: '16px' }}>
+                      <div className="mass-cert-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', fontFamily: "'Times New Roman', Times, serif", marginTop: '16px' }}>
                         <div style={{ fontSize: '14px', color: '#000' }}>
                           <p style={{ margin: 0, fontWeight: 700, color: '#000' }}>Date :</p>
                           <p style={{ margin: 0, fontWeight: 700, color: '#000' }}>{getTodayFormatted().dayName},</p>
@@ -862,6 +888,14 @@ function Intentions() {
             <div style={{ padding: '20px 28px 8px', borderBottom: '1px solid #e5e7eb' }}>
               <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#374151', marginBottom: '16px' }}>1. Personal Information</h3>
               <div className="mass-grid">
+                <div key="intentionNo">
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px', fontWeight: 600, color: '#374151', marginBottom: '8px', lineHeight: '20px' }}>
+                    Intention No
+                  </label>
+                  <input type="text" name="intentionNo" value={formData.intentionNo} readOnly
+                    style={{ width: '100%', padding: '10px 14px', fontSize: '15px', fontStyle: 'normal', fontWeight: 500, border: '1px solid #d1d5db', borderRadius: '8px', outline: 'none', backgroundColor: '#f3f4f6', color: '#111', cursor: 'not-allowed' }}
+                  />
+                </div>
                 {field('fullName', 'Full Name')}
                 {field('contactNumber', 'Contact Number')}
                 {field('emailAddress', 'Email Address', 'email', false)}
@@ -1062,7 +1096,7 @@ function Intentions() {
             </div>
 
             {/* Bottom Buttons */}
-            <div style={{
+            <div className="mass-bottom-btns" style={{
               display: 'flex', justifyContent: 'flex-end', gap: '12px',
               padding: '16px 24px', borderTop: '1px solid #e5e7eb'
             }}>
@@ -1098,7 +1132,7 @@ function Intentions() {
 
         ) : (
           /* ========== SEARCH VIEW ========== */
-          <div style={{ padding: '24px 28px' }}>
+          <div className="mass-search-section" style={{ padding: '24px 28px' }}>
 
             {/* Search Form */}
             <div className="mass-grid" key={resetKey} style={{ marginBottom: '20px' }}>
@@ -1149,12 +1183,12 @@ function Intentions() {
                 <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: '#374151', marginBottom: '8px' }}>
                   Sort by
                 </label>
-                <div style={{ display: 'flex', gap: '10px' }}>
+                <div className="mass-sort-row" style={{ display: 'flex', gap: '10px' }}>
                   <select
                     name="sortBy"
                     value={searchData.sortBy}
                     onChange={handleSearchChange}
-                    style={{ ...selectStyle, flex: 1 }}
+                    style={{ ...selectStyle, flex: 1, minWidth: 0 }}
                   >
                     <option value="created_at">Date Created</option>
                     <option value="fullName">Full Name</option>
@@ -1166,7 +1200,7 @@ function Intentions() {
                     name="sortOrder"
                     value={searchData.sortOrder}
                     onChange={handleSearchChange}
-                    style={{ ...selectStyle, flex: 1 }}
+                    style={{ ...selectStyle, flex: 1, minWidth: 0 }}
                   >
                     <option value="asc">Ascending</option>
                     <option value="desc">Descending</option>
@@ -1195,7 +1229,7 @@ function Intentions() {
             </div>
 
             {/* Search Buttons */}
-            <div style={{
+            <div className="mass-search-btns" style={{
               display: 'flex', justifyContent: 'flex-end', gap: '12px',
               padding: '16px 0', borderTop: '1px solid #e5e7eb'
             }}>
@@ -1238,7 +1272,7 @@ function Intentions() {
                 ) : searchResults.length === 0 ? (
                   <p style={{ textAlign: 'center', color: '#6b7280', padding: '40px 0', backgroundColor: '#f9fafb', borderRadius: '8px' }}>No records found matching your search criteria.</p>
                 ) : (
-                  <div style={{ overflowX: 'auto', maxWidth: '100%' }}>
+                  <div className="mass-table-wrap" style={{ overflowX: 'auto', maxWidth: '100%' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
                       <thead>
                         <tr style={{ backgroundColor: '#f9fafb', borderBottom: '2px solid #e5e7eb' }}>
@@ -1299,7 +1333,7 @@ function Intentions() {
 
                     {/* Pagination */}
                     {totalPages > 1 && (
-                      <div style={{
+                      <div className="mass-pagination" style={{
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         gap: '16px', padding: '16px 0', marginTop: '12px', borderTop: '1px solid #e5e7eb'
                       }}>

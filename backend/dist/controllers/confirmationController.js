@@ -32,9 +32,13 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchConfirmations = exports.updateConfirmation = exports.getConfirmationById = exports.getAllConfirmations = exports.createConfirmation = void 0;
+exports.getNextConfirmationNumber = exports.searchConfirmations = exports.updateConfirmation = exports.getConfirmationById = exports.getAllConfirmations = exports.createConfirmation = void 0;
 const confirmationService = __importStar(require("../services/confirmationService"));
+const numberGenerator_1 = __importDefault(require("../utils/numberGenerator"));
 const createConfirmation = async (req, res) => {
     try {
         if (req.body.churchContact && !/^\d+$/.test(req.body.churchContact.trim())) {
@@ -110,4 +114,14 @@ const searchConfirmations = async (req, res) => {
     }
 };
 exports.searchConfirmations = searchConfirmations;
+const getNextConfirmationNumber = async (_req, res) => {
+    try {
+        const nextNumber = await (0, numberGenerator_1.default)("confirmations", "confirmationNo", "CF");
+        res.status(200).json({ success: true, data: { nextNumber } });
+    }
+    catch {
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+exports.getNextConfirmationNumber = getNextConfirmationNumber;
 //# sourceMappingURL=confirmationController.js.map

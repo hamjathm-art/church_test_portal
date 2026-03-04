@@ -17,7 +17,7 @@ import "../components/sidebar.css";
 
 const Sidebar = ({ children, setIsAuthenticated }) => {
   const [showPopup, setShowPopup] = useState(false);
-  const [isMargin, setMargin] = useState(true);
+  const [isMargin, setMargin] = useState(() => window.innerWidth > 968);
   const [isCertOpen, setIsCertOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -37,6 +37,12 @@ const Sidebar = ({ children, setIsAuthenticated }) => {
   };
 
   const checklogout = () => setShowPopup(true);
+
+  const getSidebarWidth = () => {
+    if (window.innerWidth <= 600) return 240;
+    if (window.innerWidth <= 768) return 260;
+    return 280;
+  };
 
   const handleLinkClick = () => {
     if (window.innerWidth < 968) setMargin(false);
@@ -87,7 +93,7 @@ const Sidebar = ({ children, setIsAuthenticated }) => {
       <div
         className="sidebar"
         style={{
-          marginLeft: isMargin ? "0" : "-280px",
+          marginLeft: isMargin ? "0" : `-${getSidebarWidth()}px`,
           transition: "margin-left 0.3s ease",
         }}
       >

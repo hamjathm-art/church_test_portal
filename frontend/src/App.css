@@ -15,6 +15,11 @@ a, a:hover, a:focus, a:active, a:visited {
   text-decoration: none !important;
 }
 
+html, body {
+  overflow-x: clip;
+  max-width: 100vw;
+}
+
 body {
   background-color: #f0f2f5;
   color: #1f2937;
@@ -63,6 +68,11 @@ label {
   font-weight: 600;
 }
 
+input, select, textarea {
+  font-family: "Raleway", sans-serif;
+  font-style: normal !important;
+}
+
 .container1 {
   display: flex;
 }
@@ -78,6 +88,12 @@ main {
 @media only screen and (max-width: 768px) {
   main {
     padding: 16px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  main {
+    padding: 10px;
   }
 }
 

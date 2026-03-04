@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as confirmationService from "../services/confirmationService";
+import generateNextNumber from "../utils/numberGenerator";
 
 const createConfirmation = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -73,4 +74,13 @@ const searchConfirmations = async (req: Request, res: Response): Promise<void> =
   }
 };
 
-export { createConfirmation, getAllConfirmations, getConfirmationById, updateConfirmation, searchConfirmations };
+const getNextConfirmationNumber = async (_req: Request, res: Response): Promise<void> => {
+  try {
+    const nextNumber = await generateNextNumber("confirmations", "confirmationNo", "CF");
+    res.status(200).json({ success: true, data: { nextNumber } });
+  } catch {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export { createConfirmation, getAllConfirmations, getConfirmationById, updateConfirmation, searchConfirmations, getNextConfirmationNumber };

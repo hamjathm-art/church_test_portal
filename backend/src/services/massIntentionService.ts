@@ -1,9 +1,10 @@
 import pool from "../config/db";
 import { ResultSetHeader } from "mysql2";
 import { MassIntention, CountRow, SearchResult } from "../types";
+import generateNextNumber from "../utils/numberGenerator";
 
 const fields: string[] = [
-  "fullName", "contactNumber", "emailAddress",
+  "intentionNo", "fullName", "contactNumber", "emailAddress",
   "typeOfIntention", "otherIntention", "nameOfPersonForIntention", "intentionDetails",
   "slot1Date", "slot1Status", "slot2Date", "slot2Status",
   "slot3Date", "slot3Status", "slot4Date", "slot4Status",
@@ -14,6 +15,7 @@ const fields: string[] = [
 ];
 
 const create = async (data: Record<string, string>): Promise<MassIntention> => {
+  data.intentionNo = await generateNextNumber("mass_intentions", "intentionNo", "MI");
   const values = fields.map((f) => data[f] || "");
   const placeholders = fields.map(() => "?").join(", ");
   const [result] = await pool.query<ResultSetHeader>(

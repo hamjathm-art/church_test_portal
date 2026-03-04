@@ -4,7 +4,7 @@
   border-radius: 12px;
   margin: 0;
   box-shadow: 0 4px 20px rgba(30, 58, 138, 0.18);
-  overflow: hidden;
+  overflow: visible;
 }
 
 .confirmation-card-header {
@@ -65,5 +65,180 @@
   to {
     transform: translateX(0);
     opacity: 1;
+  }
+}
+
+/* ── Responsive: below 500px ── */
+@media only screen and (max-width: 500px) {
+  .confirmation-card-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px;
+    padding: 14px 16px !important;
+  }
+
+  .confirmation-card-header h2 {
+    font-size: 17px !important;
+    text-align: center;
+  }
+
+  .confirmation-header-btns {
+    flex-direction: column !important;
+    width: 100%;
+  }
+
+  .confirmation-header-btns button {
+    width: 100% !important;
+    justify-content: center;
+  }
+
+  .confirmation-grid {
+    padding: 16px !important;
+    gap: 14px !important;
+  }
+
+  .confirmation-bottom-btns {
+    flex-direction: column !important;
+    padding: 12px 16px !important;
+    gap: 10px !important;
+  }
+
+  .confirmation-bottom-btns button {
+    width: 100% !important;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .confirmation-search-section {
+    padding: 16px !important;
+    min-width: 0;
+  }
+
+  .confirmation-sort-row {
+    flex-direction: column !important;
+  }
+
+  .confirmation-search-btns {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .confirmation-search-btns button {
+    width: 100% !important;
+    text-align: center;
+  }
+
+  .confirmation-table-wrap {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100% !important;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+  }
+
+  .confirmation-toast {
+    left: 12px !important;
+    right: 12px !important;
+    min-width: auto !important;
+    max-width: none !important;
+  }
+
+  .confirmation-cert-area,
+  #confirmation-certificate-print-area {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 20px 12px 20px !important;
+    min-height: auto !important;
+    background-image: none !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    border: 1px solid #e5e7eb;
+    border-radius: 0;
+  }
+
+  #confirmation-certificate-print-area h2 {
+    font-size: 16px !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  #confirmation-certificate-print-area p {
+    font-size: 11px !important;
+  }
+
+  .confirmation-cert-table,
+  #confirmation-certificate-print-area table {
+    font-size: 12px !important;
+    width: 100% !important;
+    table-layout: fixed;
+  }
+
+  .confirmation-cert-table td,
+  #confirmation-certificate-print-area td {
+    padding: 3px 2px !important;
+    word-break: break-word !important;
+    white-space: normal !important;
+  }
+
+  .confirmation-cert-table td:first-child {
+    width: 24px;
+    white-space: nowrap !important;
+  }
+
+  .confirmation-cert-table td:nth-child(3) {
+    width: 12px;
+    white-space: nowrap !important;
+  }
+
+  .confirmation-cert-table td:nth-child(2) {
+    width: 35%;
+  }
+
+  .confirmation-cert-table td:nth-child(4) {
+    width: auto;
+  }
+
+  .confirmation-cert-auth-wrap {
+    justify-content: stretch !important;
+  }
+
+  .confirmation-cert-auth-inner {
+    min-width: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+  }
+
+  .confirmation-cert-footer {
+    flex-direction: column !important;
+    gap: 16px;
+    align-items: center !important;
+  }
+
+  .confirmation-cert-footer > div {
+    text-align: center;
+  }
+
+  .confirmation-cert-footer p {
+    font-size: 12px !important;
+  }
+
+  .confirmation-grid input,
+  .confirmation-grid select,
+  .confirmation-grid textarea {
+    font-size: 14px !important;
+    padding: 9px 12px !important;
+  }
+
+  .confirmation-grid label {
+    font-size: 13px !important;
+  }
+
+  .confirmation-pagination {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .confirmation-pagination button {
+    width: 100% !important;
+    justify-content: center;
   }
 }

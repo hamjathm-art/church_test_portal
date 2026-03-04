@@ -1,12 +1,14 @@
 import pool from "../config/db";
 import { ResultSetHeader } from "mysql2";
 import { NoObjection, CountRow, SearchResult } from "../types";
+import generateNextNumber from "../utils/numberGenerator";
 
 const fields: string[] = [
-  "fullName", "dateOfBirth", "placeOfBirth", "reason", "recipientDetails",
+  "objectionNo", "fullName", "dateOfBirth", "placeOfBirth", "reason", "recipientDetails",
 ];
 
 const create = async (data: Record<string, string>): Promise<NoObjection> => {
+  data.objectionNo = await generateNextNumber("no_objections", "objectionNo", "NO");
   const values = fields.map((f) => data[f] || "");
   const placeholders = fields.map(() => "?").join(", ");
   const [result] = await pool.query<ResultSetHeader>(

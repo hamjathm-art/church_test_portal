@@ -32,9 +32,13 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchVouchers = exports.updateVoucher = exports.getVoucherById = exports.getAllVouchers = exports.createVoucher = void 0;
+exports.getNextVoucherNumber = exports.searchVouchers = exports.updateVoucher = exports.getVoucherById = exports.getAllVouchers = exports.createVoucher = void 0;
 const voucherService = __importStar(require("../services/voucherService"));
+const numberGenerator_1 = __importDefault(require("../utils/numberGenerator"));
 const numericFields = ["amount", "tds"];
 const validateNumericFields = (body) => {
     for (const field of numericFields) {
@@ -122,4 +126,14 @@ const searchVouchers = async (req, res) => {
     }
 };
 exports.searchVouchers = searchVouchers;
+const getNextVoucherNumber = async (_req, res) => {
+    try {
+        const nextNumber = await (0, numberGenerator_1.default)("vouchers", "voucherNo", "VC");
+        res.status(200).json({ success: true, data: { nextNumber } });
+    }
+    catch {
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+exports.getNextVoucherNumber = getNextVoucherNumber;
 //# sourceMappingURL=voucherController.js.map

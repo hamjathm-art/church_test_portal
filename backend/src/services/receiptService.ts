@@ -1,6 +1,7 @@
 import pool from "../config/db";
 import { ResultSetHeader } from "mysql2";
 import { Receipt, CountRow, SearchResult } from "../types";
+import generateNextNumber from "../utils/numberGenerator";
 
 const fields: string[] = [
   "receiptNo", "dateOfReceipt", "receivedFrom", "familyCardNo",
@@ -8,6 +9,7 @@ const fields: string[] = [
 ];
 
 const create = async (data: Record<string, string>): Promise<Receipt> => {
+  data.receiptNo = await generateNextNumber("receipts", "receiptNo", "RC");
   const values = fields.map((f) => data[f] || "");
   const placeholders = fields.map(() => "?").join(", ");
   const [result] = await pool.query<ResultSetHeader>(

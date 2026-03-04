@@ -32,9 +32,13 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchReceipts = exports.updateReceipt = exports.getReceiptById = exports.getAllReceipts = exports.createReceipt = void 0;
+exports.getNextReceiptNumber = exports.searchReceipts = exports.updateReceipt = exports.getReceiptById = exports.getAllReceipts = exports.createReceipt = void 0;
 const receiptService = __importStar(require("../services/receiptService"));
+const numberGenerator_1 = __importDefault(require("../utils/numberGenerator"));
 const numericFields = ["amount"];
 const validateNumericFields = (body) => {
     for (const field of numericFields) {
@@ -122,4 +126,14 @@ const searchReceipts = async (req, res) => {
     }
 };
 exports.searchReceipts = searchReceipts;
+const getNextReceiptNumber = async (_req, res) => {
+    try {
+        const nextNumber = await (0, numberGenerator_1.default)("receipts", "receiptNo", "RC");
+        res.status(200).json({ success: true, data: { nextNumber } });
+    }
+    catch {
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+exports.getNextReceiptNumber = getNextReceiptNumber;
 //# sourceMappingURL=receiptController.js.map

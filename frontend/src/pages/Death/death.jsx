@@ -71,6 +71,21 @@ function BurialForm() {
     return () => { if (toastTimer.current) clearTimeout(toastTimer.current); };
   }, []);
 
+  useEffect(() => {
+    if (!editingId) {
+      const fetchNext = async () => {
+        try {
+          const res = await authFetch('/api/burial/next-number');
+          const result = await res.json();
+          if (result.success) {
+            setFormData(prev => ({ ...prev, burialNo: result.data.nextNumber }));
+          }
+        } catch (e) { console.error(e); }
+      };
+      fetchNext();
+    }
+  }, [editingId]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'age') {
@@ -90,7 +105,6 @@ function BurialForm() {
   const validateForm = () => {
     const newErrors = {};
     const required = {
-      burialNo: 'Burial No is required',
       dateOfBurial: 'Date of Burial is required',
       fullName: 'Name is required',
       surname: 'Surname is required',
@@ -272,6 +286,16 @@ function BurialForm() {
     setErrors({});
     setCameFromSearch(false);
     setView('form');
+    const fetchNextNumber = async () => {
+      try {
+        const res = await authFetch('/api/burial/next-number');
+        const result = await res.json();
+        if (result.success) {
+          setFormData(prev => ({ ...prev, burialNo: result.data.nextNumber }));
+        }
+      } catch (e) { console.error(e); }
+    };
+    fetchNextNumber();
   };
 
   const handleCancel = () => {
@@ -345,6 +369,7 @@ function BurialForm() {
           width: '100%',
           padding: '10px 14px',
           fontSize: '15px',
+          fontStyle: 'normal',
           border: errors[name] ? '2px solid #ef4444' : '1px solid #d1d5db',
           borderRadius: '8px',
           outline: 'none',
@@ -404,11 +429,11 @@ function BurialForm() {
   );
 
   return (
-    <div style={{ width: '100%', padding: '24px 16px', minWidth: 0, overflow: 'hidden' }}>
+    <div style={{ width: '100%', padding: '24px 16px', minWidth: 0 }}>
 
       {/* Toast Notification */}
       {toast && (
-        <div style={{
+        <div className="burial-toast" style={{
           position: 'fixed', top: '24px', right: '24px', zIndex: 100,
           display: 'flex', alignItems: 'center', gap: '12px',
           padding: '16px 24px', borderRadius: '10px',
@@ -454,7 +479,7 @@ function BurialForm() {
               ? 'Burial Certificate'
               : 'Search Burial Records'}
           </h2>
-          <div className="no-print" style={{ display: 'flex', gap: '10px' }}>
+          <div className="no-print burial-header-btns" style={{ display: 'flex', gap: '10px' }}>
             {view === 'search' ? (
               <button
                 className="form-btn"
@@ -500,7 +525,7 @@ function BurialForm() {
 
         {view === 'certificate' && certificateRecord ? (
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <div id="burial-certificate-print-area" style={{ width: '700px', minHeight: '990px', margin: '0 auto', backgroundImage: 'url(/images/f1.png)', backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat', padding: '155px 60px 50px', fontFamily: "'Times New Roman', Times, serif", position: 'relative', boxShadow: '0 2px 16px rgba(0,0,0,0.10)' }}>
+            <div className="burial-cert-area" id="burial-certificate-print-area" style={{ width: '700px', maxWidth: '100%', minHeight: '990px', margin: '0 auto', backgroundImage: 'url(/images/f1.png)', backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat', padding: '155px 60px 50px', fontFamily: "'Times New Roman', Times, serif", position: 'relative', boxShadow: '0 2px 16px rgba(0,0,0,0.10)' }}>
               {/* Certificate Header */}
               <div style={{ textAlign: 'center', marginBottom: '16px' }}>
                 <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#000', margin: '0 0 4px', letterSpacing: '1px', fontFamily: "'Times New Roman', Times, serif" }}>
@@ -516,7 +541,7 @@ function BurialForm() {
               </div>
 
               {/* Certificate Fields 1-15 */}
-              <table style={{ margin: '0 auto', borderCollapse: 'collapse', fontSize: '13px', fontFamily: "'Times New Roman', Times, serif" }}>
+              <table className="burial-cert-table" style={{ margin: '0 auto', borderCollapse: 'collapse', fontSize: '13px', fontFamily: "'Times New Roman', Times, serif", width: '100%' }}>
                 <tbody>
                   {[
                     { no: 1, label: 'Burial No', value: certificateRecord.burialNo },
@@ -548,8 +573,8 @@ function BurialForm() {
               {/* Bottom: Date left + Signing Authority right */}
               <div className="no-print" style={{ marginTop: '30px' }}>
                 {/* Dropdown */}
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: '280px' }}>
+                <div className="burial-cert-auth-wrap" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
+                  <div className="burial-cert-auth-inner" style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: '280px' }}>
                     <label style={{ fontSize: '14px', fontWeight: 600, color: '#374151' }}>Signing Authority</label>
                     <select
                       value={signingAuthority}
@@ -568,7 +593,7 @@ function BurialForm() {
 
                 {/* Date left + Authority preview right */}
                 {signingAuthority && (
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', fontFamily: "'Times New Roman', Times, serif", marginTop: '16px' }}>
+                  <div className="burial-cert-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', fontFamily: "'Times New Roman', Times, serif", marginTop: '16px' }}>
                     <div style={{ fontSize: '14px', color: '#000' }}>
                       <p style={{ margin: 0, fontWeight: 700, color: '#000' }}>Date :</p>
                       <p style={{ margin: 0, fontWeight: 700, color: '#000' }}>{getTodayFormatted().dayName},</p>
@@ -642,7 +667,36 @@ function BurialForm() {
         ) : view === 'form' ? (
           <form onSubmit={handleSubmit} noValidate>
             <div className="burial-grid">
-              {field('burialNo', 'Burial No')}
+              <div key="burialNo">
+                <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px', fontWeight: 600, color: '#374151', marginBottom: '8px', lineHeight: '20px' }}>
+                  Burial No <span style={{ color: '#ef4444', fontSize: '18px', fontWeight: 700, lineHeight: '1' }}>*</span>
+                </label>
+                <input
+                  type="text"
+                  name="burialNo"
+                  value={formData.burialNo}
+                  onChange={handleChange}
+                  placeholder="Burial No"
+                  readOnly
+                  style={{
+                    width: '100%',
+                    padding: '10px 14px',
+                    fontSize: '15px',
+                    fontStyle: 'normal',
+                    fontWeight: 500,
+                    border: errors.burialNo ? '2px solid #ef4444' : '1px solid #d1d5db',
+                    borderRadius: '8px',
+                    outline: 'none',
+                    backgroundColor: '#f3f4f6',
+                    cursor: 'not-allowed',
+                    color: errors.burialNo ? '#b91c1c' : '#111',
+                    transition: 'border-color 0.2s',
+                  }}
+                />
+                {errors.burialNo && (
+                  <p style={{ color: '#ef4444', fontSize: '12px', marginTop: '6px' }}>{errors.burialNo}</p>
+                )}
+              </div>
               {field('dateOfBurial', 'Date of Burial', 'date')}
               {field('fullName', 'Name')}
               {field('surname', 'Surname')}
@@ -660,7 +714,7 @@ function BurialForm() {
             </div>
 
             {/* Bottom Buttons */}
-            <div style={{
+            <div className="burial-bottom-btns" style={{
               display: 'flex', justifyContent: 'flex-end', gap: '12px',
               padding: '16px 24px', borderTop: '1px solid #e5e7eb'
             }}>
@@ -694,7 +748,7 @@ function BurialForm() {
             </div>
           </form>
         ) : (
-          <div style={{ padding: '24px 28px' }}>
+          <div className="burial-search-section" style={{ padding: '24px 28px' }}>
 
             {/* Search Form */}
             <div className="burial-grid" key={resetKey} style={{ marginBottom: '20px' }}>
@@ -716,12 +770,12 @@ function BurialForm() {
                 <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: '#374151', marginBottom: '8px' }}>
                   Sort by
                 </label>
-                <div style={{ display: 'flex', gap: '10px' }}>
+                <div className="burial-sort-row" style={{ display: 'flex', gap: '10px' }}>
                   <select
                     name="sortBy"
                     value={searchData.sortBy}
                     onChange={handleSearchChange}
-                    style={{ ...selectStyle, flex: 1 }}
+                    style={{ ...selectStyle, flex: 1, minWidth: 0 }}
                   >
                     <option value="burialNo">Burial No</option>
                     <option value="fullName">Name</option>
@@ -733,7 +787,7 @@ function BurialForm() {
                     name="sortOrder"
                     value={searchData.sortOrder}
                     onChange={handleSearchChange}
-                    style={{ ...selectStyle, flex: 1 }}
+                    style={{ ...selectStyle, flex: 1, minWidth: 0 }}
                   >
                     <option value="asc">Ascending</option>
                     <option value="desc">Descending</option>
@@ -762,7 +816,7 @@ function BurialForm() {
             </div>
 
             {/* Search Buttons */}
-            <div style={{
+            <div className="burial-search-btns" style={{
               display: 'flex', justifyContent: 'flex-end', gap: '12px',
               padding: '16px 0', borderTop: '1px solid #e5e7eb'
             }}>
@@ -805,8 +859,8 @@ function BurialForm() {
                 ) : searchResults.length === 0 ? (
                   <p style={{ textAlign: 'center', color: '#6b7280', padding: '40px 0', backgroundColor: '#f9fafb', borderRadius: '8px' }}>No records found matching your search criteria.</p>
                 ) : (
-                  <div style={{ overflowX: 'auto', maxWidth: '100%' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
+                  <div className="burial-table-wrap" style={{ overflowX: 'auto', maxWidth: '100%' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px', minWidth: '800px' }}>
                       <thead>
                         <tr style={{ backgroundColor: '#f9fafb', borderBottom: '2px solid #e5e7eb' }}>
                           <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' }}>Sr.</th>
@@ -860,7 +914,7 @@ function BurialForm() {
 
                     {/* Pagination */}
                     {totalPages > 1 && (
-                      <div style={{
+                      <div className="burial-pagination" style={{
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         gap: '16px', padding: '16px 0', marginTop: '12px', borderTop: '1px solid #e5e7eb'
                       }}>

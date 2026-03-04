@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as service from "../services/noObjectionService";
+import generateNextNumber from "../utils/numberGenerator";
 
 const createRecord = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -57,4 +58,13 @@ const searchRecords = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export { createRecord, getAllRecords, getRecordById, updateRecord, searchRecords };
+const getNextObjectionNumber = async (_req: Request, res: Response): Promise<void> => {
+  try {
+    const nextNumber = await generateNextNumber("no_objections", "objectionNo", "NO");
+    res.status(200).json({ success: true, data: { nextNumber } });
+  } catch {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export { createRecord, getAllRecords, getRecordById, updateRecord, searchRecords, getNextObjectionNumber };

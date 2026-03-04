@@ -32,9 +32,13 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchRequests = exports.deleteRequest = exports.updateRequest = exports.getRequestById = exports.getAllRequests = exports.createRequest = void 0;
+exports.getNextRequestNumber = exports.searchRequests = exports.deleteRequest = exports.updateRequest = exports.getRequestById = exports.getAllRequests = exports.createRequest = void 0;
 const parishRequestService = __importStar(require("../services/parishRequestService"));
+const numberGenerator_1 = __importDefault(require("../utils/numberGenerator"));
 const createRequest = async (req, res) => {
     try {
         const { phone, email } = req.body;
@@ -134,4 +138,14 @@ const deleteRequest = async (req, res) => {
     }
 };
 exports.deleteRequest = deleteRequest;
+const getNextRequestNumber = async (_req, res) => {
+    try {
+        const nextNumber = await (0, numberGenerator_1.default)("parish_requests", "requestNo", "PR");
+        res.status(200).json({ success: true, data: { nextNumber } });
+    }
+    catch {
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+exports.getNextRequestNumber = getNextRequestNumber;
 //# sourceMappingURL=parishRequestController.js.map

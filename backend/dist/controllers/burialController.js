@@ -32,9 +32,13 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchBurials = exports.getBurialById = exports.updateBurial = exports.getAllBurials = exports.createBurial = void 0;
+exports.getNextBurialNumber = exports.searchBurials = exports.getBurialById = exports.updateBurial = exports.getAllBurials = exports.createBurial = void 0;
 const burialService = __importStar(require("../services/burialService"));
+const numberGenerator_1 = __importDefault(require("../utils/numberGenerator"));
 const createBurial = async (req, res) => {
     try {
         const saved = await burialService.create(req.body);
@@ -94,4 +98,14 @@ const searchBurials = async (req, res) => {
     }
 };
 exports.searchBurials = searchBurials;
+const getNextBurialNumber = async (_req, res) => {
+    try {
+        const nextNumber = await (0, numberGenerator_1.default)("burials", "burialNo", "BL");
+        res.status(200).json({ success: true, data: { nextNumber } });
+    }
+    catch {
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+exports.getNextBurialNumber = getNextBurialNumber;
 //# sourceMappingURL=burialController.js.map

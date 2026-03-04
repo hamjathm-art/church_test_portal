@@ -5,8 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.search = exports.remove = exports.update = exports.getById = exports.getAll = exports.create = void 0;
 const db_1 = __importDefault(require("../config/db"));
+const numberGenerator_1 = __importDefault(require("../utils/numberGenerator"));
 const fields = [
-    "fullName", "phone", "email", "address", "city", "pinCode",
+    "requestNo", "fullName", "phone", "email", "address", "city", "pinCode",
     "requestType", "status",
     "baptismFullName", "baptismDateOfBirth", "baptismDate", "baptismParents", "baptismGodparents",
     "confirmationFullName", "confirmationDate",
@@ -20,6 +21,7 @@ const fields = [
     "receivedBy", "dateReceived", "actionTaken", "certificateIssuedDate", "paymentReceived", "amountReceived",
 ];
 const create = async (data) => {
+    data.requestNo = await (0, numberGenerator_1.default)("parish_requests", "requestNo", "PR");
     const values = fields.map((f) => data[f] || "");
     const placeholders = fields.map(() => "?").join(", ");
     const [result] = await db_1.default.query(`INSERT INTO parish_requests (${fields.join(", ")}) VALUES (${placeholders})`, values);

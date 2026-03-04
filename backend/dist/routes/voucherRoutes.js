@@ -6,6 +6,7 @@ const router = (0, express_1.Router)();
 router.post("/", voucherController_1.createVoucher);
 router.get("/", voucherController_1.getAllVouchers);
 router.get("/search", voucherController_1.searchVouchers);
+router.get("/next-number", voucherController_1.getNextVoucherNumber);
 router.get("/:id", voucherController_1.getVoucherById);
 router.put("/:id", voucherController_1.updateVoucher);
 exports.default = router;

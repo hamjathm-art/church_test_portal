@@ -32,9 +32,13 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchMarriages = exports.updateMarriage = exports.getMarriageById = exports.getAllMarriages = exports.createMarriage = void 0;
+exports.getNextMarriageNumber = exports.searchMarriages = exports.updateMarriage = exports.getMarriageById = exports.getAllMarriages = exports.createMarriage = void 0;
 const marriageService = __importStar(require("../services/marriageService"));
+const numberGenerator_1 = __importDefault(require("../utils/numberGenerator"));
 const createMarriage = async (req, res) => {
     try {
         const saved = await marriageService.create(req.body);
@@ -103,4 +107,14 @@ const searchMarriages = async (req, res) => {
     }
 };
 exports.searchMarriages = searchMarriages;
+const getNextMarriageNumber = async (_req, res) => {
+    try {
+        const nextNumber = await (0, numberGenerator_1.default)("marriages", "marriageNo", "MG");
+        res.status(200).json({ success: true, data: { nextNumber } });
+    }
+    catch {
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+exports.getNextMarriageNumber = getNextMarriageNumber;
 //# sourceMappingURL=marriageController.js.map

@@ -1,13 +1,15 @@
 import pool from "../config/db";
 import { ResultSetHeader } from "mysql2";
 import { Confirmation, CountRow, SearchResult } from "../types";
+import generateNextNumber from "../utils/numberGenerator";
 
 const fields: string[] = [
-  "fullName", "confirmationDate", "officiatingMinister", "sponsorName",
+  "confirmationNo", "fullName", "confirmationDate", "officiatingMinister", "sponsorName",
   "churchName", "churchAddress", "churchContact",
 ];
 
 const create = async (data: Record<string, string>): Promise<Confirmation> => {
+  data.confirmationNo = await generateNextNumber("confirmations", "confirmationNo", "CF");
   const values = fields.map((f) => data[f] || "");
   const placeholders = fields.map(() => "?").join(", ");
   const [result] = await pool.query<ResultSetHeader>(

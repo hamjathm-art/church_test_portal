@@ -6,6 +6,7 @@ const router = (0, express_1.Router)();
 router.post("/", noObjectionController_1.createRecord);
 router.get("/", noObjectionController_1.getAllRecords);
 router.get("/search", noObjectionController_1.searchRecords);
+router.get("/next-number", noObjectionController_1.getNextObjectionNumber);
 router.get("/:id", noObjectionController_1.getRecordById);
 router.put("/:id", noObjectionController_1.updateRecord);
 exports.default = router;

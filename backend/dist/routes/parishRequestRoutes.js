@@ -6,6 +6,7 @@ const router = (0, express_1.Router)();
 router.post("/", parishRequestController_1.createRequest);
 router.get("/", parishRequestController_1.getAllRequests);
 router.get("/search", parishRequestController_1.searchRequests);
+router.get("/next-number", parishRequestController_1.getNextRequestNumber);
 router.get("/:id", parishRequestController_1.getRequestById);
 router.put("/:id", parishRequestController_1.updateRequest);
 router.delete("/:id", parishRequestController_1.deleteRequest);

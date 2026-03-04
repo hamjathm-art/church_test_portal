@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as receiptService from "../services/receiptService";
+import generateNextNumber from "../utils/numberGenerator";
 
 const numericFields = ["amount"];
 
@@ -87,4 +88,13 @@ const searchReceipts = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export { createReceipt, getAllReceipts, getReceiptById, updateReceipt, searchReceipts };
+const getNextReceiptNumber = async (_req: Request, res: Response): Promise<void> => {
+  try {
+    const nextNumber = await generateNextNumber("receipts", "receiptNo", "RC");
+    res.status(200).json({ success: true, data: { nextNumber } });
+  } catch {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export { createReceipt, getAllReceipts, getReceiptById, updateReceipt, searchReceipts, getNextReceiptNumber };

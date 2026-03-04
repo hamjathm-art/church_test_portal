@@ -4,7 +4,7 @@
   border-radius: 12px;
   margin: 0;
   box-shadow: 0 4px 20px rgba(30, 58, 138, 0.18);
-  overflow: hidden;
+  overflow: visible;
 }
 
 .marriage-card-header {
@@ -63,4 +63,179 @@
 @keyframes slideIn {
   from { opacity: 0; transform: translateX(60px); }
   to { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Responsive: below 500px ── */
+@media only screen and (max-width: 500px) {
+  .marriage-card-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px;
+    padding: 14px 16px !important;
+  }
+
+  .marriage-card-header h2 {
+    font-size: 17px !important;
+    text-align: center;
+  }
+
+  .marriage-header-btns {
+    flex-direction: column !important;
+    width: 100%;
+  }
+
+  .marriage-header-btns button {
+    width: 100% !important;
+    justify-content: center;
+  }
+
+  .marriage-grid {
+    padding: 16px !important;
+    gap: 14px !important;
+  }
+
+  .marriage-bottom-btns {
+    flex-direction: column !important;
+    padding: 12px 16px !important;
+    gap: 10px !important;
+  }
+
+  .marriage-bottom-btns button {
+    width: 100% !important;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .marriage-search-section {
+    padding: 16px !important;
+    min-width: 0;
+  }
+
+  .marriage-sort-row {
+    flex-direction: column !important;
+  }
+
+  .marriage-search-btns {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .marriage-search-btns button {
+    width: 100% !important;
+    text-align: center;
+  }
+
+  .marriage-table-wrap {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100% !important;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+  }
+
+  .marriage-toast {
+    left: 12px !important;
+    right: 12px !important;
+    min-width: auto !important;
+    max-width: none !important;
+  }
+
+  .marriage-cert-area,
+  #marriage-certificate-print-area {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 20px 12px 20px !important;
+    min-height: auto !important;
+    background-image: none !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    border: 1px solid #e5e7eb;
+    border-radius: 0;
+  }
+
+  #marriage-certificate-print-area h2 {
+    font-size: 16px !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  #marriage-certificate-print-area p {
+    font-size: 11px !important;
+  }
+
+  .marriage-cert-table,
+  #marriage-certificate-print-area table {
+    font-size: 12px !important;
+    width: 100% !important;
+    table-layout: fixed;
+  }
+
+  .marriage-cert-table td,
+  #marriage-certificate-print-area td {
+    padding: 3px 2px !important;
+    word-break: break-word !important;
+    white-space: normal !important;
+  }
+
+  .marriage-cert-table td:first-child {
+    width: 24px;
+    white-space: nowrap !important;
+  }
+
+  .marriage-cert-table td:nth-child(3) {
+    width: 12px;
+    white-space: nowrap !important;
+  }
+
+  .marriage-cert-table td:nth-child(2) {
+    width: 35%;
+  }
+
+  .marriage-cert-table td:nth-child(4) {
+    width: auto;
+  }
+
+  .marriage-cert-auth-wrap {
+    justify-content: stretch !important;
+  }
+
+  .marriage-cert-auth-inner {
+    min-width: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+  }
+
+  .marriage-cert-footer {
+    flex-direction: column !important;
+    gap: 16px;
+    align-items: center !important;
+  }
+
+  .marriage-cert-footer > div {
+    text-align: center;
+  }
+
+  .marriage-cert-footer p {
+    font-size: 12px !important;
+  }
+
+  .marriage-grid input,
+  .marriage-grid select,
+  .marriage-grid textarea {
+    font-size: 14px !important;
+    padding: 9px 12px !important;
+  }
+
+  .marriage-grid label {
+    font-size: 13px !important;
+  }
+
+  .marriage-pagination {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .marriage-pagination button {
+    width: 100% !important;
+    justify-content: center;
+  }
 }

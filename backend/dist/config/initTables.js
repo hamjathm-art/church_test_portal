@@ -98,6 +98,7 @@ const initTables = async () => {
         await conn.query(`
       CREATE TABLE IF NOT EXISTS confirmations (
         id INT AUTO_INCREMENT PRIMARY KEY,
+        confirmationNo VARCHAR(255) DEFAULT '',
         fullName VARCHAR(255) NOT NULL,
         confirmationDate VARCHAR(255) NOT NULL,
         officiatingMinister VARCHAR(255) NOT NULL,
@@ -134,6 +135,7 @@ const initTables = async () => {
         await conn.query(`
       CREATE TABLE IF NOT EXISTS no_objections (
         id INT AUTO_INCREMENT PRIMARY KEY,
+        objectionNo VARCHAR(255) DEFAULT '',
         fullName VARCHAR(255) NOT NULL,
         dateOfBirth VARCHAR(255) NOT NULL,
         placeOfBirth VARCHAR(255) NOT NULL,
@@ -209,6 +211,7 @@ const initTables = async () => {
         await conn.query(`
       CREATE TABLE IF NOT EXISTS parish_requests (
         id INT AUTO_INCREMENT PRIMARY KEY,
+        requestNo VARCHAR(255) DEFAULT '',
         fullName VARCHAR(255) NOT NULL,
         phone VARCHAR(255) NOT NULL,
         email VARCHAR(255) DEFAULT '',
@@ -259,6 +262,7 @@ const initTables = async () => {
         await conn.query(`
       CREATE TABLE IF NOT EXISTS mass_intentions (
         id INT AUTO_INCREMENT PRIMARY KEY,
+        intentionNo VARCHAR(255) DEFAULT '',
         fullName VARCHAR(255) NOT NULL,
         contactNumber VARCHAR(255) NOT NULL,
         emailAddress VARCHAR(255) DEFAULT '',
@@ -312,6 +316,23 @@ const initTables = async () => {
         INDEX idx_liturgicalSeason (liturgicalSeason)
       )
     `);
+        // Add new columns if they don't exist (for existing databases)
+        try {
+            await conn.query(`ALTER TABLE confirmations ADD COLUMN confirmationNo VARCHAR(255) DEFAULT '' AFTER id`);
+        }
+        catch { /* column already exists */ }
+        try {
+            await conn.query(`ALTER TABLE no_objections ADD COLUMN objectionNo VARCHAR(255) DEFAULT '' AFTER id`);
+        }
+        catch { /* column already exists */ }
+        try {
+            await conn.query(`ALTER TABLE parish_requests ADD COLUMN requestNo VARCHAR(255) DEFAULT '' AFTER id`);
+        }
+        catch { /* column already exists */ }
+        try {
+            await conn.query(`ALTER TABLE mass_intentions ADD COLUMN intentionNo VARCHAR(255) DEFAULT '' AFTER id`);
+        }
+        catch { /* column already exists */ }
         console.log("All MySQL tables initialized");
     }
     finally {

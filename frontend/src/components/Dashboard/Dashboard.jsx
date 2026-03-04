@@ -141,20 +141,20 @@ const Dashboard = () => {
   };
 
   return (
-    <div style={{ width: '100%' }}>
+    <div style={{ width: '100%', overflowX: 'hidden' }}>
 
       {/* ── Top Row: Welcome + Date/Time ── */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '28px', flexWrap: 'wrap', gap: '16px' }}>
-        <div>
-          <h2 style={{ fontSize: '26px', fontWeight: 800, color: '#1E3A8A', margin: 0 }}>
+      <div className="dash-top-welcome" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '28px', flexWrap: 'wrap', gap: '16px' }}>
+        <div style={{ minWidth: 0 }}>
+          <h2 className="dash-welcome-title" style={{ fontSize: '26px', fontWeight: 800, color: '#1E3A8A', margin: 0 }}>
             Welcome, <span style={{ color: '#1E3A8A' }}>{userName}</span>
           </h2>
-          <p style={{ fontSize: '14px', color: '#9ca3af', marginTop: '4px', fontWeight: 400 }}>
+          <p className="dash-welcome-sub" style={{ fontSize: '14px', color: '#9ca3af', marginTop: '4px', fontWeight: 400 }}>
             Here's what's happening at your parish today
           </p>
         </div>
 
-        <div style={{
+        <div className="dash-datetime-bar" style={{
           display: 'flex', alignItems: 'center', gap: '16px',
           background: 'linear-gradient(135deg, #1E3A8A 0%, #3B5EC2 100%)', padding: '14px 20px', borderRadius: '12px',
           border: '1px solid #60A5FA', boxShadow: '0 4px 16px rgba(30, 58, 138, 0.25)'
@@ -168,7 +168,7 @@ const Dashboard = () => {
               <p style={{ fontSize: '13px', color: '#93C5FD', margin: 0, fontWeight: 500 }}>{formatDay(currentDateTime)}</p>
             </div>
           </div>
-          <div style={{ width: '1px', height: '36px', background: 'rgba(147, 197, 253, 0.4)' }} />
+          <div className="dash-datetime-divider" style={{ width: '1px', height: '36px', background: 'rgba(147, 197, 253, 0.4)' }} />
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{ background: 'rgba(96, 165, 250, 0.2)', borderRadius: '8px', padding: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <MdAccessTime style={{ color: '#93C5FD', fontSize: '20px' }} />

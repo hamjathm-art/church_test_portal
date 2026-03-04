@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as burialService from "../services/burialService";
+import generateNextNumber from "../utils/numberGenerator";
 
 const createBurial = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -57,4 +58,13 @@ const searchBurials = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export { createBurial, getAllBurials, updateBurial, getBurialById, searchBurials };
+const getNextBurialNumber = async (_req: Request, res: Response): Promise<void> => {
+  try {
+    const nextNumber = await generateNextNumber("burials", "burialNo", "BL");
+    res.status(200).json({ success: true, data: { nextNumber } });
+  } catch {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export { createBurial, getAllBurials, updateBurial, getBurialById, searchBurials, getNextBurialNumber };

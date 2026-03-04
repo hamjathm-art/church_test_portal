@@ -1,6 +1,7 @@
 import pool from "../config/db";
 import { ResultSetHeader } from "mysql2";
 import { Voucher, CountRow, SearchResult } from "../types";
+import generateNextNumber from "../utils/numberGenerator";
 
 const fields: string[] = [
   "voucherNo", "voucherDate", "payTo", "debitAccount", "amount",
@@ -8,6 +9,7 @@ const fields: string[] = [
 ];
 
 const create = async (data: Record<string, string>): Promise<Voucher> => {
+  data.voucherNo = await generateNextNumber("vouchers", "voucherNo", "VC");
   const values = fields.map((f) => data[f] || "");
   const placeholders = fields.map(() => "?").join(", ");
   const [result] = await pool.query<ResultSetHeader>(

@@ -559,7 +559,7 @@ const WeeklyAnnouncement = () => {
     <div className="w-full py-6 px-4">
 
       {toast && (
-        <div style={{
+        <div className="ann-toast" style={{
           position: 'fixed', top: '24px', right: '24px', zIndex: 100,
           display: 'flex', alignItems: 'center', gap: '12px',
           padding: '16px 24px', borderRadius: '10px',
@@ -750,7 +750,7 @@ const WeeklyAnnouncement = () => {
       <div className="bg-white border border-gray-200 rounded-xl shadow-[0_4px_20px_rgba(30,58,138,0.18)]">
 
         {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 28px', borderBottom: '1px solid #e5e7eb', backgroundColor: '#f9fafb', borderRadius: '12px 12px 0 0' }}>
+        <div className="ann-card-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 28px', borderBottom: '1px solid #e5e7eb', backgroundColor: '#f9fafb', borderRadius: '12px 12px 0 0' }}>
           <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#1f2937', margin: 0 }}>
             {view === 'form'
               ? (editingId ? 'Edit Announcement' : 'Weekly Announcement')
@@ -758,7 +758,7 @@ const WeeklyAnnouncement = () => {
               ? 'Announcement Details'
               : 'Search Announcements'}
           </h2>
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div className="ann-header-btns" style={{ display: 'flex', gap: '10px' }}>
             <button className="form-btn announcement-view-btn" onClick={handleBackToDashboard}>
               <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ display: 'inline', verticalAlign: '-2px', marginRight: '4px' }}><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4" /></svg>
               Dashboard
@@ -780,7 +780,7 @@ const WeeklyAnnouncement = () => {
 
         {/* Detail View */}
         {view === 'detail' && detailRecord ? (
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div className="ann-detail-area" style={{ display: 'flex', justifyContent: 'center' }}>
             <div id="detail-print-area" style={{ width: '700px', minHeight: '990px', margin: '0 auto', backgroundImage: 'url(/images/f1.png)', backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat', padding: '155px 60px 50px', fontFamily: "'Times New Roman', Times, serif", position: 'relative', boxShadow: '0 2px 16px rgba(0,0,0,0.10)' }}>
               <div style={{ textAlign: 'center', marginBottom: '16px' }}>
                 <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#000', margin: '0 0 4px', letterSpacing: '1px', fontFamily: "'Times New Roman', Times, serif" }}>WEEKLY ANNOUNCEMENT</h2>
@@ -811,8 +811,8 @@ const WeeklyAnnouncement = () => {
 
               {/* Signing Authority - no-print */}
               <div className="no-print" style={{ marginTop: '30px' }}>
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: '280px' }}>
+                <div className="ann-cert-auth-wrap" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
+                  <div className="ann-cert-auth-inner" style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: '280px' }}>
                     <label style={{ fontSize: '14px', fontWeight: 600, color: '#374151' }}>Signing Authority</label>
                     <select value={signingAuthority} onChange={e => setSigningAuthority(e.target.value)} style={{ padding: '10px 14px', fontSize: '15px', border: '1px solid #d1d5db', borderRadius: '8px', outline: 'none', backgroundColor: '#fff', color: '#111' }}>
                       <option value="">-- Select Authority --</option>
@@ -823,7 +823,7 @@ const WeeklyAnnouncement = () => {
                 </div>
 
                 {signingAuthority && (
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', fontFamily: "'Times New Roman', Times, serif", marginTop: '16px' }}>
+                  <div className="ann-cert-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', fontFamily: "'Times New Roman', Times, serif", marginTop: '16px' }}>
                     <div style={{ fontSize: '14px', color: '#000' }}>
                       <p style={{ margin: 0, fontWeight: 700, color: '#000' }}>Date :</p>
                       <p style={{ margin: 0, fontWeight: 700, color: '#000' }}>{getTodayFormatted().dayName},</p>
@@ -888,7 +888,7 @@ const WeeklyAnnouncement = () => {
           <form onSubmit={handleSubmit} noValidate>
 
             {/* Announcement Info */}
-            <div className="pt-5 px-7 pb-2 border-b border-gray-200">
+            <div className="ann-form-section pt-5 px-7 pb-2 border-b border-gray-200">
               <div className="announcement-grid">
                 {field('title', 'Title')}
                 {field('announcementDate', 'Announcement Date', 'date')}
@@ -910,7 +910,7 @@ const WeeklyAnnouncement = () => {
             </div>
 
             {/* Description */}
-            <div className="pt-5 px-7 pb-5 border-b border-gray-200">
+            <div className="ann-form-section pt-5 px-7 pb-5 border-b border-gray-200">
               <label className="flex items-center gap-1 text-sm font-semibold text-gray-700 mb-2 leading-5">
                 Description <span className="text-red-500 text-lg font-bold leading-none">*</span>
               </label>
@@ -932,7 +932,7 @@ const WeeklyAnnouncement = () => {
             </div>
 
             {/* Bottom Submit */}
-            <div className="flex justify-end gap-3 px-6 py-4 border-t border-gray-200">
+            <div className="ann-bottom-btns flex justify-end gap-3 px-6 py-4 border-t border-gray-200">
               {editingId && (
                 <button className="form-btn" type="button" onClick={handleCancel} style={{ backgroundColor: '#f3f4f6', color: '#374151', border: '1px solid #d1d5db', borderRadius: '6px', padding: '10px 24px', fontSize: '14px', fontWeight: 500, cursor: 'pointer' }}
                   onMouseEnter={(e) => { e.target.style.backgroundColor = '#3B5EC2'; e.target.style.color = '#fff'; e.target.style.borderColor = '#3B5EC2'; }}
@@ -951,7 +951,7 @@ const WeeklyAnnouncement = () => {
           </form>
         ) : (
           /* Search View */
-          <div style={{ padding: '24px 28px' }}>
+          <div className="ann-search-section" style={{ padding: '24px 28px' }}>
             <div className="announcement-grid" key={resetKey} style={{ marginBottom: '20px' }}>
               {searchField('title', 'Title')}
               <div>
@@ -986,7 +986,7 @@ const WeeklyAnnouncement = () => {
 
               <div style={{ minWidth: 0 }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px', fontWeight: 600, color: '#374151', marginBottom: '8px', lineHeight: '20px' }}>Sort by</label>
-                <div style={{ display: 'flex', gap: '10px', minWidth: 0 }}>
+                <div className="ann-sort-row" style={{ display: 'flex', gap: '10px', minWidth: 0 }}>
                   <select name="sortBy" value={searchData.sortBy} onChange={handleSearchChange} style={{ ...selectStyle, flex: 1, minWidth: 0 }}>
                     <option value="announcementDate">Date</option>
                     <option value="title">Title</option>
@@ -1013,7 +1013,7 @@ const WeeklyAnnouncement = () => {
               </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', padding: '16px 0', borderTop: '1px solid #e5e7eb' }}>
+            <div className="ann-search-btns" style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', padding: '16px 0', borderTop: '1px solid #e5e7eb' }}>
               <button className="form-btn" type="button" onClick={handleSearchReset} style={{ backgroundColor: '#f3f4f6', color: '#374151', border: '1px solid #d1d5db', borderRadius: '6px', padding: '10px 28px', fontSize: '14px', fontWeight: 500, cursor: 'pointer' }}
                 onMouseEnter={(e) => { e.target.style.backgroundColor = '#3B5EC2'; e.target.style.color = '#fff'; e.target.style.borderColor = '#3B5EC2'; }}
                 onMouseLeave={(e) => { e.target.style.backgroundColor = '#f3f4f6'; e.target.style.color = '#374151'; e.target.style.borderColor = '#d1d5db'; }}
@@ -1031,7 +1031,7 @@ const WeeklyAnnouncement = () => {
                 ) : searchResults.length === 0 ? (
                   <p style={{ textAlign: 'center', color: '#6b7280', padding: '40px 0', backgroundColor: '#f9fafb', borderRadius: '8px' }}>No records found matching your search criteria.</p>
                 ) : (
-                  <div style={{ overflowX: 'auto', maxWidth: '100%' }}>
+                  <div className="ann-table-wrap" style={{ overflowX: 'auto', maxWidth: '100%' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
                       <thead>
                         <tr style={{ backgroundColor: '#f9fafb', borderBottom: '2px solid #e5e7eb' }}>
@@ -1067,7 +1067,7 @@ const WeeklyAnnouncement = () => {
                     </table>
 
                     {totalPages > 1 && (
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', padding: '16px 0', marginTop: '12px', borderTop: '1px solid #e5e7eb' }}>
+                      <div className="ann-pagination" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', padding: '16px 0', marginTop: '12px', borderTop: '1px solid #e5e7eb' }}>
                         <button onClick={() => handleSearch(currentPage - 1)} disabled={currentPage <= 1 || searchLoading} style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: currentPage <= 1 ? '#f3f4f6' : '#EEF2FF', color: currentPage <= 1 ? '#9ca3af' : '#3B5EC2', border: `1px solid ${currentPage <= 1 ? '#e5e7eb' : '#C7D2FE'}`, borderRadius: '6px', padding: '8px 20px', fontSize: '14px', fontWeight: 500, cursor: currentPage <= 1 ? 'not-allowed' : 'pointer' }}>
                           <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>Previous
                         </button>
