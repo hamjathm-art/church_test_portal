@@ -8,7 +8,7 @@ const generateTokens = (user: User) => {
   const accessToken = jwt.sign(
     { id: user.id, name: user.name, email: user.email } as JwtPayload,
     process.env.JWT_SECRET as string,
-    { expiresIn: "15m" }
+    { expiresIn: "2h" }
   );
   const refreshToken = jwt.sign(
     { id: user.id },
@@ -26,7 +26,7 @@ const register = async (data: { name: string; email: string; password: string })
     throw new Error("Email already registered");
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password, 8);
   const [result] = await pool.query<ResultSetHeader>(
     "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
     [name, email, hashedPassword]
@@ -66,7 +66,7 @@ const refreshAccessToken = async (refreshToken: string) => {
   const accessToken = jwt.sign(
     { id: user.id, name: user.name, email: user.email } as JwtPayload,
     process.env.JWT_SECRET as string,
-    { expiresIn: "15m" }
+    { expiresIn: "2h" }
   );
   return { accessToken };
 };

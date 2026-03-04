@@ -22,8 +22,7 @@ const create = async (data: Record<string, string>): Promise<MassIntention> => {
     `INSERT INTO mass_intentions (${fields.join(", ")}) VALUES (${placeholders})`,
     values
   );
-  const [rows] = await pool.query<MassIntention[]>("SELECT * FROM mass_intentions WHERE id = ?", [result.insertId]);
-  return rows[0];
+  return { id: result.insertId, ...Object.fromEntries(fields.map((f, i) => [f, values[i]])) } as MassIntention;
 };
 
 const getAll = async (): Promise<MassIntention[]> => {
@@ -45,8 +44,7 @@ const update = async (id: string | number, data: Record<string, string>): Promis
     values
   );
   if (result.affectedRows === 0) return null;
-  const [rows] = await pool.query<MassIntention[]>("SELECT * FROM mass_intentions WHERE id = ?", [id]);
-  return rows[0];
+  return { id: Number(id), ...Object.fromEntries(fields.map((f) => [f, data[f] !== undefined ? data[f] : ""])) } as MassIntention;
 };
 
 const search = async (query: Record<string, string>): Promise<SearchResult<MassIntention>> => {

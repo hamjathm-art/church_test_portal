@@ -114,7 +114,8 @@ const FamilyForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (numericFields.includes(name)) {
-      const numericOnly = value.replace(/[^0-9]/g, '');
+      const maxLen = (name === 'mobile') ? 10 : (name === 'pincode') ? 6 : undefined;
+      const numericOnly = maxLen ? value.replace(/[^0-9]/g, '').slice(0, maxLen) : value.replace(/[^0-9]/g, '');
       setFormData({ ...formData, [name]: numericOnly });
     } else if (name === 'sinceYear') {
       const yearOnly = value.replace(/[^0-9]/g, '').slice(0, 4);
@@ -153,6 +154,12 @@ const FamilyForm = () => {
         const label = f === 'res' ? 'Residence' : f.charAt(0).toUpperCase() + f.slice(1);
         newErrors[f] = `${label} must contain only numbers`;
       }
+    }
+    if (formData.mobile && formData.mobile.trim() && formData.mobile.trim().length !== 10) {
+      newErrors.mobile = 'Mobile number must be exactly 10 digits';
+    }
+    if (formData.pincode && formData.pincode.trim() && formData.pincode.trim().length !== 6) {
+      newErrors.pincode = 'Pincode must be exactly 6 digits';
     }
     return newErrors;
   };

@@ -24,8 +24,7 @@ const create = async (data: Record<string, string>): Promise<Marriage> => {
     `INSERT INTO marriages (${fields.join(", ")}) VALUES (${placeholders})`,
     values
   );
-  const [rows] = await pool.query<Marriage[]>("SELECT * FROM marriages WHERE id = ?", [result.insertId]);
-  return rows[0];
+  return { id: result.insertId, ...Object.fromEntries(fields.map((f, i) => [f, values[i]])) } as Marriage;
 };
 
 const getAll = async (): Promise<Marriage[]> => {
@@ -47,8 +46,7 @@ const update = async (id: string | number, data: Record<string, string>): Promis
     values
   );
   if (result.affectedRows === 0) return null;
-  const [rows] = await pool.query<Marriage[]>("SELECT * FROM marriages WHERE id = ?", [id]);
-  return rows[0];
+  return { id: Number(id), ...Object.fromEntries(fields.map((f) => [f, data[f] !== undefined ? data[f] : ""])) } as Marriage;
 };
 
 const search = async (query: Record<string, string>): Promise<SearchResult<Marriage>> => {

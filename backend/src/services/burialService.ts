@@ -20,8 +20,7 @@ const create = async (data: Record<string, string>): Promise<Burial> => {
     `INSERT INTO burials (${fieldNames}) VALUES (${placeholders})`,
     values
   );
-  const [rows] = await pool.query<Burial[]>("SELECT * FROM burials WHERE id = ?", [result.insertId]);
-  return rows[0];
+  return { id: result.insertId, ...Object.fromEntries(fields.map((f, i) => [f, values[i]])) } as Burial;
 };
 
 const getAll = async (): Promise<Burial[]> => {
@@ -43,8 +42,7 @@ const update = async (id: string | number, data: Record<string, string>): Promis
     values
   );
   if (result.affectedRows === 0) return null;
-  const [rows] = await pool.query<Burial[]>("SELECT * FROM burials WHERE id = ?", [id]);
-  return rows[0];
+  return { id: Number(id), ...Object.fromEntries(fields.map((f) => [f, data[f] !== undefined ? data[f] : ""])) } as Burial;
 };
 
 const search = async (query: Record<string, string>): Promise<SearchResult<Burial>> => {

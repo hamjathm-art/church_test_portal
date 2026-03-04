@@ -16,8 +16,7 @@ const create = async (data: Record<string, string>): Promise<Voucher> => {
     `INSERT INTO vouchers (${fields.join(", ")}) VALUES (${placeholders})`,
     values
   );
-  const [rows] = await pool.query<Voucher[]>("SELECT * FROM vouchers WHERE id = ?", [result.insertId]);
-  return rows[0];
+  return { id: result.insertId, ...Object.fromEntries(fields.map((f, i) => [f, values[i]])) } as Voucher;
 };
 
 const getAll = async (): Promise<Voucher[]> => {
@@ -39,8 +38,7 @@ const update = async (id: string | number, data: Record<string, string>): Promis
     values
   );
   if (result.affectedRows === 0) return null;
-  const [rows] = await pool.query<Voucher[]>("SELECT * FROM vouchers WHERE id = ?", [id]);
-  return rows[0];
+  return { id: Number(id), ...Object.fromEntries(fields.map((f) => [f, data[f] !== undefined ? data[f] : ""])) } as Voucher;
 };
 
 const search = async (query: Record<string, string>): Promise<SearchResult<Voucher>> => {

@@ -26,8 +26,7 @@ const create = async (data: Record<string, string>): Promise<ParishRequest> => {
     `INSERT INTO parish_requests (${fields.join(", ")}) VALUES (${placeholders})`,
     values
   );
-  const [rows] = await pool.query<ParishRequest[]>("SELECT * FROM parish_requests WHERE id = ?", [result.insertId]);
-  return rows[0];
+  return { id: result.insertId, ...Object.fromEntries(fields.map((f, i) => [f, values[i]])) } as ParishRequest;
 };
 
 const getAll = async (): Promise<ParishRequest[]> => {
@@ -49,8 +48,7 @@ const update = async (id: string | number, data: Record<string, string>): Promis
     values
   );
   if (result.affectedRows === 0) return null;
-  const [rows] = await pool.query<ParishRequest[]>("SELECT * FROM parish_requests WHERE id = ?", [id]);
-  return rows[0];
+  return { id: Number(id), ...Object.fromEntries(fields.map((f) => [f, data[f] !== undefined ? data[f] : ""])) } as ParishRequest;
 };
 
 const search = async (query: Record<string, string>): Promise<SearchResult<ParishRequest>> => {

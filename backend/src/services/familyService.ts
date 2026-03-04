@@ -19,8 +19,7 @@ const create = async (data: Record<string, string>): Promise<Family> => {
     `INSERT INTO families (${fields.join(", ")}) VALUES (${placeholders})`,
     values
   );
-  const [rows] = await pool.query<Family[]>("SELECT * FROM families WHERE id = ?", [result.insertId]);
-  return rows[0];
+  return { id: result.insertId, ...Object.fromEntries(fields.map((f, i) => [f, values[i]])) } as Family;
 };
 
 const getAll = async (): Promise<Family[]> => {
@@ -42,8 +41,7 @@ const update = async (id: string | number, data: Record<string, string>): Promis
     values
   );
   if (result.affectedRows === 0) return null;
-  const [rows] = await pool.query<Family[]>("SELECT * FROM families WHERE id = ?", [id]);
-  return rows[0];
+  return { id: Number(id), ...Object.fromEntries(fields.map((f) => [f, data[f] !== undefined ? data[f] : ""])) } as Family;
 };
 
 const search = async (query: Record<string, string>): Promise<SearchResult<Family>> => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import '../loginform/loginform.css';
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 import { useNavigate, Link } from 'react-router-dom';
@@ -9,7 +9,15 @@ const RegisterForm = () => {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState(null);
+  const toastTimer = useRef(null);
   const navigate = useNavigate();
+
+  const showToast = (message, type = 'success') => {
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    setToast({ message, type });
+    toastTimer.current = setTimeout(() => setToast(null), 3500);
+  };
 
   const validate = () => {
     const newErrors = {};
@@ -45,8 +53,8 @@ const RegisterForm = () => {
       });
       const result = await response.json();
       if (result.success) {
-        alert('Registration successful! Please login.');
-        navigate('/login');
+        showToast('Registration successful! Redirecting to login...', 'success');
+        setTimeout(() => navigate('/login'), 2000);
       } else {
         setErrors({ server: result.message || 'Registration failed' });
       }
@@ -59,55 +67,68 @@ const RegisterForm = () => {
 
   return (
     <div className='login-form'>
+      {toast && (
+        <div className={`login-toast login-toast-${toast.type}`}>
+          <span>{toast.message}</span>
+          <button className="login-toast-close" onClick={() => setToast(null)}>&times;</button>
+        </div>
+      )}
       <div className="wrapper">
+        {/* Header Banner */}
+        <div className="login-header">
+          <p className="login-church-name">St. Francis of Assisi Church</p>
+        </div>
+
         <div className="form-box login">
           <form onSubmit={handleRegister}>
-            <h1>Register</h1>
+            <h1 className="login-title">Create Account</h1>
+            <p className="login-subtitle">Register to get started.</p>
 
             <div className="input-type">
+              <FaUser className="icon" />
               <input
                 type="text"
                 placeholder="Full Name"
                 value={name}
                 onChange={(e) => { setName(e.target.value); setErrors({ ...errors, name: '' }); }}
               />
-              <FaUser className="icon" />
+              <FaUser className="icon-right" />
             </div>
-            {errors.name && <p style={{ color: '#ff6b6b', fontSize: '12px', marginTop: '-20px', marginBottom: '10px' }}>{errors.name}</p>}
+            {errors.name && <p className="login-error">{errors.name}</p>}
 
             <div className="input-type">
+              <FaEnvelope className="icon" />
               <input
                 type="text"
                 placeholder="Email"
                 value={email}
                 onChange={(e) => { setEmail(e.target.value); setErrors({ ...errors, email: '' }); }}
               />
-              <FaEnvelope className="icon" />
+              <FaEnvelope className="icon-right" />
             </div>
-            {errors.email && <p style={{ color: '#ff6b6b', fontSize: '12px', marginTop: '-20px', marginBottom: '10px' }}>{errors.email}</p>}
+            {errors.email && <p className="login-error">{errors.email}</p>}
 
             <div className="input-type">
+              <FaLock className="icon" />
               <input
                 type="password"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); setErrors({ ...errors, password: '' }); }}
               />
-              <FaLock className="icon" />
+              <FaLock className="icon-right" />
             </div>
-            {errors.password && <p style={{ color: '#ff6b6b', fontSize: '12px', marginTop: '-20px', marginBottom: '10px' }}>{errors.password}</p>}
+            {errors.password && <p className="login-error">{errors.password}</p>}
 
-            {errors.server && <p style={{ color: '#ff6b6b', fontSize: '13px', textAlign: 'center', marginBottom: '10px' }}>{errors.server}</p>}
+            {errors.server && <p className="login-server-error">{errors.server}</p>}
 
             <button type="submit" disabled={loading}>
               {loading ? 'Registering...' : 'Register'}
             </button>
 
-            <div style={{ textAlign: 'center', fontSize: '14px', color: '#fff' }}>
+            <div className="login-register-link">
               Already have an account?{' '}
-              <Link to="/login" style={{ color: '#fff', fontWeight: 700, textDecoration: 'underline' }}>
-                Login
-              </Link>
+              <Link to="/login">Login</Link>
             </div>
           </form>
         </div>

@@ -20,8 +20,7 @@ const create = async (data: Record<string, string>): Promise<Baptism> => {
     `INSERT INTO baptisms (${fields.join(", ")}) VALUES (${placeholders})`,
     values
   );
-  const [rows] = await pool.query<Baptism[]>("SELECT * FROM baptisms WHERE id = ?", [result.insertId]);
-  return rows[0]; 
+  return { id: result.insertId, ...Object.fromEntries(fields.map((f, i) => [f, values[i]])) } as Baptism;
 };
 
 const getAll = async (): Promise<Baptism[]> => {
@@ -43,8 +42,7 @@ const update = async (id: string | number, data: Record<string, string>): Promis
     values
   );
   if (result.affectedRows === 0) return null;
-  const [rows] = await pool.query<Baptism[]>("SELECT * FROM baptisms WHERE id = ?", [id]);
-  return rows[0];
+  return { id: Number(id), ...Object.fromEntries(fields.map((f) => [f, data[f] !== undefined ? data[f] : ""])) } as Baptism;
 };
 
 const search = async (query: Record<string, string>): Promise<SearchResult<Baptism>> => {

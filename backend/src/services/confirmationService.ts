@@ -16,8 +16,7 @@ const create = async (data: Record<string, string>): Promise<Confirmation> => {
     `INSERT INTO confirmations (${fields.join(", ")}) VALUES (${placeholders})`,
     values
   );
-  const [rows] = await pool.query<Confirmation[]>("SELECT * FROM confirmations WHERE id = ?", [result.insertId]);
-  return rows[0];
+  return { id: result.insertId, ...Object.fromEntries(fields.map((f, i) => [f, values[i]])) } as Confirmation;
 };
 
 const getAll = async (): Promise<Confirmation[]> => {
@@ -39,8 +38,7 @@ const update = async (id: string | number, data: Record<string, string>): Promis
     values
   );
   if (result.affectedRows === 0) return null;
-  const [rows] = await pool.query<Confirmation[]>("SELECT * FROM confirmations WHERE id = ?", [id]);
-  return rows[0];
+  return { id: Number(id), ...Object.fromEntries(fields.map((f) => [f, data[f] !== undefined ? data[f] : ""])) } as Confirmation;
 };
 
 const search = async (query: Record<string, string>): Promise<SearchResult<Confirmation>> => {

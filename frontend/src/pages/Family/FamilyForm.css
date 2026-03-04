@@ -19,8 +19,8 @@
 }
 
 .family-view-btn {
-  background-color: #fff;
-  color: #3B5EC2;
+  background-color: #3B5EC2;
+  color: #fff;
   border: 1px solid #3B5EC2;
   border-radius: 6px;
   padding: 8px 24px;
@@ -30,7 +30,7 @@
 }
 
 .family-view-btn:hover {
-  background-color: #3B5EC2;
+  background-color: #2d4a9e;
   color: #fff;
 }
 

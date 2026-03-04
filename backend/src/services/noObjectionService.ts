@@ -15,8 +15,7 @@ const create = async (data: Record<string, string>): Promise<NoObjection> => {
     `INSERT INTO no_objections (${fields.join(", ")}) VALUES (${placeholders})`,
     values
   );
-  const [rows] = await pool.query<NoObjection[]>("SELECT * FROM no_objections WHERE id = ?", [result.insertId]);
-  return rows[0];
+  return { id: result.insertId, ...Object.fromEntries(fields.map((f, i) => [f, values[i]])) } as NoObjection;
 };
 
 const getAll = async (): Promise<NoObjection[]> => {
@@ -33,8 +32,7 @@ const update = async (id: string | number, data: Record<string, string>): Promis
     values
   );
   if (result.affectedRows === 0) return null;
-  const [rows] = await pool.query<NoObjection[]>("SELECT * FROM no_objections WHERE id = ?", [id]);
-  return rows[0];
+  return { id: Number(id), ...Object.fromEntries(fields.map((f) => [f, data[f] !== undefined ? data[f] : ""])) } as NoObjection;
 };
 
 const getById = async (id: string | number): Promise<NoObjection | null> => {

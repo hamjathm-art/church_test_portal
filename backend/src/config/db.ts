@@ -8,6 +8,8 @@ const pool = mysql.createPool({
   database: process.env.MYSQL_DATABASE || "church_db",
   waitForConnections: true,
   connectionLimit: 10,
+  enableKeepAlive: true,
+  keepAliveInitialDelay: 10000,
   ssl: process.env.MYSQL_SSL === "true" ? { rejectUnauthorized: true } : undefined,
 });
 

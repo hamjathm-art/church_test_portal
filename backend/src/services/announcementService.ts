@@ -45,8 +45,7 @@ const create = async (data: Record<string, string>): Promise<Announcement> => {
     `INSERT INTO announcements (${fields.join(", ")}) VALUES (${placeholders})`,
     values
   );
-  const [rows] = await pool.query<Announcement[]>("SELECT * FROM announcements WHERE id = ?", [result.insertId]);
-  return rows[0];
+  return { id: result.insertId, ...Object.fromEntries(fields.map((f, i) => [f, values[i]])) } as Announcement;
 };
 
 const getAll = async (): Promise<Announcement[]> => {
@@ -72,8 +71,7 @@ const update = async (id: string | number, data: Record<string, string>): Promis
     values
   );
   if (result.affectedRows === 0) return null;
-  const [rows] = await pool.query<Announcement[]>("SELECT * FROM announcements WHERE id = ?", [id]);
-  return rows[0];
+  return { id: Number(id), ...Object.fromEntries(fields.map((f) => [f, data[f] !== undefined ? data[f] : ""])) } as Announcement;
 };
 
 const toggleStatus = async (id: string | number, status: string): Promise<Announcement | null> => {
@@ -82,8 +80,7 @@ const toggleStatus = async (id: string | number, status: string): Promise<Announ
     [status, id]
   );
   if (result.affectedRows === 0) return null;
-  const [rows] = await pool.query<Announcement[]>("SELECT * FROM announcements WHERE id = ?", [id]);
-  return rows[0];
+  return { id: Number(id), status } as Announcement;
 };
 
 const search = async (query: Record<string, string>): Promise<SearchResult<Announcement>> => {

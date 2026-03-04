@@ -77,7 +77,7 @@ function ConfirmationForm() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'churchContact') {
-      const numericOnly = value.replace(/[^0-9]/g, '');
+      const numericOnly = value.replace(/[^0-9]/g, '').slice(0, 10);
       setFormData({ ...formData, [name]: numericOnly });
     } else {
       setFormData({ ...formData, [name]: value });
@@ -107,6 +107,9 @@ function ConfirmationForm() {
     });
     if (formData.churchContact && !/^\d+$/.test(formData.churchContact.trim())) {
       newErrors.churchContact = 'Church contact must contain only numbers';
+    }
+    if (formData.churchContact && formData.churchContact.trim() && formData.churchContact.trim().length !== 10) {
+      newErrors.churchContact = 'Church contact must be exactly 10 digits';
     }
     return newErrors;
   };

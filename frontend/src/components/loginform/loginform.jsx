@@ -30,7 +30,7 @@ const Loginform = ({ setIsAuthenticated }) => {
     }
 
     setLoading(true);
-    setErrors({}); 
+    setErrors({});
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/auth/login`, {
         method: 'POST',
@@ -57,50 +57,57 @@ const Loginform = ({ setIsAuthenticated }) => {
   return (
     <div className='login-form'>
       <div className="wrapper">
+        {/* Header Banner */}
+        <div className="login-header">
+          <p className="login-church-name">St. Francis of Assisi Church</p>
+        </div>
+
         <div className="form-box login">
           <form onSubmit={handleLogin}>
-            <h1>Login</h1>
+            <h1 className="login-title">Welcome Back!</h1>
+            <p className="login-subtitle">Please sign in to your account.</p>
 
             <div className="input-type">
+              <FaEnvelope className="icon" />
               <input
                 type="text"
                 placeholder="Email"
                 value={email}
                 onChange={(e) => { setEmail(e.target.value); setErrors({ ...errors, email: '' }); }}
               />
-              <FaEnvelope className="icon" />
+              <FaEnvelope className="icon-right" />
             </div>
-            {errors.email && <p style={{ color: '#ff6b6b', fontSize: '12px', marginTop: '-20px', marginBottom: '10px' }}>{errors.email}</p>}
+            {errors.email && <p className="login-error">{errors.email}</p>}
 
             <div className="input-type">
+              <FaLock className="icon" />
               <input
                 type="password"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); setErrors({ ...errors, password: '' }); }}
               />
-              <FaLock className="icon" />
+              <FaLock className="icon-right" />
             </div>
-            {errors.password && <p style={{ color: '#ff6b6b', fontSize: '12px', marginTop: '-20px', marginBottom: '10px' }}>{errors.password}</p>}
+            {errors.password && <p className="login-error">{errors.password}</p>}
 
             <div className="remember-forgot">
               <div className="remember-me">
-                <input type="checkbox" /> Remember me
+                <input type="checkbox" id="remember" />
+                <label htmlFor="remember">Remember me</label>
               </div>
               <a href="/forgot-password">Forgot Password?</a>
             </div>
 
-            {errors.server && <p style={{ color: '#ff6b6b', fontSize: '13px', textAlign: 'center', marginBottom: '10px' }}>{errors.server}</p>}
+            {errors.server && <p className="login-server-error">{errors.server}</p>}
 
             <button type="submit" disabled={loading}>
               {loading ? 'Logging in...' : 'Login'}
             </button>
 
-            <div style={{ textAlign: 'center', fontSize: '14px', color: '#fff' }}>
+            <div className="login-register-link">
               Don't have an account?{' '}
-              <Link to="/register" style={{ color: '#fff', fontWeight: 700, textDecoration: 'underline' }}>
-                Register
-              </Link>
+              <Link to="/register">Register</Link>
             </div>
           </form>
         </div>
