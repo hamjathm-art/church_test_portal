@@ -44,6 +44,10 @@ const search = async (query: Record<string, string>): Promise<SearchResult<NoObj
   const conditions: string[] = [];
   const params: (string | number)[] = [];
 
+  if (query.objectionNo) {
+    conditions.push("objectionNo LIKE ?");
+    params.push(`%${query.objectionNo}%`);
+  }
   if (query.fullName) {
     conditions.push("fullName LIKE ?");
     params.push(`%${query.fullName}%`);
@@ -74,7 +78,7 @@ const search = async (query: Record<string, string>): Promise<SearchResult<NoObj
 
   const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
 
-  const allowedSortFields = ["fullName", "dateOfBirth", "reason"];
+  const allowedSortFields = ["objectionNo", "fullName", "dateOfBirth", "reason"];
   const sortField = allowedSortFields.includes(query.sortBy) ? query.sortBy : "fullName";
   const sortOrder = query.sortOrder === "desc" ? "DESC" : "ASC";
   const limit = parseInt(query.maxRecords) || 5;

@@ -357,7 +357,10 @@ function BaptismForm() {
             try {
               const nextRes = await authFetch('/api/baptism/next-number');
               const nextResult = await nextRes.json();
-              if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+              if (nextResult.success) {
+                nextNumberRef.current = nextResult.data.nextNumber;
+                setFormData(prev => ({ ...prev, baptismNo: nextResult.data.nextNumber }));
+              }
             } catch (e) { /* ignore */ }
           }
         } else {
@@ -369,7 +372,10 @@ function BaptismForm() {
             try {
               const nextRes = await authFetch('/api/baptism/next-number');
               const nextResult = await nextRes.json();
-              if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+              if (nextResult.success) {
+                nextNumberRef.current = nextResult.data.nextNumber;
+                setFormData(prev => ({ ...prev, baptismNo: nextResult.data.nextNumber }));
+              }
             } catch (e) { /* ignore */ }
           }
         }

@@ -353,7 +353,10 @@ const FamilyForm = () => {
             try {
               const nextRes = await authFetch('/api/family/next-number');
               const nextResult = await nextRes.json();
-              if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+              if (nextResult.success) {
+                nextNumberRef.current = nextResult.data.nextNumber;
+                setFormData(prev => ({ ...prev, familyId: nextResult.data.nextNumber }));
+              }
             } catch (e) { /* ignore */ }
           }
           setEditingId(null);
@@ -367,7 +370,10 @@ const FamilyForm = () => {
             try {
               const nextRes = await authFetch('/api/family/next-number');
               const nextResult = await nextRes.json();
-              if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+              if (nextResult.success) {
+                nextNumberRef.current = nextResult.data.nextNumber;
+                setFormData(prev => ({ ...prev, familyId: nextResult.data.nextNumber }));
+              }
             } catch (e) { /* ignore */ }
           }
           setEditingId(null);

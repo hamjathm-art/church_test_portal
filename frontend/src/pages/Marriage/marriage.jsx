@@ -369,7 +369,10 @@ function MarriageForm() {
             try {
               const nextRes = await authFetch('/api/marriage/next-number');
               const nextResult = await nextRes.json();
-              if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+              if (nextResult.success) {
+                nextNumberRef.current = nextResult.data.nextNumber;
+                setFormData(prev => ({ ...prev, marriageNo: nextResult.data.nextNumber }));
+              }
             } catch (e) { /* ignore */ }
           }
         } else {
@@ -380,7 +383,10 @@ function MarriageForm() {
             try {
               const nextRes = await authFetch('/api/marriage/next-number');
               const nextResult = await nextRes.json();
-              if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+              if (nextResult.success) {
+                nextNumberRef.current = nextResult.data.nextNumber;
+                setFormData(prev => ({ ...prev, marriageNo: nextResult.data.nextNumber }));
+              }
             } catch (e) { /* ignore */ }
           }
         }

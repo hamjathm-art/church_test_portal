@@ -14,6 +14,7 @@ const initialFormData = {
 };
 
 const initialSearchData = {
+  confirmationNo: '',
   fullName: '',
   confirmationDateFrom: '',
   confirmationDateTo: '',
@@ -115,7 +116,7 @@ function ConfirmationForm() {
   };
 
   const handleSearch = async (page = 1) => {
-    const hasSearchCriteria = searchData.fullName || searchData.officiatingMinister ||
+    const hasSearchCriteria = searchData.confirmationNo || searchData.fullName || searchData.officiatingMinister ||
       searchData.churchName || searchData.churchAddress ||
       searchData.confirmationDateFrom || searchData.confirmationDateTo;
 
@@ -128,6 +129,7 @@ function ConfirmationForm() {
     setHasSearched(true);
     try {
       const params = new URLSearchParams();
+      if (searchData.confirmationNo) params.append('confirmationNo', searchData.confirmationNo);
       if (searchData.fullName) params.append('fullName', searchData.fullName);
       if (searchData.officiatingMinister) params.append('officiatingMinister', searchData.officiatingMinister);
       if (searchData.churchName) params.append('churchName', searchData.churchName);
@@ -317,7 +319,10 @@ function ConfirmationForm() {
             try {
               const nextRes = await authFetch('/api/confirmation/next-number');
               const nextResult = await nextRes.json();
-              if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+              if (nextResult.success) {
+                nextNumberRef.current = nextResult.data.nextNumber;
+                setFormData(prev => ({ ...prev, confirmationNo: nextResult.data.nextNumber }));
+              }
             } catch (e) { /* ignore */ }
           }
         } else {
@@ -328,7 +333,10 @@ function ConfirmationForm() {
             try {
               const nextRes = await authFetch('/api/confirmation/next-number');
               const nextResult = await nextRes.json();
-              if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+              if (nextResult.success) {
+                nextNumberRef.current = nextResult.data.nextNumber;
+                setFormData(prev => ({ ...prev, confirmationNo: nextResult.data.nextNumber }));
+              }
             } catch (e) { /* ignore */ }
           }
         }
@@ -609,6 +617,7 @@ function ConfirmationForm() {
         ) : (
           <div className="confirmation-search-section" style={{ padding: '24px 28px' }}>
             <div className="confirmation-grid" key={resetKey} style={{ marginBottom: '20px' }}>
+              {searchField('confirmationNo', 'Confirmation No')}
               {searchField('fullName', 'Full Name')}
               {searchField('confirmationDateFrom', 'Confirmation Date (From)', 'date')}
               {searchField('confirmationDateTo', 'Confirmation Date (To)', 'date')}
@@ -620,6 +629,7 @@ function ConfirmationForm() {
                 <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: '#374151', marginBottom: '8px' }}>Sort by</label>
                 <div className="confirmation-sort-row" style={{ display: 'flex', gap: '10px' }}>
                   <select name="sortBy" value={searchData.sortBy} onChange={handleSearchChange} style={{ ...selectStyle, flex: 1, minWidth: 0 }}>
+                    <option value="confirmationNo">Confirmation No</option>
                     <option value="fullName">Full Name</option>
                     <option value="confirmationDate">Confirmation Date</option>
                     <option value="officiatingMinister">Officiating Minister</option>

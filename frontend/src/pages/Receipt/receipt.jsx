@@ -260,7 +260,10 @@ const ReceiptForm = () => {
             try {
               const nextRes = await authFetch('/api/receipt/next-number');
               const nextResult = await nextRes.json();
-              if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+              if (nextResult.success) {
+                nextNumberRef.current = nextResult.data.nextNumber;
+                setFormData(prev => ({ ...prev, receiptNo: nextResult.data.nextNumber }));
+              }
             } catch (e) { /* ignore */ }
           }
         } else {
@@ -271,7 +274,10 @@ const ReceiptForm = () => {
             try {
               const nextRes = await authFetch('/api/receipt/next-number');
               const nextResult = await nextRes.json();
-              if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+              if (nextResult.success) {
+                nextNumberRef.current = nextResult.data.nextNumber;
+                setFormData(prev => ({ ...prev, receiptNo: nextResult.data.nextNumber }));
+              }
             } catch (e) { /* ignore */ }
           }
         }

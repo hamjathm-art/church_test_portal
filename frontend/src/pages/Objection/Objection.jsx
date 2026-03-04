@@ -12,6 +12,7 @@ const initialFormData = {
 };
 
 const initialSearchData = {
+  objectionNo: '',
   fullName: '',
   dateOfBirthFrom: '',
   dateOfBirthTo: '',
@@ -101,7 +102,7 @@ function NoObjectionForm() {
   };
 
   const handleSearch = async (page = 1) => {
-    const hasSearchCriteria = searchData.fullName || searchData.placeOfBirth ||
+    const hasSearchCriteria = searchData.objectionNo || searchData.fullName || searchData.placeOfBirth ||
       searchData.reason || searchData.recipientDetails ||
       searchData.dateOfBirthFrom || searchData.dateOfBirthTo;
 
@@ -114,6 +115,7 @@ function NoObjectionForm() {
     setHasSearched(true);
     try {
       const params = new URLSearchParams();
+      if (searchData.objectionNo) params.append('objectionNo', searchData.objectionNo);
       if (searchData.fullName) params.append('fullName', searchData.fullName);
       if (searchData.placeOfBirth) params.append('placeOfBirth', searchData.placeOfBirth);
       if (searchData.reason) params.append('reason', searchData.reason);
@@ -303,7 +305,10 @@ function NoObjectionForm() {
             try {
               const nextRes = await authFetch('/api/no-objection/next-number');
               const nextResult = await nextRes.json();
-              if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+              if (nextResult.success) {
+                nextNumberRef.current = nextResult.data.nextNumber;
+                setFormData(prev => ({ ...prev, objectionNo: nextResult.data.nextNumber }));
+              }
             } catch (e) { /* ignore */ }
           }
         } else {
@@ -314,7 +319,10 @@ function NoObjectionForm() {
             try {
               const nextRes = await authFetch('/api/no-objection/next-number');
               const nextResult = await nextRes.json();
-              if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+              if (nextResult.success) {
+                nextNumberRef.current = nextResult.data.nextNumber;
+                setFormData(prev => ({ ...prev, objectionNo: nextResult.data.nextNumber }));
+              }
             } catch (e) { /* ignore */ }
           }
         }
@@ -590,6 +598,7 @@ function NoObjectionForm() {
         ) : (
           <div className="objection-search-section" style={{ padding: '24px 28px' }}>
             <div className="objection-grid" key={resetKey} style={{ marginBottom: '20px' }}>
+              {searchField('objectionNo', 'Objection No')}
               {searchField('fullName', 'Full Name')}
               {searchField('dateOfBirthFrom', 'Date of Birth (From)', 'date')}
               {searchField('dateOfBirthTo', 'Date of Birth (To)', 'date')}
@@ -601,6 +610,7 @@ function NoObjectionForm() {
                 <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: '#374151', marginBottom: '8px' }}>Sort by</label>
                 <div className="objection-sort-row" style={{ display: 'flex', gap: '10px' }}>
                   <select name="sortBy" value={searchData.sortBy} onChange={handleSearchChange} style={{ ...selectStyle, flex: 1, minWidth: 0 }}>
+                    <option value="objectionNo">Objection No</option>
                     <option value="fullName">Full Name</option>
                     <option value="dateOfBirth">Date of Birth</option>
                     <option value="reason">Reason</option>

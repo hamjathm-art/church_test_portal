@@ -34,6 +34,15 @@
   color: #fff;
 }
 
+.family-since-row {
+  min-width: 0;
+}
+
+.family-since-row > * {
+  min-width: 0;
+  overflow: hidden;
+}
+
 @keyframes slideIn {
   from {
     transform: translateX(100%);

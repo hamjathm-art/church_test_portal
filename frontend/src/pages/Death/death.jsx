@@ -329,7 +329,10 @@ function BurialForm() {
             try {
               const nextRes = await authFetch('/api/burial/next-number');
               const nextResult = await nextRes.json();
-              if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+              if (nextResult.success) {
+                nextNumberRef.current = nextResult.data.nextNumber;
+                setFormData(prev => ({ ...prev, burialNo: nextResult.data.nextNumber }));
+              }
             } catch (e) { /* ignore */ }
           }
           setFormData(initialFormData);
@@ -343,7 +346,10 @@ function BurialForm() {
             try {
               const nextRes = await authFetch('/api/burial/next-number');
               const nextResult = await nextRes.json();
-              if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+              if (nextResult.success) {
+                nextNumberRef.current = nextResult.data.nextNumber;
+                setFormData(prev => ({ ...prev, burialNo: nextResult.data.nextNumber }));
+              }
             } catch (e) { /* ignore */ }
           }
           setFormData(initialFormData);

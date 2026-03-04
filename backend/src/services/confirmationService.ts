@@ -45,6 +45,10 @@ const search = async (query: Record<string, string>): Promise<SearchResult<Confi
   const conditions: string[] = [];
   const params: (string | number)[] = [];
 
+  if (query.confirmationNo) {
+    conditions.push("confirmationNo LIKE ?");
+    params.push(`%${query.confirmationNo}%`);
+  }
   if (query.fullName) {
     conditions.push("fullName LIKE ?");
     params.push(`%${query.fullName}%`);
@@ -75,7 +79,7 @@ const search = async (query: Record<string, string>): Promise<SearchResult<Confi
 
   const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
 
-  const allowedSortFields = ["fullName", "confirmationDate", "officiatingMinister", "churchName"];
+  const allowedSortFields = ["confirmationNo", "fullName", "confirmationDate", "officiatingMinister", "churchName"];
   const sortField = allowedSortFields.includes(query.sortBy) ? query.sortBy : "fullName";
   const sortOrder = query.sortOrder === "desc" ? "DESC" : "ASC";
   const limit = parseInt(query.maxRecords) || 5;

@@ -276,7 +276,10 @@ const VoucherForm = () => {
           try {
             const nextRes = await authFetch('/api/voucher/next-number');
             const nextResult = await nextRes.json();
-            if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+            if (nextResult.success) {
+                nextNumberRef.current = nextResult.data.nextNumber;
+                setFormData(prev => ({ ...prev, voucherNo: nextResult.data.nextNumber }));
+              }
           } catch (e) { /* ignore */ }
         } else {
           setFormData(initialFormData);
@@ -285,7 +288,10 @@ const VoucherForm = () => {
           try {
             const nextRes = await authFetch('/api/voucher/next-number');
             const nextResult = await nextRes.json();
-            if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+            if (nextResult.success) {
+                nextNumberRef.current = nextResult.data.nextNumber;
+                setFormData(prev => ({ ...prev, voucherNo: nextResult.data.nextNumber }));
+              }
           } catch (e) { /* ignore */ }
         }
       } else {
