@@ -44,6 +44,7 @@ function NoObjectionForm() {
   const [signingAuthority, setSigningAuthority] = useState('');
   const resultsRef = useRef(null);
   const toastTimer = useRef(null);
+  const nextNumberRef = useRef(null);
 
   const showToast = useCallback((message, type = 'success') => {
     if (toastTimer.current) clearTimeout(toastTimer.current);
@@ -63,6 +64,7 @@ function NoObjectionForm() {
           const result = await res.json();
           if (result.success) {
             setFormData(prev => ({ ...prev, objectionNo: result.data.nextNumber }));
+            nextNumberRef.current = result.data.nextNumber;
           }
         } catch (e) { console.error(e); }
       };
@@ -249,21 +251,11 @@ function NoObjectionForm() {
   };
 
   const handleNewClick = () => {
-    setFormData(initialFormData);
+    setFormData({ ...initialFormData, objectionNo: nextNumberRef.current || '' });
     setEditingId(null);
     setErrors({});
     setCameFromSearch(false);
     setView('form');
-    const fetchNextNumber = async () => {
-      try {
-        const res = await authFetch('/api/no-objection/next-number');
-        const result = await res.json();
-        if (result.success) {
-          setFormData(prev => ({ ...prev, objectionNo: result.data.nextNumber }));
-        }
-      } catch (e) { console.error(e); }
-    };
-    fetchNextNumber();
   };
 
   const handleCancel = () => {
@@ -307,10 +299,24 @@ function NoObjectionForm() {
           setCameFromSearch(false);
           setView('search');
           setTimeout(() => handleSearch(currentPage), 50);
+          if (!editingId) {
+            try {
+              const nextRes = await authFetch('/api/no-objection/next-number');
+              const nextResult = await nextRes.json();
+              if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+            } catch (e) { /* ignore */ }
+          }
         } else {
           setFormData(initialFormData);
           setEditingId(null);
           setErrors({});
+          if (!editingId) {
+            try {
+              const nextRes = await authFetch('/api/no-objection/next-number');
+              const nextResult = await nextRes.json();
+              if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+            } catch (e) { /* ignore */ }
+          }
         }
       } else {
         showToast(result.message || 'Failed to submit', 'error');

@@ -16,7 +16,7 @@ router.get("/", getAllRequests);
 router.get("/search", searchRequests);
 router.get("/next-number", getNextRequestNumber);
 router.get("/:id", getRequestById);
-router.put("/:id", updateRequest); 
+router.put("/:id", updateRequest);
 router.delete("/:id", deleteRequest);
 
 export default router;

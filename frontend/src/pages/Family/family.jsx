@@ -83,6 +83,7 @@ const FamilyForm = () => {
   const [signingAuthority, setSigningAuthority] = useState('');
   const resultsRef = useRef(null);
   const toastTimer = useRef(null);
+  const nextNumberRef = useRef(null);
 
   const showToast = useCallback((message, type = 'success') => {
     if (toastTimer.current) clearTimeout(toastTimer.current);
@@ -102,6 +103,7 @@ const FamilyForm = () => {
           const result = await res.json();
           if (result.success) {
             setFormData(prev => ({ ...prev, familyId: result.data.nextNumber }));
+            nextNumberRef.current = result.data.nextNumber;
           }
         } catch (e) { console.error(e); }
       };
@@ -299,21 +301,11 @@ const FamilyForm = () => {
   };
 
   const handleNewClick = () => {
-    setFormData(initialFormData);
+    setFormData({ ...initialFormData, familyId: nextNumberRef.current || '' });
     setEditingId(null);
     setErrors({});
     setCameFromSearch(false);
     setView('form');
-    const fetchNextNumber = async () => {
-      try {
-        const res = await authFetch('/api/family/next-number');
-        const result = await res.json();
-        if (result.success) {
-          setFormData(prev => ({ ...prev, familyId: result.data.nextNumber }));
-        }
-      } catch (e) { console.error(e); }
-    };
-    fetchNextNumber();
   };
 
   const handleCancel = () => {
@@ -350,6 +342,13 @@ const FamilyForm = () => {
         showToast(editingId ? 'Family registration updated successfully.' : 'Family registration submitted successfully.', 'success');
         if (cameFromSearch) {
           setFormData(initialFormData);
+          if (!editingId) {
+            try {
+              const nextRes = await authFetch('/api/family/next-number');
+              const nextResult = await nextRes.json();
+              if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+            } catch (e) { /* ignore */ }
+          }
           setEditingId(null);
           setErrors({});
           setCameFromSearch(false);
@@ -357,6 +356,13 @@ const FamilyForm = () => {
           setTimeout(() => handleSearch(currentPage), 50);
         } else {
           setFormData(initialFormData);
+          if (!editingId) {
+            try {
+              const nextRes = await authFetch('/api/family/next-number');
+              const nextResult = await nextRes.json();
+              if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+            } catch (e) { /* ignore */ }
+          }
           setEditingId(null);
           setErrors({});
         }

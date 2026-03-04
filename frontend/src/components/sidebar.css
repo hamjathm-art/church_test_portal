@@ -213,7 +213,7 @@
   }
 
   .Navbar-mobile-responsive {
-    background: #1E3A8A;
+    background: linear-gradient(135deg, #1E3A8A 0%, #3B5EC2 100%);
     display: flex;
     align-items: center;
     justify-content: space-between;

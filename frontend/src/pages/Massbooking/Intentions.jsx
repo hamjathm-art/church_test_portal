@@ -98,6 +98,7 @@ function Intentions() {
   const [bookedSlots, setBookedSlots] = useState({ slot1: false, slot2: false, slot3: false, slot4: false });
   const resultsRef = useRef(null);
   const toastTimer = useRef(null);
+  const nextNumberRef = useRef(null);
 
   const showToast = useCallback((message, type = 'success') => {
     if (toastTimer.current) clearTimeout(toastTimer.current);
@@ -117,6 +118,7 @@ function Intentions() {
           const result = await res.json();
           if (result.success) {
             setFormData(prev => ({ ...prev, intentionNo: result.data.nextNumber }));
+            nextNumberRef.current = result.data.nextNumber;
           }
         } catch (e) { console.error(e); }
       };
@@ -277,10 +279,24 @@ function Intentions() {
           setCameFromSearch(false);
           setView('search');
           setTimeout(() => handleSearch(currentPage), 50);
+          if (!editingId) {
+            try {
+              const nextRes = await authFetch('/api/mass-intention/next-number');
+              const nextResult = await nextRes.json();
+              if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+            } catch (e) { /* ignore */ }
+          }
         } else {
           setFormData(initialFormData);
           setEditingId(null);
           setErrors({});
+          if (!editingId) {
+            try {
+              const nextRes = await authFetch('/api/mass-intention/next-number');
+              const nextResult = await nextRes.json();
+              if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+            } catch (e) { /* ignore */ }
+          }
         }
       } else {
         showToast(result.message || 'Failed to submit', 'error');
@@ -399,22 +415,11 @@ function Intentions() {
   };
 
   const handleNewClick = () => {
-    setFormData(initialFormData);
+    setFormData({ ...initialFormData, intentionNo: nextNumberRef.current || '' });
     setEditingId(null);
     setErrors({});
     setCameFromSearch(false);
-    setBookedSlots({ slot1: false, slot2: false, slot3: false, slot4: false });
     setView('form');
-    const fetchNextNumber = async () => {
-      try {
-        const res = await authFetch('/api/mass-intention/next-number');
-        const result = await res.json();
-        if (result.success) {
-          setFormData(prev => ({ ...prev, intentionNo: result.data.nextNumber }));
-        }
-      } catch (e) { console.error(e); }
-    };
-    fetchNextNumber();
   };
 
   const handleCancel = () => {

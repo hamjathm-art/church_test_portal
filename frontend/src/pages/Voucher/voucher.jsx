@@ -62,6 +62,7 @@ const VoucherForm = () => {
   const [signingAuthority, setSigningAuthority] = useState('');
   const resultsRef = useRef(null);
   const toastTimer = useRef(null);
+  const nextNumberRef = useRef(null);
 
   const showToast = useCallback((message, type = 'success') => {
     if (toastTimer.current) clearTimeout(toastTimer.current);
@@ -81,6 +82,7 @@ const VoucherForm = () => {
           const result = await res.json();
           if (result.success) {
             setFormData(prev => ({ ...prev, voucherNo: result.data.nextNumber }));
+            nextNumberRef.current = result.data.nextNumber;
           }
         } catch (e) { console.error(e); }
       };
@@ -225,21 +227,11 @@ const VoucherForm = () => {
   };
 
   const handleNewClick = () => {
-    setFormData(initialFormData);
+    setFormData({ ...initialFormData, voucherNo: nextNumberRef.current || '' });
     setEditingId(null);
     setErrors({});
     setCameFromSearch(false);
     setView('form');
-    const fetchNextNumber = async () => {
-      try {
-        const res = await authFetch('/api/voucher/next-number');
-        const result = await res.json();
-        if (result.success) {
-          setFormData(prev => ({ ...prev, voucherNo: result.data.nextNumber }));
-        }
-      } catch (e) { console.error(e); }
-    };
-    fetchNextNumber();
   };
 
   const handleCancel = () => {
@@ -281,10 +273,20 @@ const VoucherForm = () => {
           setCameFromSearch(false);
           setView('search');
           setTimeout(() => handleSearch(currentPage), 50);
+          try {
+            const nextRes = await authFetch('/api/voucher/next-number');
+            const nextResult = await nextRes.json();
+            if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+          } catch (e) { /* ignore */ }
         } else {
           setFormData(initialFormData);
           setEditingId(null);
           setErrors({});
+          try {
+            const nextRes = await authFetch('/api/voucher/next-number');
+            const nextResult = await nextRes.json();
+            if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+          } catch (e) { /* ignore */ }
         }
       } else {
         showToast(result.message || 'Failed to submit', 'error');

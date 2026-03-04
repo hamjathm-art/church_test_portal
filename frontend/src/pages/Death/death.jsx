@@ -60,6 +60,7 @@ function BurialForm() {
   const [signingAuthority, setSigningAuthority] = useState('');
   const resultsRef = useRef(null);
   const toastTimer = useRef(null);
+  const nextNumberRef = useRef(null);
 
   const showToast = useCallback((message, type = 'success') => {
     if (toastTimer.current) clearTimeout(toastTimer.current);
@@ -79,6 +80,7 @@ function BurialForm() {
           const result = await res.json();
           if (result.success) {
             setFormData(prev => ({ ...prev, burialNo: result.data.nextNumber }));
+            nextNumberRef.current = result.data.nextNumber;
           }
         } catch (e) { console.error(e); }
       };
@@ -281,21 +283,11 @@ function BurialForm() {
   };
 
   const handleNewClick = () => {
-    setFormData(initialFormData);
+    setFormData({ ...initialFormData, burialNo: nextNumberRef.current || '' });
     setEditingId(null);
     setErrors({});
     setCameFromSearch(false);
     setView('form');
-    const fetchNextNumber = async () => {
-      try {
-        const res = await authFetch('/api/burial/next-number');
-        const result = await res.json();
-        if (result.success) {
-          setFormData(prev => ({ ...prev, burialNo: result.data.nextNumber }));
-        }
-      } catch (e) { console.error(e); }
-    };
-    fetchNextNumber();
   };
 
   const handleCancel = () => {
@@ -333,6 +325,13 @@ function BurialForm() {
       if (result.success) {
         showToast(editingId ? 'Burial certificate updated successfully.' : 'Burial certificate added successfully.', 'success');
         if (cameFromSearch) {
+          if (!editingId) {
+            try {
+              const nextRes = await authFetch('/api/burial/next-number');
+              const nextResult = await nextRes.json();
+              if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+            } catch (e) { /* ignore */ }
+          }
           setFormData(initialFormData);
           setEditingId(null);
           setErrors({});
@@ -340,6 +339,13 @@ function BurialForm() {
           setView('search');
           setTimeout(() => handleSearch(currentPage), 50);
         } else {
+          if (!editingId) {
+            try {
+              const nextRes = await authFetch('/api/burial/next-number');
+              const nextResult = await nextRes.json();
+              if (nextResult.success) nextNumberRef.current = nextResult.data.nextNumber;
+            } catch (e) { /* ignore */ }
+          }
           setFormData(initialFormData);
           setEditingId(null);
           setErrors({});
