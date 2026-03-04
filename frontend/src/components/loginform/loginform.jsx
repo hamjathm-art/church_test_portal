@@ -87,7 +87,7 @@ const Loginform = ({ setIsAuthenticated }) => {
               <div className="remember-me">
                 <input type="checkbox" /> Remember me
               </div>
-              <a href="#">Forgot Password?</a>
+              <a href="/forgot-password">Forgot Password?</a>
             </div>
 
             {errors.server && <p style={{ color: '#ff6b6b', fontSize: '13px', textAlign: 'center', marginBottom: '10px' }}>{errors.server}</p>}

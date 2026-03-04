@@ -457,13 +457,6 @@ const FamilyForm = () => {
     </div>
   );
 
-  const detailRow = (label, value) => (
-    <div key={label} style={{ display: 'flex', borderBottom: '1px solid #f3f4f6', padding: '10px 0' }}>
-      <span style={{ width: '200px', flexShrink: 0, fontSize: '14px', fontWeight: 600, color: '#374151' }}>{label}</span>
-      <span style={{ fontSize: '14px', color: '#111827' }}>{value || '-'}</span>
-    </div>
-  );
-
   return (
     <div className="w-full py-6 px-4">
 
