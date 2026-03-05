@@ -3,6 +3,7 @@ import './ReceiptForm.css';
 import authFetch from '../../utils/authFetch';
 import ActionButton from '../../components/Buttons/ActionButton';
 import SearchButton from '../../components/Buttons/SearchButton';
+import DatePickerField from '../../components/DatePickerField';
 
 const initialFormData = {
   receiptNo: '',
@@ -351,19 +352,29 @@ const ReceiptForm = () => {
       <label className="flex items-center gap-1 text-sm font-semibold text-gray-700 mb-2 leading-5">
         {label} {required && <span className="text-red-500 text-lg font-bold leading-none">*</span>}
       </label>
-      <input
-        type={type}
-        name={name}
-        value={formData[name]}
-        onChange={handleChange}
-        placeholder={type === 'date' ? '' : label}
-        className={`w-full py-2.5 px-3.5 text-[15px] rounded-lg outline-none transition-colors duration-200 focus:border-[#1E3A8A] ${
-          errors[name]
-            ? 'border-2 border-red-500 bg-red-50 text-red-800'
-            : 'border border-gray-300 bg-white text-gray-900'
-        }`}
-        style={{ fontStyle: 'normal' }}
-      />
+      {type === 'date' || type === 'datetime-local' ? (
+        <DatePickerField
+          name={name}
+          value={formData[name]}
+          onChange={(n, v) => { setFormData(prev => ({ ...prev, [n]: v })); setErrors(prev => ({ ...prev, [n]: '' })); }}
+          showTime={type === 'datetime-local'}
+          hasError={!!errors[name]}
+        />
+      ) : (
+        <input
+          type={type}
+          name={name}
+          value={formData[name]}
+          onChange={handleChange}
+          placeholder={type === 'date' ? '' : label}
+          className={`w-full py-2.5 px-3.5 text-[15px] rounded-lg outline-none transition-colors duration-200 focus:border-[#1E3A8A] ${
+            errors[name]
+              ? 'border-2 border-red-500 bg-red-50 text-red-800'
+              : 'border border-gray-300 bg-white text-gray-900'
+          }`}
+          style={{ fontStyle: 'normal' }}
+        />
+      )}
       {errors[name] && (
         <p className="text-red-500 text-xs mt-1.5">{errors[name]}</p>
       )}
@@ -411,20 +422,30 @@ const ReceiptForm = () => {
       <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px', fontWeight: 600, color: '#374151', marginBottom: '8px', lineHeight: '20px' }}>
         {label}
       </label>
-      <input
-        type={type}
-        name={name}
-        value={searchData[name]}
-        onChange={handleSearchChange}
-        placeholder={type === 'date' ? '' : label}
-        style={{
-          width: '100%', padding: '10px 14px', fontSize: '15px',
-          border: '1px solid #d1d5db', borderRadius: '8px', outline: 'none',
-          backgroundColor: '#fff', color: '#111', transition: 'border-color 0.2s',
-        }}
-        onFocus={(e) => { e.target.style.borderColor = '#3b82f6'; }}
-        onBlur={(e) => { e.target.style.borderColor = '#d1d5db'; }}
-      />
+      {type === 'date' || type === 'datetime-local' ? (
+        <DatePickerField
+          name={name}
+          value={searchData[name]}
+          onChange={(n, v) => setSearchData(prev => ({ ...prev, [n]: v }))}
+          showTime={type === 'datetime-local'}
+          hasError={false}
+        />
+      ) : (
+        <input
+          type={type}
+          name={name}
+          value={searchData[name]}
+          onChange={handleSearchChange}
+          placeholder={type === 'date' ? '' : label}
+          style={{
+            width: '100%', padding: '10px 14px', fontSize: '15px',
+            border: '1px solid #d1d5db', borderRadius: '8px', outline: 'none',
+            backgroundColor: '#fff', color: '#111', transition: 'border-color 0.2s',
+          }}
+          onFocus={(e) => { e.target.style.borderColor = '#3b82f6'; }}
+          onBlur={(e) => { e.target.style.borderColor = '#d1d5db'; }}
+        />
+      )}
     </div>
   );
 
@@ -562,10 +583,10 @@ const ReceiptForm = () => {
 
                 {signingAuthority && (
                   <div style={{ display: 'flex', justifyContent: 'center', marginTop: '24px' }}>
-                    <button onClick={handlePrint} style={{ backgroundColor: '#3B5EC2', color: '#fff', border: 'none', borderRadius: '6px', padding: '10px 40px', fontSize: '15px', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <ActionButton onClick={handlePrint}>
                       <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4H7v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
                       Print Receipt
-                    </button>
+                    </ActionButton>
                   </div>
                 )}
               </div>

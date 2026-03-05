@@ -48,6 +48,9 @@
   padding: 20px 20px 18px;
   text-align: center;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .login-header::after {
@@ -58,6 +61,16 @@
   right: 0;
   height: 6px;
   background: linear-gradient(180deg, rgba(59, 130, 246, 0.12) 0%, transparent 100%);
+}
+
+.login-logo {
+  height: 80px;
+  width: 80px;
+  margin-bottom: 10px;
+  border-radius: 50%;
+  border: 2.5px solid #93c5fd;
+  object-fit: cover;
+  object-position: center;
 }
 
 .login-church-name {

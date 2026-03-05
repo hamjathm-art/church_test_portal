@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Loginform from './components/loginform/loginform';
 import './App.css'
+import 'react-datepicker/dist/react-datepicker.css';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard/Dashboard.jsx';
 // import Navbar from './components/Navbar/navbar.jsx';

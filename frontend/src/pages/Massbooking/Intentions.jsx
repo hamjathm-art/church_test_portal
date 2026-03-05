@@ -4,6 +4,7 @@ import './intentions.css';
 import authFetch from '../../utils/authFetch';
 import ActionButton from '../../components/Buttons/ActionButton';
 import SearchButton from '../../components/Buttons/SearchButton';
+import DatePickerField from '../../components/DatePickerField';
 
 const intentionTypeOptions = [
   { value: 'ForTheDeceased', label: 'For the Deceased' },
@@ -499,23 +500,33 @@ function Intentions() {
       <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px', fontWeight: 600, color: '#374151', marginBottom: '8px', lineHeight: '20px' }}>
         {label} {required && <span style={{ color: '#ef4444', fontSize: '18px', fontWeight: 700, lineHeight: '1' }}>*</span>}
       </label>
-      <input
-        type={type}
-        name={name}
-        value={formData[name]}
-        onChange={handleChange}
-        placeholder={type === 'date' || type === 'datetime-local' ? '' : label}
-        style={{
-          width: '100%', padding: '10px 14px', fontSize: '15px', fontStyle: 'normal',
-          border: errors[name] ? '2px solid #ef4444' : '1px solid #d1d5db',
-          borderRadius: '8px', outline: 'none',
-          backgroundColor: errors[name] ? '#fef2f2' : '#fff',
-          color: errors[name] ? '#b91c1c' : '#111',
-          transition: 'border-color 0.2s',
-        }}
-        onFocus={(e) => { if (!errors[name]) e.target.style.borderColor = '#3b82f6'; }}
-        onBlur={(e) => { if (!errors[name]) e.target.style.borderColor = '#d1d5db'; }}
-      />
+      {type === 'date' || type === 'datetime-local' ? (
+        <DatePickerField
+          name={name}
+          value={formData[name]}
+          onChange={(n, v) => { setFormData(prev => ({ ...prev, [n]: v })); setErrors(prev => ({ ...prev, [n]: '' })); }}
+          showTime={type === 'datetime-local'}
+          hasError={!!errors[name]}
+        />
+      ) : (
+        <input
+          type={type}
+          name={name}
+          value={formData[name]}
+          onChange={handleChange}
+          placeholder={label}
+          style={{
+            width: '100%', padding: '10px 14px', fontSize: '15px', fontStyle: 'normal',
+            border: errors[name] ? '2px solid #ef4444' : '1px solid #d1d5db',
+            borderRadius: '8px', outline: 'none',
+            backgroundColor: errors[name] ? '#fef2f2' : '#fff',
+            color: errors[name] ? '#b91c1c' : '#111',
+            transition: 'border-color 0.2s',
+          }}
+          onFocus={(e) => { if (!errors[name]) e.target.style.borderColor = '#3b82f6'; }}
+          onBlur={(e) => { if (!errors[name]) e.target.style.borderColor = '#d1d5db'; }}
+        />
+      )}
       {errors[name] && <p style={{ color: '#ef4444', fontSize: '12px', marginTop: '6px' }}>{errors[name]}</p>}
     </div>
   );
@@ -559,20 +570,30 @@ function Intentions() {
       <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px', fontWeight: 600, color: '#374151', marginBottom: '8px', lineHeight: '20px' }}>
         {label}
       </label>
-      <input
-        type={type}
-        name={name}
-        value={searchData[name]}
-        onChange={handleSearchChange}
-        placeholder={type === 'date' ? '' : label}
-        style={{
-          width: '100%', padding: '10px 14px', fontSize: '15px',
-          border: '1px solid #d1d5db', borderRadius: '8px', outline: 'none',
-          backgroundColor: '#fff', color: '#111', transition: 'border-color 0.2s',
-        }}
-        onFocus={(e) => { e.target.style.borderColor = '#3b82f6'; }}
-        onBlur={(e) => { e.target.style.borderColor = '#d1d5db'; }}
-      />
+      {type === 'date' || type === 'datetime-local' ? (
+        <DatePickerField
+          name={name}
+          value={searchData[name]}
+          onChange={(n, v) => setSearchData(prev => ({ ...prev, [n]: v }))}
+          showTime={type === 'datetime-local'}
+          hasError={false}
+        />
+      ) : (
+        <input
+          type={type}
+          name={name}
+          value={searchData[name]}
+          onChange={handleSearchChange}
+          placeholder={label}
+          style={{
+            width: '100%', padding: '10px 14px', fontSize: '15px',
+            border: '1px solid #d1d5db', borderRadius: '8px', outline: 'none',
+            backgroundColor: '#fff', color: '#111', transition: 'border-color 0.2s',
+          }}
+          onFocus={(e) => { e.target.style.borderColor = '#3b82f6'; }}
+          onBlur={(e) => { e.target.style.borderColor = '#d1d5db'; }}
+        />
+      )}
     </div>
   );
 
@@ -941,16 +962,12 @@ function Intentions() {
                       return (
                         <tr key={idx} style={isBooked ? { backgroundColor: '#fef2f2' } : {}}>
                           <td>
-                            <input
-                              type="date"
+                            <DatePickerField
                               name={dateField}
                               value={formData[dateField]}
-                              onChange={handleChange}
-                              style={{
-                                width: '100%', padding: '8px 10px', fontSize: '14px',
-                                border: isBooked ? '2px solid #ef4444' : '1px solid #d1d5db', borderRadius: '8px',
-                                outline: 'none', backgroundColor: isBooked ? '#fef2f2' : '#fff', color: '#111',
-                              }}
+                              onChange={(n, v) => { setFormData(prev => ({ ...prev, [n]: v })); setErrors(prev => ({ ...prev, [n]: '' })); }}
+                              showTime={false}
+                              hasError={false}
                             />
                           </td>
                           <td>

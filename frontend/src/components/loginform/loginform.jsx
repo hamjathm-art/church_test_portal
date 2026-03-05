@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import './loginform.css';
-import { FaEnvelope, FaLock } from "react-icons/fa";
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate, Link } from 'react-router-dom';
-
 const Loginform = ({ setIsAuthenticated }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const validate = () => {
     const newErrors = {};
-    if (!email.trim()) {
+    if (!email.trim()) { 
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = 'Enter a valid email';
@@ -59,6 +59,7 @@ const Loginform = ({ setIsAuthenticated }) => {
       <div className="wrapper">
         {/* Header Banner */}
         <div className="login-header">
+          <img src="/images/l5.png" alt="Church Logo" className="login-logo" />
           <p className="login-church-name">St. Francis of Assisi Church</p>
         </div>
 
@@ -82,12 +83,14 @@ const Loginform = ({ setIsAuthenticated }) => {
             <div className="input-type">
               <FaLock className="icon" />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); setErrors({ ...errors, password: '' }); }}
               />
-              <FaLock className="icon-right" />
+              <span className="icon-right" onClick={() => setShowPassword(!showPassword)} style={{ cursor: 'pointer' }}>
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
             </div>
             {errors.password && <p className="login-error">{errors.password}</p>}
 

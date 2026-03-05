@@ -1,3 +1,10 @@
+.burial-grid input,
+.burial-grid select,
+.burial-grid textarea {
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-style: normal !important;
+}
+
 .burial-card {
   background-color: white;
   border: 1px solid #e0e0e0;
@@ -52,12 +59,10 @@
   color: #fff;
 }
 
-#burial-certificate-print-area {
-  font-family: 'Times New Roman', Times, serif;
-}
-
+#burial-certificate-print-area,
 #burial-certificate-print-area * {
-  font-family: 'Times New Roman', Times, serif;
+  font-family: 'Times New Roman', Times, serif !important;
+  color: #000 !important;
 }
 
 @keyframes slideIn {

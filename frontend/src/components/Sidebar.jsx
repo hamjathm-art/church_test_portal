@@ -58,7 +58,7 @@ const Sidebar = ({ children, setIsAuthenticated }) => {
         { path: "/marriage", name: "Marriage Certificates" },
         { path: "/confirmation", name: "Confirmation Certificates" },
         { path: "/death", name: "Burial Certificates" },
-        { path: "/objection", name: "No Objection Letters" },
+        { path: "/objection", name: "No Objection Certificates" },
       ],
     },
     { path: "/announcements", name: "Weekly Announcement", icon: <BsCalendarWeek /> },

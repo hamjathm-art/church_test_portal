@@ -305,7 +305,7 @@
   border-radius: 10px;
   padding: 10px 14px;
   border: 1px solid #E0E7FF;
-  cursor: pointer;
+  cursor: default;
   transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
 }
 

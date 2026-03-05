@@ -239,8 +239,8 @@ const Dashboard = () => {
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginTop: '2px' }}>
                   {upcomingDates.slice(0, 3).map((item) => (
-                    <p key={item.id} className="dash-card-sub" onClick={() => navigate('/announcement')}
-                      style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', padding: '2px 0' }}
+                    <p key={item.id} className="dash-card-sub"
+                      style={{ display: 'flex', justifyContent: 'space-between', padding: '2px 0' }}
                       onMouseEnter={(e) => { e.target.style.color = '#3B5EC2'; }}
                       onMouseLeave={(e) => { e.target.style.color = '#6b7280'; }}
                     >
@@ -329,7 +329,7 @@ const Dashboard = () => {
                 {recentAnnouncements.map((ann) => {
                   const d = ann.announcementDate ? new Date(ann.announcementDate) : null;
                   return (
-                    <div key={ann.id} className="dash-ann-card" onClick={() => navigate('/announcement')}>
+                    <div key={ann.id} className="dash-ann-card">
                       <div className="dash-ann-card-date-box">
                         <span className="dash-ann-card-day">{d ? d.getDate() : '--'}</span>
                         <span className="dash-ann-card-month">{d ? d.toLocaleDateString('en-US', { month: 'short' }) : ''}</span>

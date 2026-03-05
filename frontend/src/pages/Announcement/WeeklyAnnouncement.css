@@ -1,3 +1,10 @@
+.announcement-grid input,
+.announcement-grid select,
+.announcement-grid textarea {
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-style: normal !important;
+}
+
 .announcement-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
@@ -552,6 +559,13 @@
     width: 100%;
     justify-content: center;
   }
+}
+
+/* Detail view — Times New Roman */
+#detail-print-area,
+#detail-print-area * {
+  font-family: 'Times New Roman', Times, serif !important;
+  color: #000 !important;
 }
 
 /* ── Responsive: below 500px ── */
