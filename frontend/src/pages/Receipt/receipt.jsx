@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './ReceiptForm.css';
 import authFetch from '../../utils/authFetch';
+import ActionButton from '../../components/Buttons/ActionButton';
+import SearchButton from '../../components/Buttons/SearchButton';
 
 const initialFormData = {
   receiptNo: '',
@@ -475,15 +477,15 @@ const ReceiptForm = () => {
           </h2>
           <div className="receipt-header-btns" style={{ display: 'flex', gap: '10px' }}>
             {view === 'search' ? (
-              <button className="form-btn" onClick={handleNewClick} style={{ backgroundColor: '#3B5EC2', color: '#fff', border: 'none', borderRadius: '6px', padding: '7px 18px', fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}><span style={{ fontSize: '18px', fontWeight: 700, lineHeight: '1' }}>+</span> New Receipt</button>
+              <ActionButton onClick={handleNewClick}><span style={{ fontSize: '18px', fontWeight: 700, lineHeight: '1' }}>+</span> New Receipt</ActionButton>
             ) : view === 'detail' ? (
-              <button className="form-btn receipt-view-btn" onClick={handleBackToSearch} style={{ padding: '7px 18px', fontSize: '13px' }}>Back to Search</button>
+              <SearchButton onClick={handleBackToSearch}>Back to Search</SearchButton>
             ) : (
               <>
-                <button className="form-btn receipt-view-btn" onClick={handleSearchClick} style={{ padding: '7px 18px', fontSize: '13px' }}>Search</button>
-                <button className="form-btn" onClick={handleSubmit} disabled={loading} style={{ backgroundColor: '#3B5EC2', color: '#fff', border: 'none', borderRadius: '6px', padding: '7px 18px', fontSize: '13px', fontWeight: 500, cursor: 'pointer', opacity: loading ? 0.7 : 1 }}>
+                <SearchButton onClick={handleSearchClick}>Search</SearchButton>
+                <ActionButton onClick={handleSubmit} disabled={loading}>
                   {loading ? 'Submitting...' : (editingId ? 'Update' : 'Submit')}
-                </button>
+                </ActionButton>
               </>
             )}
           </div>
@@ -653,19 +655,11 @@ const ReceiptForm = () => {
             {/* Bottom Submit */}
             <div className="receipt-bottom-btns flex justify-end gap-3 px-6 py-3 border-t border-gray-200">
               {editingId && (
-                <button className="form-btn" type="button" onClick={handleCancel} style={{ backgroundColor: '#f3f4f6', color: '#374151', border: '1px solid #d1d5db', borderRadius: '6px', padding: '7px 18px', fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}
-                  onMouseEnter={(e) => { e.target.style.backgroundColor = '#3B5EC2'; e.target.style.color = '#fff'; e.target.style.borderColor = '#3B5EC2'; }}
-                  onMouseLeave={(e) => { e.target.style.backgroundColor = '#f3f4f6'; e.target.style.color = '#374151'; e.target.style.borderColor = '#d1d5db'; }}
-                >Cancel</button>
+                <ActionButton variant="secondary" onClick={handleCancel}>Cancel</ActionButton>
               )}
-              <button
-                type="submit"
-                disabled={loading}
-                className="form-btn"
-                style={{ backgroundColor: '#3B5EC2', color: '#fff', border: 'none', borderRadius: '6px', padding: '7px 18px', fontSize: '13px', fontWeight: 500, cursor: 'pointer', opacity: loading ? 0.7 : 1 }}
-              >
-                {loading ? 'Submitting...' : (editingId ? 'Update' : 'Submit')}
-              </button>
+              <ActionButton type="submit" disabled={loading}>
+                {loading ? 'Submitting...' : (editingId ? 'Update Receipt' : 'Submit Receipt')}
+              </ActionButton>
             </div>
           </form>
         ) : (
@@ -715,13 +709,10 @@ const ReceiptForm = () => {
             </div>
 
             <div className="receipt-search-btns" style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', padding: '16px 0', borderTop: '1px solid #e5e7eb' }}>
-              <button className="form-btn" type="button" onClick={handleSearchReset} style={{ backgroundColor: '#f3f4f6', color: '#374151', border: '1px solid #d1d5db', borderRadius: '6px', padding: '7px 18px', fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}
-                onMouseEnter={(e) => { e.target.style.backgroundColor = '#3B5EC2'; e.target.style.color = '#fff'; e.target.style.borderColor = '#3B5EC2'; }}
-                onMouseLeave={(e) => { e.target.style.backgroundColor = '#f3f4f6'; e.target.style.color = '#374151'; e.target.style.borderColor = '#d1d5db'; }}
-              >Reset</button>
-              <button className="form-btn" type="button" onClick={handleSearch} disabled={searchLoading} style={{ backgroundColor: '#3B5EC2', color: '#fff', border: 'none', borderRadius: '6px', padding: '7px 18px', fontSize: '13px', fontWeight: 500, cursor: 'pointer', opacity: searchLoading ? 0.7 : 1 }}>
-                {searchLoading ? 'Searching...' : 'Search Receipts'}
-              </button>
+              <ActionButton variant="secondary" onClick={handleSearchReset}>Reset</ActionButton>
+              <SearchButton onClick={() => handleSearch()} disabled={searchLoading}>
+                {searchLoading ? 'Searching...' : 'Search Receipt'}
+              </SearchButton>
             </div>
 
             {hasSearched && (

@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './NoObjectionForm.css';
 import authFetch from '../../utils/authFetch';
+import ActionButton from '../../components/Buttons/ActionButton';
+import SearchButton from '../../components/Buttons/SearchButton';
 
 const initialFormData = {
   objectionNo: '',
@@ -454,15 +456,15 @@ function NoObjectionForm() {
           </h2>
           <div className="no-print objection-header-btns" style={{ display: 'flex', gap: '10px' }}>
             {view === 'search' ? (
-              <button className="form-btn" onClick={handleNewClick} style={{ backgroundColor: '#3B5EC2', color: '#fff', border: 'none', borderRadius: '6px', padding: '8px 24px', fontSize: '14px', fontWeight: 500, cursor: 'pointer' }}><span style={{ fontSize: '20px', fontWeight: 700, lineHeight: '1' }}>+</span> New Certificate</button>
+              <ActionButton onClick={handleNewClick}><span style={{ fontSize: '20px', fontWeight: 700, lineHeight: '1' }}>+</span> New Certificate</ActionButton>
             ) : view === 'certificate' ? (
-              <button className="form-btn objection-view-btn" onClick={handleBackToSearch}>Back to Search</button>
+              <SearchButton onClick={handleBackToSearch}>Back to Search</SearchButton>
             ) : (
               <>
-                <button className="form-btn objection-view-btn" onClick={handleSearchClick}>Search</button>
-                <button className="form-btn" onClick={handleSubmit} disabled={loading} style={{ backgroundColor: '#3B5EC2', color: '#fff', border: 'none', borderRadius: '6px', padding: '8px 24px', fontSize: '14px', fontWeight: 500, cursor: 'pointer', opacity: loading ? 0.7 : 1 }}>
+                <SearchButton onClick={handleSearchClick}>Search</SearchButton>
+                <ActionButton onClick={handleSubmit} disabled={loading}>
                   {loading ? 'Submitting...' : (editingId ? 'Update' : 'Submit')}
-                </button>
+                </ActionButton>
               </>
             )}
           </div>
@@ -585,14 +587,11 @@ function NoObjectionForm() {
 
             <div className="objection-bottom-btns" style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', padding: '16px 24px', borderTop: '1px solid #e5e7eb' }}>
               {editingId && (
-                <button className="form-btn" type="button" onClick={handleCancel} style={{ backgroundColor: '#f3f4f6', color: '#374151', border: '1px solid #d1d5db', borderRadius: '6px', padding: '10px 24px', fontSize: '14px', fontWeight: 500, cursor: 'pointer', width: 'auto' }}
-                  onMouseEnter={(e) => { e.target.style.backgroundColor = '#3B5EC2'; e.target.style.color = '#fff'; e.target.style.borderColor = '#3B5EC2'; }}
-                  onMouseLeave={(e) => { e.target.style.backgroundColor = '#f3f4f6'; e.target.style.color = '#374151'; e.target.style.borderColor = '#d1d5db'; }}
-                >Cancel</button>
+                <ActionButton variant="secondary" onClick={handleCancel}>Cancel</ActionButton>
               )}
-              <button className="form-btn" type="submit" disabled={loading} style={{ backgroundColor: '#3B5EC2', color: '#fff', border: 'none', borderRadius: '6px', padding: '10px 24px', fontSize: '14px', fontWeight: 500, cursor: 'pointer', width: 'auto', opacity: loading ? 0.7 : 1 }}>
+              <ActionButton type="submit" disabled={loading}>
                 {loading ? 'Submitting...' : (editingId ? 'Update Certificate' : 'Submit Certificate')}
-              </button>
+              </ActionButton>
             </div>
           </form>
         ) : (
@@ -635,13 +634,10 @@ function NoObjectionForm() {
             </div>
 
             <div className="objection-search-btns" style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', padding: '16px 0', borderTop: '1px solid #e5e7eb' }}>
-              <button className="form-btn" type="button" onClick={handleSearchReset} style={{ backgroundColor: '#f3f4f6', color: '#374151', border: '1px solid #d1d5db', borderRadius: '6px', padding: '10px 28px', fontSize: '14px', fontWeight: 500, cursor: 'pointer' }}
-                onMouseEnter={(e) => { e.target.style.backgroundColor = '#3B5EC2'; e.target.style.color = '#fff'; e.target.style.borderColor = '#3B5EC2'; }}
-                onMouseLeave={(e) => { e.target.style.backgroundColor = '#f3f4f6'; e.target.style.color = '#374151'; e.target.style.borderColor = '#d1d5db'; }}
-              >Reset</button>
-              <button className="form-btn" type="button" onClick={handleSearch} disabled={searchLoading} style={{ backgroundColor: '#3B5EC2', color: '#fff', border: 'none', borderRadius: '6px', padding: '10px 28px', fontSize: '14px', fontWeight: 500, cursor: 'pointer', opacity: searchLoading ? 0.7 : 1 }}>
-                {searchLoading ? 'Searching...' : 'Search Records'}
-              </button>
+              <ActionButton variant="secondary" onClick={handleSearchReset}>Reset</ActionButton>
+              <SearchButton onClick={() => handleSearch()} disabled={searchLoading}>
+                {searchLoading ? 'Searching...' : 'Search No Objection'}
+              </SearchButton>
             </div>
 
             {hasSearched && (

@@ -129,6 +129,7 @@
   .baptism-search-btns button {
     width: 100% !important;
     text-align: center;
+    justify-content: center;
   }
 
   /* Table — scroll only inside table container */

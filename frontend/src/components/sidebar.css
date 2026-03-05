@@ -34,6 +34,8 @@
   font-size: 30px;
   margin: 0;
   line-height: 1;
+  display: flex;
+  justify-content: center;
 }
 
 .logo img {

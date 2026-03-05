@@ -1,0 +1,68 @@
+/* ── Action Button (Submit, Update, New, Cancel, Reset) ── */
+.action-btn {
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 10px 24px;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.action-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.action-btn-primary {
+  background: linear-gradient(135deg, #2546A0 0%, #4B6FD4 100%);
+  color: #fff;
+  border: 1px solid #2546A0;
+}
+
+.action-btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1E3A8A 0%, #3B5EC2 100%);
+  border-color: #1E3A8A;
+}
+
+.action-btn-secondary {
+  background: linear-gradient(135deg, #2546A0 0%, #4B6FD4 100%);
+  color: #fff;
+  border: 1px solid #2546A0;
+}
+
+.action-btn-secondary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1E3A8A 0%, #3B5EC2 100%);
+  border-color: #1E3A8A;
+}
+
+/* ── Search Button ── */
+.search-btn {
+  background-color: #fff;
+  color: #3B5EC2;
+  border: 1px solid #3B5EC2;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 10px 24px;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.search-btn:hover:not(:disabled) {
+  background-color: #3B5EC2;
+  color: #fff;
+  border-color: #3B5EC2;
+}
+
+.search-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

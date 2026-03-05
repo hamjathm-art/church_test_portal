@@ -129,6 +129,7 @@
   .burial-search-btns button {
     width: 100% !important;
     text-align: center;
+    justify-content: center;
   }
 
   .burial-table-wrap {

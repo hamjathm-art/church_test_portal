@@ -216,10 +216,10 @@ input[type="checkbox"] {
 }
 
 /* ── Login Button ── */
-form button {
+.login-form form button {
   width: 100%;
   height: 48px;
-  background: linear-gradient(135deg, #1E3A8A 0%, #0EA5A0 100%);
+  background: linear-gradient(135deg, #1E3A8A 0%, #3B5EC2 100%);
   border: none;
   outline: none;
   border-radius: 28px;
@@ -235,16 +235,16 @@ form button {
   box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3);
 }
 
-form button:hover {
+.login-form form button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(30, 58, 138, 0.45);
 }
 
-form button:active {
+.login-form form button:active {
   transform: translateY(0);
 }
 
-form button:disabled {
+.login-form form button:disabled {
   opacity: 0.7;
   cursor: not-allowed;
   transform: none;
@@ -365,7 +365,7 @@ form button:disabled {
     padding: 11px 38px 11px 38px;
   }
 
-  form button {
+  .login-form form button {
     height: 44px;
     font-size: 15px;
   }

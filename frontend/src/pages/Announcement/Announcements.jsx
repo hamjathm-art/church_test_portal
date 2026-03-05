@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './WeeklyAnnouncement.css';
 import authFetch from '../../utils/authFetch';
+import ActionButton from '../../components/Buttons/ActionButton';
+import SearchButton from '../../components/Buttons/SearchButton';
 
 const initialFormData = {
   title: '',
@@ -665,12 +667,9 @@ const WeeklyAnnouncement = () => {
                 </div>
                 {dashboardAnnouncements.length > 4 && (
                   <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                    <button onClick={() => handleViewAllSearch({ status: 'Published' })} style={{ backgroundColor: '#EEF2FF', color: '#1E3A8A', border: '1px solid #C7D2FE', borderRadius: '8px', padding: '10px 32px', fontSize: '14px', fontWeight: 600, cursor: 'pointer', transition: 'background-color 0.2s' }}
-                      onMouseEnter={(e) => { e.target.style.backgroundColor = '#1E3A8A'; e.target.style.color = '#fff'; }}
-                      onMouseLeave={(e) => { e.target.style.backgroundColor = '#EEF2FF'; e.target.style.color = '#1E3A8A'; }}
-                    >
+                    <SearchButton onClick={() => handleViewAllSearch({ status: 'Published' })}>
                       View All Announcements ({dashboardAnnouncements.length})
-                    </button>
+                    </SearchButton>
                   </div>
                 )}
               </div>
@@ -764,15 +763,15 @@ const WeeklyAnnouncement = () => {
               Dashboard
             </button>
             {view === 'search' ? (
-              <button className="form-btn" onClick={() => handleNewClick()} style={{ backgroundColor: '#3B5EC2', color: '#fff', border: 'none', borderRadius: '6px', padding: '8px 24px', fontSize: '14px', fontWeight: 500, cursor: 'pointer' }}><span style={{ fontSize: '20px', fontWeight: 700, lineHeight: '1' }}>+</span> New Announcement</button>
+              <ActionButton onClick={() => handleNewClick()}><span style={{ fontSize: '18px', fontWeight: 700, lineHeight: '1' }}>+</span> New Announcement</ActionButton>
             ) : view === 'detail' ? (
-              <button className="form-btn announcement-view-btn" onClick={handleBackToSearch}>{cameFromSearch ? 'Back to Search' : 'Back'}</button>
+              <SearchButton onClick={handleBackToSearch}>{cameFromSearch ? 'Back to Search' : 'Back'}</SearchButton>
             ) : (
               <>
-                <button className="form-btn announcement-view-btn" onClick={handleSearchClick}>Search</button>
-                <button className="form-btn" onClick={handleSubmit} disabled={loading} style={{ backgroundColor: '#3B5EC2', color: '#fff', border: 'none', borderRadius: '6px', padding: '8px 24px', fontSize: '14px', fontWeight: 500, cursor: 'pointer', opacity: loading ? 0.7 : 1 }}>
+                <SearchButton onClick={handleSearchClick}>Search</SearchButton>
+                <ActionButton onClick={handleSubmit} disabled={loading}>
                   {loading ? 'Submitting...' : (editingId ? 'Update' : 'Submit')}
-                </button>
+                </ActionButton>
               </>
             )}
           </div>
@@ -934,19 +933,11 @@ const WeeklyAnnouncement = () => {
             {/* Bottom Submit */}
             <div className="ann-bottom-btns flex justify-end gap-3 px-6 py-4 border-t border-gray-200">
               {editingId && (
-                <button className="form-btn" type="button" onClick={handleCancel} style={{ backgroundColor: '#f3f4f6', color: '#374151', border: '1px solid #d1d5db', borderRadius: '6px', padding: '10px 24px', fontSize: '14px', fontWeight: 500, cursor: 'pointer' }}
-                  onMouseEnter={(e) => { e.target.style.backgroundColor = '#3B5EC2'; e.target.style.color = '#fff'; e.target.style.borderColor = '#3B5EC2'; }}
-                  onMouseLeave={(e) => { e.target.style.backgroundColor = '#f3f4f6'; e.target.style.color = '#374151'; e.target.style.borderColor = '#d1d5db'; }}
-                >Cancel</button>
+                <ActionButton variant="secondary" onClick={handleCancel}>Cancel</ActionButton>
               )}
-              <button
-                type="submit"
-                disabled={loading}
-                className="bg-[#3B5EC2] text-white border-none rounded-md px-6 py-2 text-sm font-medium cursor-pointer"
-                style={{ opacity: loading ? 0.7 : 1 }}
-              >
-                {loading ? 'Submitting...' : (editingId ? 'Update' : 'Submit')}
-              </button>
+              <ActionButton type="submit" disabled={loading}>
+                {loading ? 'Submitting...' : (editingId ? 'Update Announcement' : 'Submit Announcement')}
+              </ActionButton>
             </div>
           </form>
         ) : (
@@ -1014,13 +1005,10 @@ const WeeklyAnnouncement = () => {
             </div>
 
             <div className="ann-search-btns" style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', padding: '16px 0', borderTop: '1px solid #e5e7eb' }}>
-              <button className="form-btn" type="button" onClick={handleSearchReset} style={{ backgroundColor: '#f3f4f6', color: '#374151', border: '1px solid #d1d5db', borderRadius: '6px', padding: '10px 28px', fontSize: '14px', fontWeight: 500, cursor: 'pointer' }}
-                onMouseEnter={(e) => { e.target.style.backgroundColor = '#3B5EC2'; e.target.style.color = '#fff'; e.target.style.borderColor = '#3B5EC2'; }}
-                onMouseLeave={(e) => { e.target.style.backgroundColor = '#f3f4f6'; e.target.style.color = '#374151'; e.target.style.borderColor = '#d1d5db'; }}
-              >Reset</button>
-              <button className="form-btn" type="button" onClick={() => handleSearch(1)} disabled={searchLoading} style={{ backgroundColor: '#3B5EC2', color: '#fff', border: 'none', borderRadius: '6px', padding: '10px 28px', fontSize: '14px', fontWeight: 500, cursor: 'pointer', opacity: searchLoading ? 0.7 : 1 }}>
+              <ActionButton variant="secondary" onClick={handleSearchReset}>Reset</ActionButton>
+              <SearchButton onClick={() => handleSearch()} disabled={searchLoading}>
                 {searchLoading ? 'Searching...' : 'Search Announcements'}
-              </button>
+              </SearchButton>
             </div>
 
             {hasSearched && (

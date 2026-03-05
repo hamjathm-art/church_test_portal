@@ -145,6 +145,7 @@
   .request-search-btns button {
     width: 100% !important;
     text-align: center;
+    justify-content: center;
   }
 
   .request-table-wrap {
