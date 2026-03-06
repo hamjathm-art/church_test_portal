@@ -68,6 +68,7 @@ const initialFormData = {
 };
 
 const initialSearchData = {
+  intentionNo: '',
   fullName: '',
   contactNumber: '',
   typeOfIntention: '',
@@ -227,7 +228,12 @@ function Intentions() {
 
   const handleSearchChange = (e) => {
     const { name, value } = e.target;
-    setSearchData({ ...searchData, [name]: value });
+    if (name === 'contactNumber') {
+      const numOnly = value.replace(/[^0-9]/g, '').slice(0, 10);
+      setSearchData({ ...searchData, [name]: numOnly });
+    } else {
+      setSearchData({ ...searchData, [name]: value });
+    }
   };
 
   const validateForm = () => {
@@ -313,7 +319,7 @@ function Intentions() {
   };
 
   const handleSearch = async (page = 1) => {
-    const hasSearchCriteria = searchData.fullName || searchData.contactNumber ||
+    const hasSearchCriteria = searchData.intentionNo || searchData.fullName || searchData.contactNumber ||
       searchData.typeOfIntention || searchData.status ||
       searchData.receivedDateFrom || searchData.receivedDateTo;
 
@@ -326,6 +332,7 @@ function Intentions() {
     setHasSearched(true);
     try {
       const params = new URLSearchParams();
+      if (searchData.intentionNo) params.append('intentionNo', searchData.intentionNo);
       if (searchData.fullName) params.append('fullName', searchData.fullName);
       if (searchData.contactNumber) params.append('contactNumber', searchData.contactNumber);
       if (searchData.typeOfIntention) params.append('typeOfIntention', searchData.typeOfIntention);
@@ -601,6 +608,7 @@ function Intentions() {
   // Build detail rows
   const getDetailRows = (r) => {
     const rows = [
+      { label: 'Intention No', value: r.intentionNo },
       { label: 'Full Name', value: r.fullName },
       { label: 'Contact Number', value: r.contactNumber },
       { label: 'Email Address', value: r.emailAddress },
@@ -1115,6 +1123,7 @@ function Intentions() {
 
             {/* Search Form */}
             <div className="mass-grid" key={resetKey} style={{ marginBottom: '20px' }}>
+              {searchField('intentionNo', 'Intention No')}
               {searchField('fullName', 'Full Name')}
               {searchField('contactNumber', 'Contact Number')}
 
@@ -1232,6 +1241,7 @@ function Intentions() {
                       <thead>
                         <tr style={{ backgroundColor: '#f9fafb', borderBottom: '2px solid #e5e7eb' }}>
                           <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' }}>Sr.</th>
+                          <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' }}>Intention No</th>
                           <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' }}>Full Name</th>
                           <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' }}>Contact</th>
                           <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' }}>Intention Type</th>
@@ -1244,6 +1254,7 @@ function Intentions() {
                         {searchResults.map((r, i) => (
                           <tr key={r.id} style={{ borderBottom: '1px solid #e5e7eb' }}>
                             <td style={{ padding: '12px 16px', color: '#6b7280', whiteSpace: 'nowrap' }}>{(currentPage - 1) * parseInt(searchData.maxRecords) + i + 1}</td>
+                            <td style={{ padding: '12px 16px', color: '#111827', fontWeight: 500, whiteSpace: 'nowrap' }}>{r.intentionNo}</td>
                             <td style={{ padding: '12px 16px', color: '#111827', fontWeight: 500, whiteSpace: 'nowrap' }}>{r.fullName}</td>
                             <td style={{ padding: '12px 16px', color: '#111827', whiteSpace: 'nowrap' }}>{r.contactNumber}</td>
                             <td style={{ padding: '12px 16px', color: '#111827', whiteSpace: 'nowrap' }}>{intentionTypeLabel(r.typeOfIntention)}</td>

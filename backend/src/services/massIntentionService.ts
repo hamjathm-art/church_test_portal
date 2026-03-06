@@ -51,6 +51,10 @@ const search = async (query: Record<string, string>): Promise<SearchResult<MassI
   const conditions: string[] = [];
   const params: (string | number)[] = [];
 
+  if (query.intentionNo) {
+    conditions.push("intentionNo LIKE ?");
+    params.push(`%${query.intentionNo}%`);
+  }
   if (query.fullName) {
     conditions.push("fullName LIKE ?");
     params.push(`%${query.fullName}%`);

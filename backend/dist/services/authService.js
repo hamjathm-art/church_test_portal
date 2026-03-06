@@ -8,7 +8,7 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const db_1 = __importDefault(require("../config/db"));
 const generateTokens = (user) => {
-    const accessToken = jsonwebtoken_1.default.sign({ id: user.id, name: user.name, email: user.email }, process.env.JWT_SECRET, { expiresIn: "15m" });
+    const accessToken = jsonwebtoken_1.default.sign({ id: user.id, name: user.name, email: user.email }, process.env.JWT_SECRET, { expiresIn: "2h" });
     const refreshToken = jsonwebtoken_1.default.sign({ id: user.id }, process.env.JWT_REFRESH_SECRET, { expiresIn: "7d" });
     return { accessToken, refreshToken };
 };
@@ -18,7 +18,7 @@ const register = async (data) => {
     if (existing.length > 0) {
         throw new Error("Email already registered");
     }
-    const hashedPassword = await bcryptjs_1.default.hash(password, 10);
+    const hashedPassword = await bcryptjs_1.default.hash(password, 8);
     const [result] = await db_1.default.query("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", [name, email, hashedPassword]);
     return { id: result.insertId, name, email };
 };
@@ -48,7 +48,7 @@ const refreshAccessToken = async (refreshToken) => {
         throw new Error("User not found");
     }
     const user = rows[0];
-    const accessToken = jsonwebtoken_1.default.sign({ id: user.id, name: user.name, email: user.email }, process.env.JWT_SECRET, { expiresIn: "15m" });
+    const accessToken = jsonwebtoken_1.default.sign({ id: user.id, name: user.name, email: user.email }, process.env.JWT_SECRET, { expiresIn: "2h" });
     return { accessToken };
 };
 exports.refreshAccessToken = refreshAccessToken;

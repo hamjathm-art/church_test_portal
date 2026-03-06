@@ -517,13 +517,14 @@ function ConfirmationForm() {
               <table className="confirmation-cert-table" style={{ margin: '0 auto', borderCollapse: 'collapse', fontSize: '13px', fontFamily: "'Times New Roman', Times, serif", width: '100%' }}>
                 <tbody>
                   {[
-                    { no: 1, label: 'Full Name', value: certificateRecord.fullName },
-                    { no: 2, label: 'Date of Confirmation', value: formatDate(certificateRecord.confirmationDate) },
-                    { no: 3, label: 'Officiating Minister', value: certificateRecord.officiatingMinister },
-                    { no: 4, label: 'Sponsor Name', value: certificateRecord.sponsorName },
-                    { no: 5, label: 'Church Name', value: certificateRecord.churchName },
-                    { no: 6, label: 'Church Address', value: certificateRecord.churchAddress },
-                    { no: 7, label: 'Church Contact', value: certificateRecord.churchContact },
+                    { no: 1, label: 'Confirmation No', value: certificateRecord.confirmationNo },
+                    { no: 2, label: 'Full Name', value: certificateRecord.fullName },
+                    { no: 3, label: 'Date of Confirmation', value: formatDate(certificateRecord.confirmationDate) },
+                    { no: 4, label: 'Officiating Minister', value: certificateRecord.officiatingMinister },
+                    { no: 5, label: 'Sponsor Name', value: certificateRecord.sponsorName },
+                    { no: 6, label: 'Church Name', value: certificateRecord.churchName },
+                    { no: 7, label: 'Church Address', value: certificateRecord.churchAddress },
+                    { no: 8, label: 'Church Contact', value: certificateRecord.churchContact },
                   ].map((item) => (
                     <tr key={item.no} style={{ verticalAlign: 'top' }}>
                       <td style={{ padding: '3px 6px 3px 0', color: '#000', textAlign: 'right', whiteSpace: 'nowrap' }}>{item.no}.</td>
@@ -694,6 +695,7 @@ function ConfirmationForm() {
                       <thead>
                         <tr style={{ backgroundColor: '#f9fafb', borderBottom: '2px solid #e5e7eb' }}>
                           <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' }}>Sr.</th>
+                          <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' }}>Confirmation No</th>
                           <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' }}>Full Name</th>
                           <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' }}>Date</th>
                           <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' }}>Minister</th>
@@ -706,6 +708,7 @@ function ConfirmationForm() {
                         {searchResults.map((r, i) => (
                           <tr key={r.id} style={{ borderBottom: '1px solid #e5e7eb' }}>
                             <td style={{ padding: '12px 16px', color: '#6b7280', whiteSpace: 'nowrap' }}>{(currentPage - 1) * parseInt(searchData.maxRecords) + i + 1}</td>
+                            <td style={{ padding: '12px 16px', color: '#111827', fontWeight: 500, whiteSpace: 'nowrap' }}>{r.confirmationNo}</td>
                             <td style={{ padding: '12px 16px', color: '#111827', fontWeight: 500, whiteSpace: 'nowrap' }}>{r.fullName}</td>
                             <td style={{ padding: '12px 16px', color: '#111827', whiteSpace: 'nowrap' }}>{r.confirmationDate}</td>
                             <td style={{ padding: '12px 16px', color: '#111827', whiteSpace: 'nowrap' }}>{r.officiatingMinister}</td>

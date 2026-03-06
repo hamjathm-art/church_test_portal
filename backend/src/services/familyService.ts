@@ -48,6 +48,10 @@ const search = async (query: Record<string, string>): Promise<SearchResult<Famil
   const conditions: string[] = [];
   const params: (string | number)[] = [];
 
+  if (query.familyId) {
+    conditions.push("familyId LIKE ?");
+    params.push(`%${query.familyId}%`);
+  }
   if (query.scc) {
     conditions.push("scc LIKE ?");
     params.push(`%${query.scc}%`);

@@ -18,8 +18,7 @@ const create = async (data) => {
     const placeholders = fields.map(() => "?").join(", ");
     const fieldNames = fields.map(escapeField).join(", ");
     const [result] = await db_1.default.query(`INSERT INTO burials (${fieldNames}) VALUES (${placeholders})`, values);
-    const [rows] = await db_1.default.query("SELECT * FROM burials WHERE id = ?", [result.insertId]);
-    return rows[0];
+    return { id: result.insertId, ...Object.fromEntries(fields.map((f, i) => [f, values[i]])) };
 };
 exports.create = create;
 const getAll = async () => {
@@ -39,8 +38,7 @@ const update = async (id, data) => {
     const [result] = await db_1.default.query(`UPDATE burials SET ${setClauses} WHERE id = ?`, values);
     if (result.affectedRows === 0)
         return null;
-    const [rows] = await db_1.default.query("SELECT * FROM burials WHERE id = ?", [id]);
-    return rows[0];
+    return { id: Number(id), ...Object.fromEntries(fields.map((f) => [f, data[f] !== undefined ? data[f] : ""])) };
 };
 exports.update = update;
 const search = async (query) => {

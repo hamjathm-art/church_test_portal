@@ -19,8 +19,7 @@ const create = async (data) => {
     const values = fields.map((f) => data[f] || "");
     const placeholders = fields.map(() => "?").join(", ");
     const [result] = await db_1.default.query(`INSERT INTO baptisms (${fields.join(", ")}) VALUES (${placeholders})`, values);
-    const [rows] = await db_1.default.query("SELECT * FROM baptisms WHERE id = ?", [result.insertId]);
-    return rows[0];
+    return { id: result.insertId, ...Object.fromEntries(fields.map((f, i) => [f, values[i]])) };
 };
 exports.create = create;
 const getAll = async () => {
@@ -40,8 +39,7 @@ const update = async (id, data) => {
     const [result] = await db_1.default.query(`UPDATE baptisms SET ${setClauses} WHERE id = ?`, values);
     if (result.affectedRows === 0)
         return null;
-    const [rows] = await db_1.default.query("SELECT * FROM baptisms WHERE id = ?", [id]);
-    return rows[0];
+    return { id: Number(id), ...Object.fromEntries(fields.map((f) => [f, data[f] !== undefined ? data[f] : ""])) };
 };
 exports.update = update;
 const search = async (query) => {

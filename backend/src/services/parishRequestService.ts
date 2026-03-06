@@ -55,6 +55,10 @@ const search = async (query: Record<string, string>): Promise<SearchResult<Paris
   const conditions: string[] = [];
   const params: (string | number)[] = [];
 
+  if (query.requestNo) {
+    conditions.push("requestNo LIKE ?");
+    params.push(`%${query.requestNo}%`);
+  }
   if (query.fullName) {
     conditions.push("fullName LIKE ?");
     params.push(`%${query.fullName}%`);

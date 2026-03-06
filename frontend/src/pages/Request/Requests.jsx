@@ -78,6 +78,7 @@ const initialFormData = {
 };
 
 const initialSearchData = {
+  requestNo: '',
   fullName: '',
   phone: '',
   requestType: '',
@@ -189,7 +190,12 @@ function ParishRequestForm() {
 
   const handleSearchChange = (e) => {
     const { name, value } = e.target;
-    setSearchData({ ...searchData, [name]: value });
+    if (name === 'phone') {
+      const numOnly = value.replace(/[^0-9]/g, '').slice(0, 10);
+      setSearchData({ ...searchData, [name]: numOnly });
+    } else {
+      setSearchData({ ...searchData, [name]: value });
+    }
   };
 
   const validateForm = () => {
@@ -306,7 +312,7 @@ function ParishRequestForm() {
   };
 
   const handleSearch = async (page = 1) => {
-    const hasSearchCriteria = searchData.fullName || searchData.phone ||
+    const hasSearchCriteria = searchData.requestNo || searchData.fullName || searchData.phone ||
       searchData.requestType || searchData.status ||
       searchData.dateReceivedFrom || searchData.dateReceivedTo;
 
@@ -319,6 +325,7 @@ function ParishRequestForm() {
     setHasSearched(true);
     try {
       const params = new URLSearchParams();
+      if (searchData.requestNo) params.append('requestNo', searchData.requestNo);
       if (searchData.fullName) params.append('fullName', searchData.fullName);
       if (searchData.phone) params.append('phone', searchData.phone);
       if (searchData.requestType) params.append('requestType', searchData.requestType);
@@ -580,6 +587,7 @@ function ParishRequestForm() {
   // Build detail rows based on request type
   const getDetailRows = (r) => {
     const rows = [
+      { label: 'Request No', value: r.requestNo },
       { label: 'Full Name', value: r.fullName },
       { label: 'Phone', value: r.phone },
       { label: 'Email', value: r.email },
@@ -1092,6 +1100,7 @@ function ParishRequestForm() {
 
             {/* Search Form */}
             <div className="request-grid" key={resetKey} style={{ marginBottom: '20px' }}>
+              {searchField('requestNo', 'Request No')}
               {searchField('fullName', 'Full Name')}
               {searchField('phone', 'Phone Number')}
 
@@ -1209,6 +1218,7 @@ function ParishRequestForm() {
                       <thead>
                         <tr style={{ backgroundColor: '#f9fafb', borderBottom: '2px solid #e5e7eb' }}>
                           <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' }}>Sr.</th>
+                          <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' }}>Request No</th>
                           <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' }}>Full Name</th>
                           <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' }}>Phone</th>
                           <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' }}>Request Type</th>
@@ -1221,6 +1231,7 @@ function ParishRequestForm() {
                         {searchResults.map((r, i) => (
                           <tr key={r.id} style={{ borderBottom: '1px solid #e5e7eb' }}>
                             <td style={{ padding: '12px 16px', color: '#6b7280', whiteSpace: 'nowrap' }}>{(currentPage - 1) * parseInt(searchData.maxRecords) + i + 1}</td>
+                            <td style={{ padding: '12px 16px', color: '#111827', fontWeight: 500, whiteSpace: 'nowrap' }}>{r.requestNo}</td>
                             <td style={{ padding: '12px 16px', color: '#111827', fontWeight: 500, whiteSpace: 'nowrap' }}>{r.fullName}</td>
                             <td style={{ padding: '12px 16px', color: '#111827', whiteSpace: 'nowrap' }}>{r.phone}</td>
                             <td style={{ padding: '12px 16px', color: '#111827', whiteSpace: 'nowrap' }}>{requestTypeLabel(r.requestType)}</td>

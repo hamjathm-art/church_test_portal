@@ -503,11 +503,12 @@ function NoObjectionForm() {
               <table className="objection-cert-table" style={{ margin: '0 auto', borderCollapse: 'collapse', fontSize: '13px', fontFamily: "'Times New Roman', Times, serif", width: '100%' }}>
                 <tbody>
                   {[
-                    { no: 1, label: 'Full Name', value: certificateRecord.fullName },
-                    { no: 2, label: 'Date of Birth', value: formatDate(certificateRecord.dateOfBirth) },
-                    { no: 3, label: 'Place of Birth', value: certificateRecord.placeOfBirth },
-                    { no: 4, label: 'Reason', value: certificateRecord.reason },
-                    { no: 5, label: 'Recipient Details', value: certificateRecord.recipientDetails },
+                    { no: 1, label: 'Objection No', value: certificateRecord.objectionNo },
+                    { no: 2, label: 'Full Name', value: certificateRecord.fullName },
+                    { no: 3, label: 'Date of Birth', value: formatDate(certificateRecord.dateOfBirth) },
+                    { no: 4, label: 'Place of Birth', value: certificateRecord.placeOfBirth },
+                    { no: 5, label: 'Reason', value: certificateRecord.reason },
+                    { no: 6, label: 'Recipient Details', value: certificateRecord.recipientDetails },
                   ].map((item) => (
                     <tr key={item.no} style={{ verticalAlign: 'top' }}>
                       <td style={{ padding: '3px 6px 3px 0', color: '#000', textAlign: 'right', whiteSpace: 'nowrap' }}>{item.no}.</td>
@@ -674,6 +675,7 @@ function NoObjectionForm() {
                       <thead>
                         <tr style={{ backgroundColor: '#f9fafb', borderBottom: '2px solid #e5e7eb' }}>
                           <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' }}>Sr.</th>
+                          <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' }}>Objection No</th>
                           <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' }}>Full Name</th>
                           <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' }}>Date of Birth</th>
                           <th style={{ padding: '12px 16px', textAlign: 'left', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' }}>Place of Birth</th>
@@ -686,6 +688,7 @@ function NoObjectionForm() {
                         {searchResults.map((r, i) => (
                           <tr key={r.id} style={{ borderBottom: '1px solid #e5e7eb' }}>
                             <td style={{ padding: '12px 16px', color: '#6b7280', whiteSpace: 'nowrap' }}>{(currentPage - 1) * parseInt(searchData.maxRecords) + i + 1}</td>
+                            <td style={{ padding: '12px 16px', color: '#111827', fontWeight: 500, whiteSpace: 'nowrap' }}>{r.objectionNo}</td>
                             <td style={{ padding: '12px 16px', color: '#111827', fontWeight: 500, whiteSpace: 'nowrap' }}>{r.fullName}</td>
                             <td style={{ padding: '12px 16px', color: '#111827', whiteSpace: 'nowrap' }}>{r.dateOfBirth}</td>
                             <td style={{ padding: '12px 16px', color: '#111827', whiteSpace: 'nowrap' }}>{r.placeOfBirth}</td>

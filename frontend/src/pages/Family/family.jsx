@@ -37,6 +37,7 @@ const initialFormData = {
 };
 
 const initialSearchData = {
+  familyId: '',
   scc: '',
   firstName: '',
   surname: '',
@@ -133,7 +134,12 @@ const FamilyForm = () => {
 
   const handleSearchChange = (e) => {
     const { name, value } = e.target;
-    setSearchData({ ...searchData, [name]: value });
+    if (name === 'mobile') {
+      const numOnly = value.replace(/[^0-9]/g, '').slice(0, 10);
+      setSearchData({ ...searchData, [name]: numOnly });
+    } else {
+      setSearchData({ ...searchData, [name]: value });
+    }
   };
 
   const validateForm = () => {
@@ -170,7 +176,7 @@ const FamilyForm = () => {
   };
 
   const handleSearch = async (page = 1) => {
-    const hasSearchCriteria = searchData.scc || searchData.firstName || searchData.surname ||
+    const hasSearchCriteria = searchData.familyId || searchData.scc || searchData.firstName || searchData.surname ||
       searchData.address2 || searchData.pincode || searchData.mobile || searchData.email ||
       searchData.stateOfOrigin || searchData.registrationDateFrom || searchData.registrationDateTo;
 
@@ -183,6 +189,7 @@ const FamilyForm = () => {
     setHasSearched(true);
     try {
       const params = new URLSearchParams();
+      if (searchData.familyId) params.append('familyId', searchData.familyId);
       if (searchData.scc) params.append('scc', searchData.scc);
       if (searchData.firstName) params.append('firstName', searchData.firstName);
       if (searchData.surname) params.append('surname', searchData.surname);
@@ -872,6 +879,7 @@ const FamilyForm = () => {
           /* Search View */
           <div className="family-search-section" style={{ padding: '24px 28px' }}>
             <div className="family-grid" key={resetKey} style={{ marginBottom: '20px' }}>
+              {searchField('familyId', 'Family ID')}
               <div>
                 <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: '#374151', marginBottom: '8px' }}>SCC</label>
                 <select name="scc" value={searchData.scc} onChange={handleSearchChange} style={{ ...selectStyle, width: '100%' }}>
