@@ -5,6 +5,7 @@ import authFetch from '../../utils/authFetch';
 import ActionButton from '../../components/Buttons/ActionButton';
 import SearchButton from '../../components/Buttons/SearchButton';
 import DatePickerField from '../../components/DatePickerField';
+import PageLoader from '../../components/PageLoader/PageLoader';
 
 const requestTypeOptions = [
   { value: 'baptism', label: 'Baptism Certificate' },
@@ -672,6 +673,7 @@ function ParishRequestForm() {
 
   return (
     <div style={{ width: '100%', padding: '24px 16px', minWidth: 0 }}>
+      {(loading || searchLoading) && <PageLoader />}
 
       {/* Toast Notification */}
       {toast && (

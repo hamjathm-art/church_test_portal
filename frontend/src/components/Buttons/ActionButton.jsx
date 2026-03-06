@@ -9,7 +9,7 @@ const ActionButton = ({ children, onClick, type = 'button', disabled = false, va
     className={`action-btn action-btn-${variant}`}
     style={style}
   > 
-    {children}
+    {children} 
   </button>
 );
 

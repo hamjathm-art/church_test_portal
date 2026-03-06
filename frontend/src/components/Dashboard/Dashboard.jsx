@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { MdAccessTime, MdCalendarToday } from 'react-icons/md';
 import authFetch from '../../utils/authFetch';
 import './dashboard.css';
- 
+import PageLoader from '../PageLoader/PageLoader';
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
@@ -181,7 +182,7 @@ const Dashboard = () => {
       </div>
 
       {loading ? (
-        <div style={{ textAlign: 'center', padding: '60px 0', color: '#6b7280', fontSize: '15px' }}>Loading dashboard...</div>
+        <PageLoader />
       ) : (
         <>
           {/* ── Row 1: 3 Cards in one line ── */}

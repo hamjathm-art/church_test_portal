@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" fill="none">
+  <!-- Reindeer -->
+  <g opacity="0.95">
+    <!-- Reindeer body -->
+    <ellipse cx="45" cy="45" rx="18" ry="12" fill="#fff" opacity="0.9"/>
+    <!-- Reindeer head -->
+    <circle cx="25" cy="38" r="7" fill="#fff" opacity="0.9"/>
+    <!-- Antlers -->
+    <path d="M22 32 L18 22 L15 26 M22 32 L20 24 M28 32 L32 22 L35 26 M28 32 L30 24" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.85"/>
+    <!-- Reindeer legs -->
+    <line x1="35" y1="55" x2="33" y2="65" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>
+    <line x1="42" y1="55" x2="40" y2="65" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>
+    <line x1="50" y1="55" x2="52" y2="65" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>
+    <line x1="57" y1="55" x2="59" y2="65" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>
+    <!-- Red nose -->
+    <circle cx="19" cy="39" r="2" fill="#93c5fd"/>
+  </g>
+
+  <!-- Reins -->
+  <path d="M60 48 Q75 42 90 50" stroke="#bfdbfe" stroke-width="1" stroke-dasharray="3 2" opacity="0.7"/>
+
+  <!-- Sleigh -->
+  <g>
+    <!-- Sleigh body -->
+    <path d="M85 42 Q82 42 80 48 L78 58 Q77 65 85 65 L155 65 Q165 65 165 58 L165 48 Q165 42 158 42 Z" fill="#fff" opacity="0.9"/>
+    <!-- Sleigh runner -->
+    <path d="M75 68 Q73 72 78 75 L160 75 Q168 75 170 70 Q172 66 168 68 L80 68 Q76 68 75 68Z" fill="#bfdbfe" opacity="0.8"/>
+    <!-- Sleigh runner curl -->
+    <path d="M170 70 Q175 62 180 65" stroke="#bfdbfe" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7"/>
+  </g>
+
+  <!-- Santa -->
+  <g>
+    <!-- Santa body -->
+    <ellipse cx="120" cy="42" rx="16" ry="18" fill="#fff" opacity="0.85"/>
+    <!-- Santa head -->
+    <circle cx="120" cy="22" r="10" fill="#fff" opacity="0.9"/>
+    <!-- Santa hat -->
+    <path d="M112 20 Q120 -2 135 15" fill="#93c5fd" opacity="0.85"/>
+    <circle cx="135" cy="14" r="3" fill="#fff" opacity="0.9"/>
+    <!-- Hat brim -->
+    <rect x="109" y="18" width="22" height="4" rx="2" fill="#fff" opacity="0.9"/>
+    <!-- Belt -->
+    <rect x="104" y="40" width="32" height="4" rx="1" fill="#60a5fa" opacity="0.7"/>
+    <!-- Arm waving -->
+    <path d="M136 32 Q145 22 148 18" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+  </g>
+
+  <!-- Gift boxes in sleigh -->
+  <rect x="90" y="48" width="10" height="10" rx="1" fill="#93c5fd" opacity="0.7"/>
+  <rect x="102" y="45" width="12" height="13" rx="1" fill="#60a5fa" opacity="0.7"/>
+  <rect x="140" y="48" width="10" height="10" rx="1" fill="#bfdbfe" opacity="0.7"/>
+
+  <!-- Stars trail -->
+  <polygon points="8,50 10,46 12,50 10,48" fill="#fff" opacity="0.6"/>
+  <polygon points="0,55 2,51 4,55 2,53" fill="#93c5fd" opacity="0.5"/>
+  <polygon points="15,60 17,56 19,60 17,58" fill="#bfdbfe" opacity="0.4"/>
+</svg>

@@ -4,6 +4,7 @@ import authFetch from '../../utils/authFetch';
 import ActionButton from '../../components/Buttons/ActionButton';
 import SearchButton from '../../components/Buttons/SearchButton';
 import DatePickerField from '../../components/DatePickerField';
+import PageLoader from '../../components/PageLoader/PageLoader';
 
 const initialFormData = {
   title: '',
@@ -580,6 +581,7 @@ const WeeklyAnnouncement = () => {
 
   return (
     <div className="w-full py-6 px-4">
+      {(loading || searchLoading) && <PageLoader />}
 
       {toast && (
         <div className="ann-toast" style={{

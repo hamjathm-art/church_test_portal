@@ -4,6 +4,7 @@ import authFetch from '../../utils/authFetch';
 import DatePickerField from '../../components/DatePickerField';
 import ActionButton from '../../components/Buttons/ActionButton';
 import SearchButton from '../../components/Buttons/SearchButton';
+import PageLoader from '../../components/PageLoader/PageLoader';
 
 const initialFormData = {
   confirmationNo: '',
@@ -443,6 +444,7 @@ function ConfirmationForm() {
 
   return (
     <div style={{ width: '100%', padding: '24px 16px', minWidth: 0 }}>
+      {(loading || searchLoading) && <PageLoader />}
 
       {toast && (
         <div className="confirmation-toast" style={{

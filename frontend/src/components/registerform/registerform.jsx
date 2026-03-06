@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import '../loginform/loginform.css';
 import { FaUser, FaLock, FaEnvelope, FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate, Link } from 'react-router-dom';
+import PageLoader from '../PageLoader/PageLoader';
 const RegisterForm = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -67,6 +68,18 @@ const RegisterForm = () => {
 
   return (
     <div className='login-form'>
+      {loading && <PageLoader />}
+      {/* Background sparkle stars */}
+      <div className="login-bg-stars">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+      </div>
       {toast && (
         <div className={`login-toast login-toast-${toast.type}`}>
           <span>{toast.message}</span>
@@ -76,11 +89,22 @@ const RegisterForm = () => {
       <div className="wrapper">
         {/* Header Banner */}
         <div className="login-header">
-          <img src="/images/l5.png" alt="Church Logo" className="login-logo" />
-          <p className="login-church-name">St. Francis of Assisi Church</p>
+          <div className="login-header-sparks">
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span>
+          </div>
+          <img src="/images/h1.png" alt="St. Francis of Assisi Church" className="login-banner-img" />
         </div>
 
         <div className="form-box login">
+          <div className="form-box-sparks">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+          </div>
           <form onSubmit={handleRegister}>
             <h1 className="login-title">Create Account</h1>
             <p className="login-subtitle">Register to get started.</p>
