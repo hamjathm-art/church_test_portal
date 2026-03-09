@@ -59,7 +59,7 @@ const initialFormData = {
   ifscCode: '',
   referenceNumber: '',
   specialNotes: '',
-  status: 'Pending',
+  status: '',
   receivedBy: '',
   receivedDate: '',
   confirmedDateTime: '',
@@ -249,11 +249,39 @@ function Intentions() {
       newErrors.emailAddress = 'Enter a valid email address';
     }
     if (!formData.typeOfIntention) newErrors.typeOfIntention = 'Type of Intention is required';
+    if (!formData.status) newErrors.status = 'Booking Status is required';
     if (formData.typeOfIntention === 'Other' && !formData.otherIntention.trim()) {
       newErrors.otherIntention = 'Please specify the intention';
     }
     if (!formData.nameOfPersonForIntention.trim()) {
       newErrors.nameOfPersonForIntention = 'Name(s) of Person(s) for Intention is required';
+    }
+
+    // Validate preferred date/time is not in the past
+    if (formData.preferredDateTime) {
+      const selected = new Date(formData.preferredDateTime);
+      if (selected <= new Date()) {
+        newErrors.preferredDateTime = 'Please select a future date and time. Past time is not allowed.';
+      }
+    }
+
+    // Validate slot dates are not in the past
+    const slotTimes = ['06:30', '09:00', '17:30', '19:00'];
+    const today = new Date();
+    const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    for (let i = 1; i <= 4; i++) {
+      const slotDate = formData[`slot${i}Date`];
+      if (slotDate) {
+        if (slotDate < todayStr) {
+          newErrors[`slot${i}Date`] = 'Past date is not allowed. Please select today or a future date.';
+        } else if (slotDate === todayStr) {
+          const [h, m] = slotTimes[i - 1].split(':').map(Number);
+          const slotTime = new Date(today.getFullYear(), today.getMonth(), today.getDate(), h, m);
+          if (slotTime <= today) {
+            newErrors[`slot${i}Date`] = 'This time slot has already passed for today. Please select a future date.';
+          }
+        }
+      }
     }
 
     return newErrors;
@@ -975,10 +1003,19 @@ function Intentions() {
                             <DatePickerField
                               name={dateField}
                               value={formData[dateField]}
-                              onChange={(n, v) => { setFormData(prev => ({ ...prev, [n]: v })); setErrors(prev => ({ ...prev, [n]: '' })); }}
+                              onChange={(n, v) => {
+                                if (!v) {
+                                  setFormData(prev => ({ ...prev, [n]: '', [statusField]: '' }));
+                                } else {
+                                  setFormData(prev => ({ ...prev, [n]: v }));
+                                }
+                                setErrors(prev => ({ ...prev, [n]: '' }));
+                              }}
                               showTime={false}
-                              hasError={false}
+                              hasError={!!errors[dateField]}
+                              minDate={new Date()}
                             />
+                            {errors[dateField] && <p style={{ color: '#ef4444', fontSize: '11px', marginTop: '4px', marginBottom: 0 }}>{errors[dateField]}</p>}
                           </td>
                           <td>
                             <span style={{ fontSize: '14px', fontWeight: 500, color: isBooked ? '#dc2626' : '#374151' }}>{slot.label}</span>
@@ -1031,7 +1068,28 @@ function Intentions() {
                 If none of the listed dates or times work, please specify your preferred date and time. We will contact you to confirm availability.
               </p>
               <div className="mass-grid">
-                {field('preferredDateTime', 'Preferred Date and Time', 'datetime-local', false)}
+                <div>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px', fontWeight: 600, color: '#374151', marginBottom: '8px', lineHeight: '20px' }}>
+                    Preferred Date and Time
+                  </label>
+                  <DatePickerField
+                    name="preferredDateTime"
+                    value={formData.preferredDateTime}
+                    onChange={(n, v) => { setFormData(prev => ({ ...prev, [n]: v })); setErrors(prev => ({ ...prev, [n]: '' })); }}
+                    showTime
+                    hasError={!!errors.preferredDateTime}
+                    minDate={new Date()}
+                    filterTime={(time) => {
+                      const now = new Date();
+                      const selected = formData.preferredDateTime ? new Date(formData.preferredDateTime) : null;
+                      if (selected && selected.toDateString() === now.toDateString()) {
+                        return time.getTime() > now.getTime();
+                      }
+                      return true;
+                    }}
+                  />
+                  {errors.preferredDateTime && <p style={{ color: '#ef4444', fontSize: '12px', marginTop: '6px' }}>{errors.preferredDateTime}</p>}
+                </div>
               </div>
             </div>
 
@@ -1086,7 +1144,7 @@ function Intentions() {
             <div style={{ padding: '20px 28px 8px', borderBottom: '1px solid #e5e7eb' }}>
               <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#374151', marginBottom: '16px' }}>6. Status</h3>
               <div className="mass-grid">
-                {selectField('status', 'Booking Status', statusOptions, false)}
+                {selectField('status', 'Booking Status', statusOptions)}
               </div>
             </div>
 

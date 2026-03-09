@@ -150,6 +150,10 @@ main {
   z-index: 9999 !important;
 }
 
+#datepicker-portal .react-datepicker-popper {
+  z-index: 99999 !important;
+}
+
 .datepicker-wrapper {
   position: relative;
   width: 100%;

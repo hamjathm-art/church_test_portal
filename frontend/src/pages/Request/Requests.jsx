@@ -39,7 +39,7 @@ const initialFormData = {
   city: '',
   pinCode: '',
   requestType: '',
-  status: 'Pending',
+  status: '',
   baptismFullName: '',
   baptismDateOfBirth: '',
   baptismDate: '',
@@ -211,6 +211,7 @@ function ParishRequestForm() {
       newErrors.email = 'Enter a valid email address';
     }
     if (!formData.requestType) newErrors.requestType = 'Request Type is required';
+    if (!formData.status) newErrors.status = 'Status is required';
 
     if (formData.requestType === 'baptism') {
       if (!formData.baptismFullName.trim()) newErrors.baptismFullName = 'Full Name of Baptized is required';
@@ -926,7 +927,7 @@ function ParishRequestForm() {
               <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#374151', marginBottom: '16px' }}>2. Type of Request</h3>
               <div className="request-grid" style={{ padding: 0, paddingBottom: '20px' }}>
                 {selectField('requestType', 'Request Type', requestTypeOptions)}
-                {selectField('status', 'Status', statusOptions, false)}
+                {selectField('status', 'Status', statusOptions)}
               </div>
             </div>
 

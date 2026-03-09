@@ -88,7 +88,7 @@ const handleRawChange = (e, showTime, name, onChange) => {
   }
 };
 
-const DatePickerField = ({ name, value, onChange, showTime, hasError }) => {
+const DatePickerField = ({ name, value, onChange, showTime, hasError, minDate, filterTime }) => {
   const parsed = value ? new Date(value) : null;
   const selected = parsed && !isNaN(parsed) ? parsed : null;
 
@@ -126,6 +126,9 @@ const DatePickerField = ({ name, value, onChange, showTime, hasError }) => {
         className={`datepicker-input${hasError ? ' datepicker-error' : ''}`}
         placeholderText={showTime ? 'YYYY-MM-DD HH:MM' : 'YYYY-MM-DD'}
         isClearable
+        portalId="datepicker-portal"
+        {...(minDate ? { minDate } : {})}
+        {...(filterTime ? { filterTime } : {})}
         renderCustomHeader={({
           date,
           changeYear,
