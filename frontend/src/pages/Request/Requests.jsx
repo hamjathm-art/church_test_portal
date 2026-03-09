@@ -1208,9 +1208,7 @@ function ParishRequestForm() {
                 <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#1f2937', marginBottom: '12px' }}>
                   Search Results ({totalCount})
                 </h3>
-                {searchLoading ? (
-                  <p style={{ textAlign: 'center', color: '#6b7280', padding: '40px 0' }}>Searching...</p>
-                ) : searchResults.length === 0 ? (
+                {searchLoading ? null : searchResults.length === 0 ? (
                   <p style={{ textAlign: 'center', color: '#6b7280', padding: '40px 0', backgroundColor: '#f9fafb', borderRadius: '8px' }}>No records found matching your search criteria.</p>
                 ) : (
                   <div className="request-table-wrap" style={{ overflowX: 'auto', maxWidth: '100%' }}>

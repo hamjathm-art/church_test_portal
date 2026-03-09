@@ -581,7 +581,7 @@ const WeeklyAnnouncement = () => {
 
   return (
     <div className="w-full py-6 px-4">
-      {(loading || searchLoading) && <PageLoader />}
+      {(loading || searchLoading || dashboardLoading) && <PageLoader />}
 
       {toast && (
         <div className="ann-toast" style={{
@@ -646,9 +646,7 @@ const WeeklyAnnouncement = () => {
           </div>
 
           {/* Dashboard Body */}
-          {dashboardLoading ? (
-            <div className="ann-dash-loading">Loading announcements...</div>
-          ) : dashboardAnnouncements.length === 0 ? (
+          {dashboardLoading ? null : dashboardAnnouncements.length === 0 ? (
             <div className="ann-dash-empty">
               <svg width="48" height="48" fill="none" stroke="#9ca3af" viewBox="0 0 24 24" style={{ margin: '0 auto 12px' }}><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
               <p style={{ margin: 0 }}>No published announcements yet.</p>
@@ -1037,9 +1035,7 @@ const WeeklyAnnouncement = () => {
             {hasSearched && (
               <div ref={resultsRef} style={{ marginTop: '20px' }}>
                 <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#1f2937', marginBottom: '12px' }}>{searchTitle ? `${searchTitle} (${totalCount})` : `Search Results (${totalCount})`}</h3>
-                {searchLoading ? (
-                  <p style={{ textAlign: 'center', color: '#6b7280', padding: '40px 0' }}>Searching...</p>
-                ) : searchResults.length === 0 ? (
+                {searchLoading ? null : searchResults.length === 0 ? (
                   <p style={{ textAlign: 'center', color: '#6b7280', padding: '40px 0', backgroundColor: '#f9fafb', borderRadius: '8px' }}>No records found matching your search criteria.</p>
                 ) : (
                   <div className="ann-table-wrap" style={{ overflowX: 'auto', maxWidth: '100%' }}>
