@@ -670,8 +670,8 @@ function MarriageForm() {
                       }}
                     >
                       <option value="">-- Select Authority --</option>
-                      <option value="christopher">Fr. Christopher Jayakumar</option>
-                      <option value="joel">Joel Savio Fernandes</option>
+                      <option value="christopher">Parish Priest</option>
+                      <option value="joel">Asst. Parish Priest</option>
                     </select>
                   </div>
                 </div>

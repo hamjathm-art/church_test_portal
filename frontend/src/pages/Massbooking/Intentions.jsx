@@ -820,8 +820,8 @@ function Intentions() {
                           style={{ padding: '10px 14px', fontSize: '15px', border: '1px solid #d1d5db', borderRadius: '8px', outline: 'none', backgroundColor: '#fff', color: '#111' }}
                         >
                           <option value="">-- Select Authority --</option>
-                          <option value="christopher">Fr. Christopher Jayakumar</option>
-                          <option value="joel">Joel Savio Fernandes</option>
+                          <option value="christopher">Parish Priest</option>
+                          <option value="joel">Asst. Parish Priest</option>
                         </select>
                       </div>
                     </div>
